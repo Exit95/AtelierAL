@@ -138,10 +138,13 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
             messageDiv.className = "message";
             uploadBtn.disabled = true; // Prevent double click
 
-            const res = await fetch("/api/upload", {
-                method: "POST",
-                body: formData,
-            });
+            const res = await fetch(
+                "https://test-danapfel-digital.de/upload-proxy.php",
+                {
+                    method: "POST",
+                    body: formData,
+                },
+            );
 
             let result;
             try {
