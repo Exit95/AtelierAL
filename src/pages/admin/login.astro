@@ -71,7 +71,9 @@ import "../../styles/global.css";
                         body: formData,
                     });
 
+                    console.log("Response status:", response.status);
                     const data = await response.json();
+                    console.log("Response data:", data);
 
                     if (data.success) {
                         window.location.href = data.redirect || "/admin";
@@ -80,8 +82,9 @@ import "../../styles/global.css";
                             data.error || "Login fehlgeschlagen";
                     }
                 } catch (error) {
-                    errorDiv.textContent = "Ein Fehler ist aufgetreten";
-                    console.error("Login error:", error);
+                    errorDiv.textContent =
+                        "Ein Fehler ist aufgetreten (siehe Konsole)";
+                    console.error("Login error details:", error);
                 }
             });
         </script>
