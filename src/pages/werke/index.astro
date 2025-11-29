@@ -1,0 +1,50 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import GalleryGrid from "../../components/GalleryGrid.astro";
+import { getCollection } from "astro:content";
+
+const allArtworks = await getCollection("artworks");
+---
+
+<Layout
+    title="Werke"
+    description="Entdecken Sie abstrakte Kunstwerke von Katharina Lanvermann. Einzigartige Acrylbilder in warmen Erdtönen und mediterranen Farben."
+>
+    <section class="page-hero">
+        <div class="container">
+            <h1>Werke</h1>
+            <p class="hero-subtitle">
+                Einzigartige abstrakte Kunstwerke, die Räume verwandeln
+            </p>
+        </div>
+    </section>
+
+    <section class="section py-12">
+        <div class="container">
+            <GalleryGrid artworks={allArtworks} />
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .page-hero {
+        padding: var(--space-16) 0 var(--space-8);
+        background: linear-gradient(
+            135deg,
+            var(--color-brand-beige-light),
+            var(--color-surface)
+        );
+        text-align: center;
+    }
+
+    .page-hero h1 {
+        margin-bottom: var(--space-4);
+    }
+
+    .hero-subtitle {
+        font-size: var(--font-size-xl);
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+</style>

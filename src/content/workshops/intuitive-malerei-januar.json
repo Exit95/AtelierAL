@@ -1,0 +1,20 @@
+{
+    "title": "Intuitive Malerei - Entdecke deine kreative Stimme",
+    "description": "In diesem Workshop tauchen wir gemeinsam in die Welt der intuitiven Malerei ein. Ohne Vorgaben und Erwartungen lassen wir Farben und Formen aus dem Inneren entstehen. Perfekt für Anfänger und alle, die ihre kreative Seite entdecken möchten.",
+    "date": "2025-01-15T00:00:00.000Z",
+    "time": "10:00 - 16:00",
+    "duration": "6 Stunden (inkl. Pause)",
+    "location": "ATELIER KL, Hauptstraße 45, 48619 Heek",
+    "maxParticipants": 8,
+    "currentParticipants": 3,
+    "materials": [
+        "Leinwände (verschiedene Größen)",
+        "Acrylfarben",
+        "Pinsel und Spachteln",
+        "Schürzen",
+        "Kaffee, Tee und kleine Snacks"
+    ],
+    "price": 129,
+    "image": "/placeholders/workshop-1.jpg",
+    "bookingEnabled": true
+}

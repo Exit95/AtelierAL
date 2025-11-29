@@ -1,0 +1,235 @@
+---
+interface Props {
+    workshop: {
+        title: string;
+        description: string;
+        date: Date;
+        time: string;
+        location: string;
+        maxParticipants: number;
+        currentParticipants: number;
+        price: number;
+        image: string;
+        bookingEnabled: boolean;
+    };
+}
+
+const { workshop } = Astro.props;
+import Badge from "./Badge.astro";
+import CTAButton from "./CTAButton.astro";
+
+const availableSpots = workshop.maxParticipants - workshop.currentParticipants;
+const isFull = availableSpots === 0;
+
+// Format date for display
+const dateFormatter = new Intl.DateTimeFormat("de-DE", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+});
+const formattedDate = dateFormatter.format(new Date(workshop.date));
+---
+
+<article class="workshop-card">
+    <div class="workshop-image">
+        <img src={workshop.image} alt={workshop.title} loading="lazy" />
+        {
+            isFull ? (
+                <Badge
+                    variant="sold"
+                    label="Ausgebucht"
+                    className="workshop-badge"
+                />
+            ) : (
+                <Badge
+                    variant="available"
+                    label={`${availableSpots} Plätze frei`}
+                    className="workshop-badge"
+                />
+            )
+        }
+    </div>
+    <div class="workshop-content">
+        <h3 class="workshop-title">{workshop.title}</h3>
+        <div class="workshop-meta">
+            <div class="meta-item">
+                <span class="meta-icon">📅</span>
+                <span>{formattedDate}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-icon">🕒</span>
+                <span>{workshop.time}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-icon">📍</span>
+                <span>{workshop.location}</span>
+            </div>
+        </div>
+        <p class="workshop-description">{workshop.description}</p>
+        <div class="workshop-footer">
+            <div class="workshop-price">{workshop.price}€</div>
+            {
+                workshop.bookingEnabled && !isFull && (
+                    <CTAButton
+                        label="Jetzt buchen"
+                        href="/workshops#booking"
+                        type="primary"
+                    />
+                )
+            }
+        </div>
+    </div>
+</article>
+
+<style>
+    .workshop-card {
+        display: flex;
+        flex-direction: column;
+        background: var(--color-surface-elevated);
+        border-radius: var(--radius-base);
+        overflow: hidden;
+        box-shadow: var(--shadow-base);
+        transition: all var(--transition-base);
+        height: 100%;
+    }
+
+    .workshop-card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-4px);
+    }
+
+    .workshop-image {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        background-color: var(--color-brand-beige-light);
+    }
+
+    .workshop-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+    }
+
+    .workshop-badge {
+        position: absolute;
+        top: var(--space-3);
+        right: var(--space-3);
+    }
+
+    .workshop-content {
+        padding: var(--space-4);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+        flex-grow: 1;
+    }
+
+    .workshop-title {
+        margin: 0;
+        font-size: var(--font-size-lg);
+        line-height: var(--line-height-tight);
+    }
+
+    .workshop-meta {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: var(--font-size-xs);
+        color: var(--color-text-secondary);
+    }
+
+    .meta-icon {
+        font-size: 1.1em;
+        flex-shrink: 0;
+    }
+
+    .workshop-description {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        line-height: var(--line-height-relaxed);
+        flex-grow: 1;
+    }
+
+    .workshop-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-3);
+        padding-top: var(--space-3);
+        border-top: 1px solid var(--color-border-light);
+    }
+
+    .workshop-price {
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-accent);
+        text-align: center;
+    }
+
+    /* Small smartphones: 375px+ */
+    @media (min-width: 375px) {
+        .workshop-content {
+            padding: var(--space-5);
+        }
+
+        .workshop-title {
+            font-size: var(--font-size-xl);
+        }
+
+        .meta-item {
+            font-size: var(--font-size-sm);
+        }
+
+        .workshop-price {
+            font-size: var(--font-size-2xl);
+        }
+    }
+
+    /* Tablets: 768px+ */
+    @media (min-width: 768px) {
+        .workshop-card {
+            border-radius: var(--radius-lg);
+        }
+
+        .workshop-badge {
+            top: var(--space-4);
+            right: var(--space-4);
+        }
+
+        .workshop-content {
+            padding: var(--space-6);
+            gap: var(--space-4);
+        }
+
+        .workshop-footer {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: var(--space-4);
+        }
+
+        .workshop-price {
+            text-align: left;
+        }
+    }
+
+    /* Desktop: 1024px+ */
+    @media (min-width: 1024px) {
+        .workshop-title {
+            font-size: var(--font-size-2xl);
+        }
+
+        .workshop-description {
+            font-size: var(--font-size-base);
+        }
+    }
+</style>

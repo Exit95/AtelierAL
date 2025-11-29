@@ -1,0 +1,423 @@
+---
+interface Artwork {
+    id: string;
+    data: {
+        title: string;
+        images: string[];
+        availability: "available" | "reserved" | "sold";
+        technique: string;
+        size: {
+            width: number;
+            height: number;
+            unit: string;
+        };
+    };
+}
+
+interface Props {
+    artworks: Artwork[];
+}
+
+const { artworks } = Astro.props;
+import Badge from "./Badge.astro";
+
+// Extract unique tags for filtering
+const allTags = [
+    ...new Set(artworks.flatMap((artwork) => artwork.data.tags || [])),
+];
+const techniques = [
+    ...new Set(artworks.map((artwork) => artwork.data.technique)),
+];
+---
+
+<div class="gallery-container">
+    <div class="gallery-filters" data-gallery-filters>
+        <div class="filter-group">
+            <label for="filter-availability">Status:</label>
+            <select
+                id="filter-availability"
+                class="filter-select"
+                data-filter-type="availability"
+            >
+                <option value="all">Alle</option>
+                <option value="available">Verfügbar</option>
+                <option value="reserved">Reserviert</option>
+                <option value="sold">Verkauft</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="filter-technique">Technik:</label>
+            <select
+                id="filter-technique"
+                class="filter-select"
+                data-filter-type="technique"
+            >
+                <option value="all">Alle</option>
+                {
+                    techniques.map((technique) => (
+                        <option value={technique}>{technique}</option>
+                    ))
+                }
+            </select>
+        </div>
+
+        <button class="filter-reset" data-filter-reset
+            >Filter zurücksetzen</button
+        >
+    </div>
+
+    <div class="gallery-grid masonry" data-gallery-grid>
+        {
+            artworks.length === 0 ? (
+                <div class="gallery-empty">
+                    <p>Keine Werke gefunden.</p>
+                </div>
+            ) : (
+                artworks.map((artwork, index) => (
+                    <div
+                        class="masonry-item gallery-item"
+                        data-availability={artwork.data.availability}
+                        data-technique={artwork.data.technique}
+                        data-artwork-index={index}
+                    >
+                        <a
+                            href={`/werke/${artwork.id}`}
+                            class="artwork-link"
+                            data-lightbox-trigger
+                            data-image-url={artwork.data.images[0]}
+                        >
+                            <div class="artwork-image">
+                                <img
+                                    src={artwork.data.images[0]}
+                                    alt={artwork.data.title}
+                                    loading="lazy"
+                                />
+                                <div class="artwork-overlay">
+                                    <span class="view-icon">👁️</span>
+                                </div>
+                            </div>
+                            <div class="artwork-info">
+                                <h3 class="artwork-title">
+                                    {artwork.data.title}
+                                </h3>
+                                <p class="artwork-meta">
+                                    {artwork.data.technique}
+                                    <br />
+                                    {artwork.data.size.width} ×{" "}
+                                    {artwork.data.size.height}{" "}
+                                    {artwork.data.size.unit}
+                                </p>
+                                <Badge
+                                    variant={artwork.data.availability}
+                                    label={
+                                        artwork.data.availability ===
+                                        "available"
+                                            ? "Verfügbar"
+                                            : artwork.data.availability ===
+                                                "reserved"
+                                              ? "Reserviert"
+                                              : "Verkauft"
+                                    }
+                                />
+                            </div>
+                        </a>
+                    </div>
+                ))
+            )
+        }
+    </div>
+
+    <div class="gallery-no-results" hidden data-no-results>
+        <p>Keine Werke entsprechen den ausgewählten Filtern.</p>
+    </div>
+</div>
+
+<script>
+    const galleryContainer = document.querySelector("[data-gallery-grid]");
+    const filters = document.querySelectorAll("[data-filter-type]");
+    const resetButton = document.querySelector("[data-filter-reset]");
+    const noResults = document.querySelector("[data-no-results]");
+
+    if (galleryContainer && filters.length > 0) {
+        // Store active filters
+        const activeFilters = {
+            availability: "all",
+            technique: "all",
+        };
+
+        // Filter function
+        function filterGallery() {
+            const items = galleryContainer.querySelectorAll(".gallery-item");
+            let visibleCount = 0;
+
+            items.forEach((item) => {
+                const availability = item.getAttribute("data-availability");
+                const technique = item.getAttribute("data-technique");
+
+                const matchesAvailability =
+                    activeFilters.availability === "all" ||
+                    availability === activeFilters.availability;
+                const matchesTechnique =
+                    activeFilters.technique === "all" ||
+                    technique === activeFilters.technique;
+
+                if (matchesAvailability && matchesTechnique) {
+                    item.style.display = "";
+                    visibleCount++;
+                } else {
+                    item.style.display = "none";
+                }
+            });
+
+            // Show/hide no results message
+            if (noResults) {
+                if (visibleCount === 0) {
+                    noResults.hidden = false;
+                    galleryContainer.style.display = "none";
+                } else {
+                    noResults.hidden = true;
+                    galleryContainer.style.display = "";
+                }
+            }
+        }
+
+        // Add event listeners to filters
+        filters.forEach((filter) => {
+            filter.addEventListener("change", (e) => {
+                const target = e.target as HTMLSelectElement;
+                const filterType = target.getAttribute(
+                    "data-filter-type",
+                ) as keyof typeof activeFilters;
+                activeFilters[filterType] = target.value;
+                filterGallery();
+            });
+        });
+
+        // Reset filters
+        if (resetButton) {
+            resetButton.addEventListener("click", () => {
+                filters.forEach((filter) => {
+                    (filter as HTMLSelectElement).value = "all";
+                });
+                activeFilters.availability = "all";
+                activeFilters.technique = "all";
+                filterGallery();
+            });
+        }
+    }
+</script>
+
+<style>
+    .gallery-container {
+        margin-top: var(--space-8);
+    }
+
+    .gallery-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-3);
+        align-items: flex-end;
+        padding: var(--space-4);
+        background-color: var(--color-surface);
+        border-radius: var(--radius-base);
+        margin-bottom: var(--space-6);
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+
+    .filter-group label {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-text-secondary);
+    }
+
+    .filter-select {
+        padding: var(--space-3);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-base);
+        background-color: var(--color-white);
+        font-size: var(--font-size-base);
+        transition: border-color var(--transition-fast);
+        min-height: 44px; /* Touch-friendly */
+    }
+
+    .filter-select:focus {
+        border-color: var(--color-border-focus);
+        outline: none;
+    }
+
+    .filter-reset {
+        padding: var(--space-3) var(--space-4);
+        background-color: transparent;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-base);
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        width: 100%;
+        min-height: 44px; /* Touch-friendly */
+    }
+
+    .filter-reset:hover {
+        background-color: var(--color-gray-100);
+        border-color: var(--color-gray-300);
+    }
+
+    .gallery-grid {
+        /* Masonry styles are defined in global.css */
+    }
+
+    .gallery-item {
+        background-color: var(--color-surface-elevated);
+        border-radius: var(--radius-base);
+        overflow: hidden;
+        box-shadow: var(--shadow-base);
+        transition: all var(--transition-base);
+    }
+
+    .gallery-item:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-4px);
+    }
+
+    .artwork-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .artwork-image {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        background-color: var(--color-gray-100);
+    }
+
+    .artwork-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 0;
+        transition: transform var(--transition-slow);
+    }
+
+    .artwork-link:hover .artwork-image img {
+        transform: scale(1.05);
+    }
+
+    .artwork-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity var(--transition-base);
+    }
+
+    .artwork-link:hover .artwork-overlay {
+        opacity: 1;
+    }
+
+    .view-icon {
+        font-size: 1.5rem;
+        filter: brightness(0) invert(1);
+    }
+
+    .artwork-info {
+        padding: var(--space-3);
+    }
+
+    .artwork-title {
+        font-size: var(--font-size-base);
+        margin-bottom: var(--space-2);
+    }
+
+    .artwork-meta {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-2);
+        line-height: var(--line-height-relaxed);
+    }
+
+    .gallery-empty,
+    .gallery-no-results {
+        text-align: center;
+        padding: var(--space-8);
+        color: var(--color-text-secondary);
+    }
+
+    /* Small smartphones: 375px+ */
+    @media (min-width: 375px) {
+        .filter-group {
+            flex: 1 1 calc(50% - var(--space-2));
+            min-width: calc(50% - var(--space-2));
+        }
+
+        .filter-reset {
+            flex: 1 1 100%;
+        }
+
+        .artwork-info {
+            padding: var(--space-4);
+        }
+
+        .artwork-title {
+            font-size: var(--font-size-lg);
+        }
+
+        .artwork-meta {
+            font-size: var(--font-size-sm);
+        }
+    }
+
+    /* Tablets: 768px+ */
+    @media (min-width: 768px) {
+        .gallery-filters {
+            padding: var(--space-6);
+            gap: var(--space-4);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-8);
+        }
+
+        .filter-group {
+            flex: 1 1 auto;
+            min-width: 200px;
+        }
+
+        .filter-reset {
+            flex: 0 0 auto;
+            width: auto;
+        }
+
+        .gallery-item {
+            border-radius: var(--radius-lg);
+        }
+
+        .view-icon {
+            font-size: 2rem;
+        }
+    }
+
+    /* Desktop: 1024px+ */
+    @media (min-width: 1024px) {
+        .artwork-info {
+            padding: var(--space-5);
+        }
+
+        .artwork-title {
+            font-size: var(--font-size-xl);
+        }
+    }
+
+</style>

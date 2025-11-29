@@ -1,0 +1,229 @@
+---
+import Layout from "../layouts/Layout.astro";
+import WorkshopCard from "../components/WorkshopCard.astro";
+import { getCollection } from "astro:content";
+
+const allWorkshops = await getCollection("workshops");
+
+// Separate upcoming and past workshops
+const now = new Date();
+const upcomingWorkshops = allWorkshops
+    .filter((w) => new Date(w.data.date) >= now)
+    .sort(
+        (a, b) =>
+            new Date(a.data.date).getTime() - new Date(b.data.date).getTime(),
+    );
+
+const pastWorkshops = allWorkshops
+    .filter((w) => new Date(w.data.date) < now)
+    .sort(
+        (a, b) =>
+            new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+    );
+---
+
+<Layout
+    title="Workshops"
+    description="Kreative Mal-Workshops bei ATELIER KL in Heek. Entdecken Sie Ihre künstlerische Seite in kleinen Gruppen mit persönlicher Betreuung."
+>
+    <section class="page-hero">
+        <div class="container">
+            <h1>Workshops</h1>
+            <p class="hero-subtitle">
+                Entdecken Sie Ihre Kreativität in inspirierender Atmosphäre
+            </p>
+        </div>
+    </section>
+
+    <!-- Workshop Benefits -->
+    <section
+        class="section py-12"
+        style="background-color: var(--color-surface);"
+    >
+        <div class="container">
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <div class="benefit-icon">👥</div>
+                    <h3>Kleine Gruppen</h3>
+                    <p>Maximal 8 Teilnehmer für persönliche Betreuung</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🎨</div>
+                    <h3>Alle Materialien inkl.</h3>
+                    <p>Hochwertige Farben, Leinwände und Werkzeuge</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">✨</div>
+                    <h3>Für Alle</h3>
+                    <p>Keine Vorkenntnisse erforderlich</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">☕</div>
+                    <h3>Wohlfühlatmosphäre</h3>
+                    <p>Getränke und Snacks inklusive</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Workshops -->
+    <section class="section py-16">
+        <div class="container">
+            <h2 class="section-title">Kommende Workshops</h2>
+
+            {
+                upcomingWorkshops.length > 0 ? (
+                    <div class="grid grid-cols-1 grid-cols-md-3">
+                        {upcomingWorkshops.map((workshop) => (
+                            <WorkshopCard workshop={workshop.data} />
+                        ))}
+                    </div>
+                ) : (
+                    <p class="text-center text-secondary">
+                        Aktuell sind keine Workshops geplant. Schauen Sie bald
+                        wieder vorbei oder
+                        <a href="/kontakt">kontaktieren Sie mich</a> für private
+                        Workshop-Anfragen.
+                    </p>
+                )
+            }
+        </div>
+    </section>
+
+    <!-- What You'll Learn -->
+    <section
+        class="section py-16"
+        style="background-color: var(--color-surface);"
+    >
+        <div class="container">
+            <div class="content-box">
+                <h2 class="section-title">Was Sie erwartet</h2>
+                <div class="learn-grid">
+                    <div class="learn-item">
+                        <h3>Intuitive Malweise</h3>
+                        <p>
+                            Lernen Sie, ohne Vorgaben zu malen und Ihrer
+                            Kreativität freien Lauf zu lassen
+                        </p>
+                    </div>
+                    <div class="learn-item">
+                        <h3>Techniken</h3>
+                        <p>
+                            Entdecken Sie verschiedene Techniken mit
+                            Acrylfarben, Spachteln und Pigmenten
+                        </p>
+                    </div>
+                    <div class="learn-item">
+                        <h3>Farbharmonien</h3>
+                        <p>
+                            Verstehen Sie, wie Farben zusammenwirken und
+                            Stimmungen erzeugen
+                        </p>
+                    </div>
+                    <div class="learn-item">
+                        <h3>Ihr Werk</h3>
+                        <p>
+                            Nehmen Sie Ihr eigenes, fertig gerahmtes Kunstwerk
+                            mit nach Hause
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Past Workshops (if any) -->
+    {
+        pastWorkshops.length > 0 && (
+            <section class="section py-16">
+                <div class="container">
+                    <h2 class="section-title">Vergangene Workshops</h2>
+                    <div class="grid grid-cols-1 grid-cols-md-3">
+                        {pastWorkshops.slice(0, 3).map((workshop) => (
+                            <WorkshopCard
+                                workshop={{
+                                    ...workshop.data,
+                                    bookingEnabled: false,
+                                }}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </section>
+        )
+    }
+</Layout>
+
+<style>
+    .page-hero {
+        padding: var(--space-16) 0 var(--space-8);
+        background: linear-gradient(
+            135deg,
+            var(--color-brand-beige-light),
+            var(--color-surface)
+        );
+        text-align: center;
+    }
+
+    .page-hero h1 {
+        margin-bottom: var(--space-4);
+    }
+
+    .hero-subtitle {
+        font-size: var(--font-size-xl);
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: var(--space-12);
+    }
+
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--space-6);
+    }
+
+    .benefit {
+        text-align: center;
+        padding: var(--space-6);
+    }
+
+    .benefit-icon {
+        font-size: 3rem;
+        margin-bottom: var(--space-4);
+    }
+
+    .benefit h3 {
+        margin-bottom: var(--space-2);
+    }
+
+    .benefit p {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+    }
+
+    .content-box {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .learn-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-6);
+    }
+
+    .learn-item h3 {
+        margin-bottom: var(--space-2);
+        color: var(--color-accent);
+    }
+
+    .learn-item p {
+        font-size: var(--font-size-sm);
+        line-height: var(--line-height-relaxed);
+    }
+</style>

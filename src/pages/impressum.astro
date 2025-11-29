@@ -1,0 +1,149 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+    title="Impressum"
+    description="Impressum und Angaben gemäß § 5 TMG für ATELIER KL"
+>
+    <section class="legal-page">
+        <div class="container">
+            <h1>Impressum</h1>
+
+            <div class="legal-content">
+                <section>
+                    <h2>Angaben gemäß § 5 TMG</h2>
+                    <p>
+                        ATELIER KL<br />
+                        Katharina Lanvermann<br />
+                        Hauptstraße 45<br />
+                        48619 Heek
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Kontakt</h2>
+                    <p>
+                        E-Mail: <a href="mailto:info@atelier-kl.de"
+                            >info@atelier-kl.de</a
+                        >
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Umsatzsteuer-ID</h2>
+                    <p>
+                        Umsatzsteuer-Identifikationsnummer gemäß §27 a
+                        Umsatzsteuergesetz:<br />
+                        <em>[Bitte ergänzen]</em>
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+                    <p>
+                        Katharina Lanvermann<br />
+                        Hauptstraße 45<br />
+                        48619 Heek
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Haftungsausschluss</h2>
+
+                    <h3>Haftung für Inhalte</h3>
+                    <p>
+                        Die Inhalte unserer Seiten wurden mit größter Sorgfalt
+                        erstellt. Für die Richtigkeit, Vollständigkeit und
+                        Aktualität der Inhalte können wir jedoch keine Gewähr
+                        übernehmen.
+                    </p>
+
+                    <h3>Haftung für Links</h3>
+                    <p>
+                        Unser Angebot enthält Links zu externen Webseiten
+                        Dritter, auf deren Inhalte wir keinen Einfluss haben.
+                        Deshalb können wir für diese fremden Inhalte auch keine
+                        Gewähr übernehmen. Für die Inhalte der verlinkten Seiten
+                        ist stets der jeweilige Anbieter oder Betreiber der
+                        Seiten verantwortlich.
+                    </p>
+
+                    <h3>Urheberrecht</h3>
+                    <p>
+                        Die durch die Seitenbetreiber erstellten Inhalte und
+                        Werke auf diesen Seiten unterliegen dem deutschen
+                        Urheberrecht. Die Vervielfältigung, Bearbeitung,
+                        Verbreitung und jede Art der Verwertung außerhalb der
+                        Grenzen des Urheberrechtes bedürfen der schriftlichen
+                        Zustimmung des jeweiligen Autors bzw. Erstellers.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Streitschlichtung</h2>
+                    <p>
+                        Die Europäische Kommission stellt eine Plattform zur
+                        Online-Streitbeilegung (OS) bereit: <a
+                            href="https://ec.europa.eu/consumers/odr"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            https://ec.europa.eu/consumers/odr</a
+                        >.
+                    </p>
+                    <p>
+                        Wir sind nicht bereit oder verpflichtet, an
+                        Streitbeilegungsverfahren vor einer
+                        Verbraucherschlichtungsstelle teilzunehmen.
+                    </p>
+                </section>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .legal-page {
+        padding: var(--space-16) 0;
+        min-height: 60vh;
+    }
+
+    .legal-page h1 {
+        margin-bottom: var(--space-12);
+        padding-bottom: var(--space-6);
+        border-bottom: 2px solid var(--color-border);
+    }
+
+    .legal-content {
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-10);
+    }
+
+    .legal-content section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+
+    .legal-content h2 {
+        color: var(--color-accent);
+        font-size: var(--font-size-xl);
+    }
+
+    .legal-content h3 {
+        font-size: var(--font-size-lg);
+        margin-top: var(--space-4);
+    }
+
+    .legal-content p {
+        line-height: var(--line-height-relaxed);
+    }
+
+    .legal-content a {
+        color: var(--color-accent);
+        text-decoration: underline;
+    }
+</style>

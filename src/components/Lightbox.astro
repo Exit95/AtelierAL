@@ -1,0 +1,306 @@
+---
+interface Props {
+    images: { url: string; alt: string }[];
+}
+
+const { images } = Astro.props;
+---
+
+<div class="lightbox" data-lightbox hidden>
+    <button class="lightbox-close" data-lightbox-close aria-label="Schließen">
+        <span class="close-icon">✕</span>
+    </button>
+
+    <button
+        class="lightbox-prev"
+        data-lightbox-prev
+        aria-label="Vorheriges Bild"
+    >
+        <span class="arrow">‹</span>
+    </button>
+
+    <button class="lightbox-next" data-lightbox-next aria-label="Nächstes Bild">
+        <span class="arrow">›</span>
+    </button>
+
+    <div class="lightbox-content">
+        <img
+            class="lightbox-image"
+            data-lightbox-image
+            src=""
+            alt=""
+            loading="eager"
+        />
+    </div>
+
+    <div class="lightbox-counter" data-lightbox-counter>
+        <span data-current-index>1</span> / <span data-total-images>1</span>
+    </div>
+</div>
+
+<script>
+    const lightbox = document.querySelector("[data-lightbox]") as HTMLElement;
+    const lightboxImage = document.querySelector(
+        "[data-lightbox-image]",
+    ) as HTMLImageElement;
+    const closeButton = document.querySelector("[data-lightbox-close]");
+    const prevButton = document.querySelector("[data-lightbox-prev]");
+    const nextButton = document.querySelector("[data-lightbox-next]");
+    const currentIndexEl = document.querySelector("[data-current-index]");
+    const totalImagesEl = document.querySelector("[data-total-images]");
+
+    let currentIndex = 0;
+    let images: { url: string; alt: string }[] = [];
+
+    // Open lightbox
+    function openLightbox(
+        imageUrl: string,
+        imageAlt: string,
+        index: number = 0,
+    ) {
+        if (!lightbox || !lightboxImage) return;
+
+        currentIndex = index;
+        lightboxImage.src = imageUrl;
+        lightboxImage.alt = imageAlt;
+        lightbox.hidden = false;
+        document.body.style.overflow = "hidden";
+
+        updateCounter();
+    }
+
+    // Close lightbox
+    function closeLightbox() {
+        if (!lightbox) return;
+
+        lightbox.hidden = true;
+        document.body.style.overflow = "";
+    }
+
+    // Navigate to previous image
+    function prevImage() {
+        if (images.length === 0) return;
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage(currentIndex);
+    }
+
+    // Navigate to next image
+    function nextImage() {
+        if (images.length === 0) return;
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+    }
+
+    // Show image at index
+    function showImage(index: number) {
+        if (!lightboxImage || !images[index]) return;
+        lightboxImage.src = images[index].url;
+        lightboxImage.alt = images[index].alt;
+        updateCounter();
+    }
+
+    // Update counter
+    function updateCounter() {
+        if (currentIndexEl)
+            currentIndexEl.textContent = String(currentIndex + 1);
+        if (totalImagesEl) totalImagesEl.textContent = String(images.length);
+    }
+
+    // Event listeners
+    if (closeButton) {
+        closeButton.addEventListener("click", closeLightbox);
+    }
+
+    if (prevButton) {
+        prevButton.addEventListener("click", prevImage);
+    }
+
+    if (nextButton) {
+        nextButton.addEventListener("click", nextImage);
+    }
+
+    // Keyboard navigation
+    document.addEventListener("keydown", (e) => {
+        if (lightbox && !lightbox.hidden) {
+            if (e.key === "Escape") closeLightbox();
+            if (e.key === "ArrowLeft") prevImage();
+            if (e.key === "ArrowRight") nextImage();
+        }
+    });
+
+    // Click outside to close
+    if (lightbox) {
+        lightbox.addEventListener("click", (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+    }
+
+    // Initialize lightbox triggers
+    document.addEventListener("DOMContentLoaded", () => {
+        const triggers = document.querySelectorAll("[data-lightbox-trigger]");
+
+        // Collect all images
+        images = Array.from(triggers).map((trigger) => ({
+            url: trigger.getAttribute("data-image-url") || "",
+            alt: trigger.querySelector("img")?.alt || "",
+        }));
+
+        if (totalImagesEl) {
+            totalImagesEl.textContent = String(images.length);
+        }
+
+        // Add click handlers
+        triggers.forEach((trigger, index) => {
+            trigger.addEventListener("click", (e) => {
+                e.preventDefault();
+                const imageUrl = trigger.getAttribute("data-image-url");
+                const imageAlt = trigger.querySelector("img")?.alt || "";
+                if (imageUrl) {
+                    openLightbox(imageUrl, imageAlt, index);
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    .lightbox {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.95);
+        z-index: var(--z-modal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn var(--transition-base);
+    }
+
+    .lightbox[hidden] {
+        display: none;
+    }
+
+    .lightbox-content {
+        max-width: 90vw;
+        max-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lightbox-image {
+        max-width: 100%;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: var(--radius-base);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .lightbox-close,
+    .lightbox-prev,
+    .lightbox-next {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: var(--color-white);
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        backdrop-filter: blur(10px);
+        border-radius: var(--radius-base);
+    }
+
+    .lightbox-close:hover,
+    .lightbox-prev:hover,
+    .lightbox-next:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: scale(1.1);
+    }
+
+    .lightbox-close:focus-visible,
+    .lightbox-prev:focus-visible,
+    .lightbox-next:focus-visible {
+        outline: 2px solid var(--color-white);
+        outline-offset: 4px;
+    }
+
+    .lightbox-close {
+        top: var(--space-6);
+        right: var(--space-6);
+    }
+
+    .close-icon {
+        font-size: 1.5rem;
+        font-weight: var(--font-weight-bold);
+    }
+
+    .lightbox-prev {
+        left: var(--space-6);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .lightbox-next {
+        right: var(--space-6);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .lightbox-prev:hover,
+    .lightbox-next:hover {
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .arrow {
+        font-size: 2rem;
+        font-weight: var(--font-weight-bold);
+        line-height: 1;
+    }
+
+    .lightbox-counter {
+        position: absolute;
+        bottom: var(--space-6);
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        color: var(--color-white);
+        padding: var(--space-2) var(--space-4);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-sm);
+        backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 640px) {
+        .lightbox-prev,
+        .lightbox-next {
+            width: 40px;
+            height: 40px;
+        }
+
+        .lightbox-prev {
+            left: var(--space-4);
+        }
+
+        .lightbox-next {
+            right: var(--space-4);
+        }
+
+        .arrow {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* Touch gestures hint */
+    @media (hover: none) and (pointer: coarse) {
+        .lightbox-prev,
+        .lightbox-next {
+            opacity: 0.7;
+        }
+    }
+</style>

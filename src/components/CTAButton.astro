@@ -1,0 +1,105 @@
+---
+interface Props {
+    label: string;
+    href: string;
+    type?: "primary" | "secondary";
+    icon?: string;
+    className?: string;
+}
+
+const { label, href, type = "primary", icon, className = "" } = Astro.props;
+---
+
+<a href={href} class={`cta-button cta-button-${type} ${className}`}>
+    {label}
+    {icon && <span class="icon">{icon}</span>}
+</a>
+
+<style>
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-2);
+        padding: var(--space-3) var(--space-5);
+        font-family: var(--font-headline);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        text-decoration: none;
+        border-radius: var(--radius-base);
+        transition: all var(--transition-base);
+        cursor: pointer;
+        border: 2px solid transparent;
+        min-height: 48px; /* Touch-friendly */
+        width: 100%;
+        text-align: center;
+    }
+
+    .cta-button-primary {
+        background-color: var(--color-accent);
+        color: var(--color-white);
+        border-color: var(--color-accent);
+    }
+
+    .cta-button-primary:hover {
+        background-color: var(--color-accent-dark);
+        border-color: var(--color-accent-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .cta-button-primary:active {
+        transform: translateY(0);
+    }
+
+    .cta-button-secondary {
+        background-color: transparent;
+        color: var(--color-accent);
+        border-color: var(--color-accent);
+    }
+
+    .cta-button-secondary:hover {
+        background-color: var(--color-accent);
+        color: var(--color-white);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .cta-button-secondary:active {
+        transform: translateY(0);
+    }
+
+    .cta-button:focus-visible {
+        outline: 2px solid var(--color-border-focus);
+        outline-offset: 4px;
+    }
+
+    .icon {
+        font-size: 1.2em;
+    }
+
+    /* Small smartphones: 375px+ */
+    @media (min-width: 375px) {
+        .cta-button {
+            font-size: var(--font-size-base);
+            padding: var(--space-4) var(--space-6);
+        }
+    }
+
+    /* Tablets: 768px+ */
+    @media (min-width: 768px) {
+        .cta-button {
+            width: auto;
+            min-width: 180px;
+            min-height: 44px; /* Standard desktop size */
+        }
+    }
+
+    /* Desktop: 1024px+ */
+    @media (min-width: 1024px) {
+        .cta-button {
+            font-size: var(--font-size-lg);
+            min-width: 200px;
+        }
+    }
+</style>

@@ -1,0 +1,20 @@
+{
+    "title": "Abstrakte Landschaften",
+    "description": "Lassen Sie sich von der Natur inspirieren und erschaffen Sie Ihre eigene abstrakte Landschaft. Wir arbeiten mit verschiedenen Techniken und Materialien, um Tiefe und Struktur zu erzeugen.",
+    "date": "2025-02-22T00:00:00.000Z",
+    "time": "14:00 - 18:00",
+    "duration": "4 Stunden",
+    "location": "ATELIER KL, Hauptstraße 45, 48619 Heek",
+    "maxParticipants": 6,
+    "currentParticipants": 1,
+    "materials": [
+        "Leinwände",
+        "Acrylfarben und Pigmente",
+        "Strukturpaste",
+        "Verschiedene Werkzeuge",
+        "Getränke"
+    ],
+    "price": 89,
+    "image": "/placeholders/workshop-2.jpg",
+    "bookingEnabled": true
+}

@@ -1,0 +1,239 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+    <div class="container footer-content">
+        <div class="footer-section">
+            <div class="footer-brand">
+                <img src="/logo.png" alt="ATELIER KL" class="footer-logo" />
+                <h3>ATELIER KL</h3>
+                <p>Kunst, die Räume verwandelt</p>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>Navigation</h4>
+            <ul class="footer-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/werke">Werke</a></li>
+                <li><a href="/auftragsarbeiten">Auftragsarbeiten</a></li>
+                <li><a href="/workshops">Workshops</a></li>
+                <li><a href="/team">Über mich</a></li>
+                <li><a href="/kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Kontakt</h4>
+            <address class="footer-contact">
+                <p>ATELIER KL</p>
+                <p>Katharina Lanvermann</p>
+                <p>Hauptstraße 45</p>
+                <p>48619 Heek</p>
+                <p>
+                    <a href="mailto:info@atelier-kl.de">info@atelier-kl.de</a>
+                </p>
+            </address>
+        </div>
+
+        <div class="footer-section">
+            <h4>Rechtliches</h4>
+            <ul class="footer-links">
+                <li><a href="/impressum">Impressum</a></li>
+                <li><a href="/datenschutz">Datenschutz</a></li>
+                <li><a href="/rechtliches">AGB</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p>
+                &copy; {currentYear} ATELIER KL - Katharina Lanvermann. Alle Rechte
+                vorbehalten.
+            </p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .site-footer {
+        background-color: var(--color-gray-900);
+        color: var(--color-gray-100);
+        padding-top: var(--space-12);
+        padding-bottom: var(--space-6);
+        margin-top: var(--space-16);
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+        margin-bottom: var(--space-8);
+    }
+
+    .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .footer-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .footer-brand h3 {
+        font-size: var(--font-size-lg);
+        color: var(--color-white);
+        margin: 0;
+    }
+
+    .footer-brand p {
+        color: var(--color-gray-300);
+        margin: 0;
+        font-size: var(--font-size-sm);
+    }
+
+    .footer-section h4 {
+        font-size: var(--font-size-base);
+        color: var(--color-white);
+        margin-bottom: var(--space-3);
+        font-weight: var(--font-weight-semibold);
+    }
+
+    .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .footer-links a {
+        color: var(--color-gray-300);
+        text-decoration: none;
+        transition: color var(--transition-fast);
+        font-size: var(--font-size-sm);
+        display: inline-block;
+        padding: var(--space-1) 0;
+    }
+
+    .footer-links a:hover {
+        color: var(--color-brand-beige);
+    }
+
+    .footer-contact {
+        font-style: normal;
+        color: var(--color-gray-300);
+        line-height: var(--line-height-relaxed);
+        font-size: var(--font-size-sm);
+    }
+
+    .footer-contact p {
+        margin-bottom: var(--space-1);
+    }
+
+    .footer-contact a {
+        color: var(--color-gray-300);
+        text-decoration: underline;
+        transition: color var(--transition-fast);
+    }
+
+    .footer-contact a:hover {
+        color: var(--color-brand-beige);
+    }
+
+    .footer-bottom {
+        border-top: 1px solid var(--color-gray-700);
+        padding-top: var(--space-4);
+        text-align: center;
+    }
+
+    .footer-bottom p {
+        color: var(--color-gray-400);
+        font-size: var(--font-size-xs);
+        margin: 0;
+        line-height: var(--line-height-relaxed);
+    }
+
+    /* Small smartphones: 375px+ */
+    @media (min-width: 375px) {
+        .footer-logo {
+            width: 56px;
+            height: 56px;
+        }
+
+        .footer-brand h3 {
+            font-size: var(--font-size-xl);
+        }
+
+        .footer-brand p {
+            font-size: var(--font-size-base);
+        }
+
+        .footer-section h4 {
+            font-size: var(--font-size-lg);
+        }
+
+        .footer-links a,
+        .footer-contact {
+            font-size: var(--font-size-base);
+        }
+
+        .footer-bottom p {
+            font-size: var(--font-size-sm);
+        }
+    }
+
+    /* Tablets: 768px+ */
+    @media (min-width: 768px) {
+        .site-footer {
+            padding-top: var(--space-16);
+            padding-bottom: var(--space-8);
+            margin-top: var(--space-20);
+        }
+
+        .footer-content {
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-8);
+            margin-bottom: var(--space-10);
+        }
+
+        .footer-brand {
+            gap: var(--space-3);
+        }
+
+        .footer-logo {
+            width: 64px;
+            height: 64px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: var(--space-4);
+        }
+
+        .footer-bottom {
+            padding-top: var(--space-6);
+        }
+    }
+
+    /* Desktop: 1024px+ */
+    @media (min-width: 1024px) {
+        .footer-content {
+            grid-template-columns: repeat(4, 1fr);
+            margin-bottom: var(--space-12);
+        }
+    }
+
+    /* Large desktop: 1440px+ */
+    @media (min-width: 1440px) {
+        .footer-content {
+            gap: var(--space-10);
+        }
+    }
+</style>

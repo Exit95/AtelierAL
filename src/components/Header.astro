@@ -1,0 +1,337 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+    { label: "Home", href: "/" },
+    { label: "Werke", href: "/werke" },
+    { label: "Auftragsarbeiten", href: "/auftragsarbeiten" },
+    { label: "Workshops", href: "/workshops" },
+    { label: "Über mich", href: "/team" },
+    { label: "Kontakt", href: "/kontakt" },
+];
+---
+
+<header class="site-header">
+    <div class="container header-content">
+        <a href="/" class="logo-link">
+            <img src="/logo-clean.png?v=5" alt="ATELIER KL" class="logo" />
+        </a>
+
+        <button
+            class="mobile-menu-toggle"
+            aria-label="Menü öffnen"
+            aria-expanded="false"
+            aria-controls="main-navigation"
+        >
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
+        <nav id="main-navigation" aria-label="Hauptnavigation" class="main-nav">
+            <ul class="nav-list">
+                {
+                    navItems.map((item) => (
+                        <li>
+                            <a
+                                href={item.href}
+                                class={
+                                    currentPath === item.href
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                }
+                                aria-current={
+                                    currentPath === item.href
+                                        ? "page"
+                                        : undefined
+                                }
+                            >
+                                {item.label}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<script>
+    // Mobile menu toggle functionality
+    const menuToggle = document.querySelector('.mobile-menu-toggle') as HTMLButtonElement | null;
+    const mainNav = document.querySelector('.main-nav') as HTMLElement | null;
+    const body = document.body;
+
+    if (menuToggle && mainNav) {
+        menuToggle.addEventListener('click', () => {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+
+            menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
+            menuToggle.setAttribute('aria-label', isExpanded ? 'Menü öffnen' : 'Menü schließen');
+            menuToggle.classList.toggle('active');
+            mainNav.classList.toggle('active');
+            body.classList.toggle('menu-open');
+        });
+
+        // Close menu when clicking on a link
+        const navLinks = mainNav.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.setAttribute('aria-label', 'Menü öffnen');
+                menuToggle.classList.remove('active');
+                mainNav.classList.remove('active');
+                body.classList.remove('menu-open');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const target = e.target as Node;
+            if (!mainNav.contains(target) && !menuToggle.contains(target)) {
+                if (mainNav.classList.contains('active')) {
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    menuToggle.setAttribute('aria-label', 'Menü öffnen');
+                    menuToggle.classList.remove('active');
+                    mainNav.classList.remove('active');
+                    body.classList.remove('menu-open');
+                }
+            }
+        });
+
+        // Close menu on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.setAttribute('aria-label', 'Menü öffnen');
+                menuToggle.classList.remove('active');
+                mainNav.classList.remove('active');
+                body.classList.remove('menu-open');
+                menuToggle.focus();
+            }
+        });
+    }
+</script>
+
+<style>
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: var(--z-sticky);
+        background-color: var(--color-white);
+        border-bottom: 1px solid var(--color-border-light);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--space-3);
+        padding-top: var(--space-3);
+        padding-bottom: var(--space-3);
+    }
+
+    .logo-link {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        text-decoration: none;
+        color: var(--color-text-primary);
+        flex-shrink: 0;
+    }
+
+    .logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .logo-text {
+        font-family: var(--font-headline);
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-semibold);
+        letter-spacing: var(--letter-spacing-wide);
+    }
+
+    /* Mobile Menu Toggle Button */
+    .mobile-menu-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        z-index: calc(var(--z-sticky) + 2);
+        transition: transform var(--transition-base);
+    }
+
+    .mobile-menu-toggle:hover {
+        transform: scale(1.05);
+    }
+
+    .mobile-menu-toggle:focus-visible {
+        outline: 2px solid var(--color-border-focus);
+        outline-offset: 4px;
+        border-radius: var(--radius-base);
+    }
+
+    .hamburger-line {
+        width: 28px;
+        height: 3px;
+        background-color: var(--color-accent);
+        border-radius: 2px;
+        transition: all var(--transition-base);
+    }
+
+    /* Hamburger Animation */
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Navigation */
+    .main-nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background-color: var(--color-white);
+        box-shadow: var(--shadow-lg);
+        z-index: calc(var(--z-sticky) + 1);
+        transition: right var(--transition-base);
+        overflow-y: auto;
+        padding-top: 80px;
+    }
+
+    .main-nav.active {
+        right: 0;
+    }
+
+    .nav-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        list-style: none;
+        margin: 0;
+        padding: var(--space-4);
+    }
+
+    .nav-link {
+        font-family: var(--font-headline);
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        padding: var(--space-4);
+        border-radius: var(--radius-base);
+        transition: all var(--transition-fast);
+        display: block;
+        border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        color: var(--color-accent);
+        background-color: var(--color-brand-beige-light);
+    }
+
+    /* Prevent body scroll when menu is open */
+    :global(body.menu-open) {
+        overflow: hidden;
+    }
+
+    /* Small smartphones: 375px+ */
+    @media (min-width: 375px) {
+        .logo {
+            width: 44px;
+            height: 44px;
+        }
+
+        .main-nav {
+            width: 300px;
+        }
+    }
+
+    /* Tablets: 768px+ */
+    @media (min-width: 768px) {
+        .header-content {
+            flex-wrap: nowrap;
+            padding-top: var(--space-4);
+            padding-bottom: var(--space-4);
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+        }
+
+        .logo-text {
+            font-size: var(--font-size-xl);
+        }
+
+        /* Hide mobile menu toggle on tablet+ */
+        .mobile-menu-toggle {
+            display: none;
+        }
+
+        /* Show navigation inline on tablet+ */
+        .main-nav {
+            position: static;
+            width: auto;
+            height: auto;
+            background: transparent;
+            box-shadow: none;
+            padding-top: 0;
+            overflow-y: visible;
+        }
+
+        .nav-list {
+            flex-direction: row;
+            padding: 0;
+            gap: var(--space-4);
+        }
+
+        .nav-link {
+            font-size: var(--font-size-base);
+            padding: var(--space-2) var(--space-3);
+            border-bottom: none;
+        }
+    }
+
+    /* Desktop: 1024px+ */
+    @media (min-width: 1024px) {
+        .logo {
+            width: 56px;
+            height: 56px;
+        }
+
+        .logo-link {
+            gap: var(--space-3);
+        }
+
+        .nav-list {
+            gap: var(--space-6);
+        }
+
+        .nav-link {
+            padding: var(--space-2) var(--space-4);
+        }
+    }
+</style>

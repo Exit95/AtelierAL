@@ -1,0 +1,23 @@
+{
+    "title": "Erdige Harmonie",
+    "description": "Ein abstraktes Werk, das die Ruhe und Wärme natürlicher Erdtöne einfängt. Organische Formen und sanfte Texturen schaffen eine beruhigende Atmosphäre.",
+    "technique": "Acryl auf Leinwand",
+    "size": {
+        "width": 80,
+        "height": 100,
+        "unit": "cm"
+    },
+    "availability": "available",
+    "price": "auf Anfrage",
+    "images": [
+        "/placeholders/artwork-1.jpg"
+    ],
+    "tags": [
+        "abstrakt",
+        "erdtöne",
+        "natur",
+        "modern"
+    ],
+    "featured": true,
+    "createdDate": "2024-11-15T00:00:00.000Z"
+}

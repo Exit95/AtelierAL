@@ -1,0 +1,446 @@
+---
+interface Props {
+    formTitle?: string;
+    showPreferredDate?: boolean;
+}
+
+const { formTitle = "Kontaktformular", showPreferredDate = false } =
+    Astro.props;
+import Alert from "./Alert.astro";
+---
+
+<div class="contact-form-container">
+    <h2>{formTitle}</h2>
+
+    <form class="contact-form" data-contact-form>
+        <div class="form-group">
+            <label for="name">Name *</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                aria-required="true"
+                placeholder="Ihr vollständiger Name"
+            />
+            <span class="form-error" data-error="name"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-Mail *</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                aria-required="true"
+                placeholder="ihre.email@beispiel.de"
+            />
+            <span class="form-error" data-error="email"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Telefon (optional)</label>
+            <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="+49 123 456789"
+            />
+        </div>
+
+        {
+            showPreferredDate && (
+                <div class="form-group">
+                    <label for="preferredDate">Wunschtermin (optional)</label>
+                    <input
+                        type="date"
+                        id="preferredDate"
+                        name="preferredDate"
+                    />
+                </div>
+            )
+        }
+
+        <div class="form-group">
+            <label for="message">Nachricht *</label>
+            <textarea
+                id="message"
+                name="message"
+                rows="6"
+                required
+                aria-required="true"
+                placeholder="Beschreiben Sie Ihr Anliegen..."></textarea>
+            <span class="form-error" data-error="message"></span>
+        </div>
+
+        <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+                <input
+                    type="checkbox"
+                    name="privacy"
+                    required
+                    aria-required="true"
+                />
+                <span>
+                    Ich habe die <a href="/datenschutz" target="_blank"
+                        >Datenschutzerklärung</a
+                    >
+                    zur Kenntnis genommen und bin damit einverstanden, dass die von
+                    mir angegebenen Daten elektronisch erhoben und gespeichert werden.
+                    *
+                </span>
+            </label>
+            <span class="form-error" data-error="privacy"></span>
+        </div>
+
+        <div class="form-alert" data-form-alert hidden></div>
+
+        <button type="submit" class="submit-button" data-submit-button>
+            <span class="button-text">Nachricht senden</span>
+            <span class="button-loader" hidden>Wird gesendet...</span>
+        </button>
+    </form>
+</div>
+
+<script>
+    const form = document.querySelector(
+        "[data-contact-form]",
+    ) as HTMLFormElement;
+    const submitButton = document.querySelector(
+        "[data-submit-button]",
+    ) as HTMLButtonElement;
+    const buttonText = submitButton?.querySelector(
+        ".button-text",
+    ) as HTMLElement;
+    const buttonLoader = submitButton?.querySelector(
+        ".button-loader",
+    ) as HTMLElement;
+    const formAlert = document.querySelector(
+        "[data-form-alert]",
+    ) as HTMLElement;
+
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            // Clear previous errors
+            clearErrors();
+
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+
+            // Show loading state
+            setLoadingState(true);
+
+            try {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+
+                // TODO: Replace with actual API endpoint
+                // For now, simulate API call
+                await new Promise((resolve) => setTimeout(resolve, 1500));
+
+                // Show success message
+                showAlert(
+                    "success",
+                    "Vielen Dank!",
+                    "Ihre Nachricht wurde erfolgreich versendet. Wir melden uns bald bei Ihnen.",
+                );
+                form.reset();
+            } catch (error) {
+                showAlert(
+                    "error",
+                    "Fehler",
+                    "Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut.",
+                );
+            } finally {
+                setLoadingState(false);
+            }
+        });
+    }
+
+    function validateForm(): boolean {
+        let isValid = true;
+        const formData = new FormData(form);
+
+        // Validate name
+        const name = formData.get("name") as string;
+        if (!name || name.trim().length < 2) {
+            showError("name", "Bitte geben Sie einen gültigen Namen ein.");
+            isValid = false;
+        }
+
+        // Validate email
+        const email = formData.get("email") as string;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+            showError(
+                "email",
+                "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+            );
+            isValid = false;
+        }
+
+        // Validate message
+        const message = formData.get("message") as string;
+        if (!message || message.trim().length < 10) {
+            showError(
+                "message",
+                "Bitte geben Sie eine Nachricht mit mindestens 10 Zeichen ein.",
+            );
+            isValid = false;
+        }
+
+        // Validate privacy checkbox
+        const privacy = formData.get("privacy");
+        if (!privacy) {
+            showError(
+                "privacy",
+                "Bitte akzeptieren Sie die Datenschutzerklärung.",
+            );
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    function showError(field: string, message: string) {
+        const errorElement = document.querySelector(
+            `[data-error="${field}"]`,
+        ) as HTMLElement;
+        const inputElement = form.querySelector(
+            `[name="${field}"]`,
+        ) as HTMLInputElement;
+
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = "block";
+        }
+
+        if (inputElement) {
+            inputElement.setAttribute("aria-invalid", "true");
+            inputElement.classList.add("error");
+        }
+    }
+
+    function clearErrors() {
+        const errorElements = form.querySelectorAll(".form-error");
+        const inputElements = form.querySelectorAll("input, textarea");
+
+        errorElements.forEach((el) => {
+            (el as HTMLElement).textContent = "";
+            (el as HTMLElement).style.display = "none";
+        });
+
+        inputElements.forEach((el) => {
+            el.removeAttribute("aria-invalid");
+            el.classList.remove("error");
+        });
+    }
+
+    function setLoadingState(loading: boolean) {
+        if (submitButton) {
+            submitButton.disabled = loading;
+        }
+        if (buttonText) {
+            buttonText.hidden = loading;
+        }
+        if (buttonLoader) {
+            buttonLoader.hidden = !loading;
+        }
+    }
+
+    function showAlert(
+        variant: "success" | "error",
+        title: string,
+        message: string,
+    ) {
+        if (formAlert) {
+            formAlert.className = `form-alert alert alert-${variant}`;
+            formAlert.innerHTML = `
+        ${title ? `<div class="alert-title">${title}</div>` : ""}
+        <div class="alert-message">${message}</div>
+      `;
+            formAlert.hidden = false;
+            formAlert.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+    }
+</script>
+
+<style>
+    .contact-form-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .contact-form-container h2 {
+        margin-bottom: var(--space-6);
+    }
+
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-5);
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .form-group label {
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-sm);
+        color: var(--color-text-primary);
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: var(--space-3) var(--space-4);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-base);
+        font-size: var(--font-size-base);
+        transition: border-color var(--transition-fast);
+        min-height: 48px; /* Touch-friendly minimum */
+        -webkit-appearance: none; /* Remove iOS styling */
+        appearance: none;
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+        padding-top: var(--space-3);
+        padding-bottom: var(--space-3);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        border-color: var(--color-border-focus);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(139, 139, 107, 0.1);
+    }
+
+    .form-group input.error,
+    .form-group textarea.error {
+        border-color: var(--color-error);
+    }
+
+    .form-error {
+        display: none;
+        color: var(--color-error);
+        font-size: var(--font-size-xs);
+        margin-top: var(--space-1);
+    }
+
+    .checkbox-group {
+        margin-top: var(--space-2);
+    }
+
+    .checkbox-label {
+        display: flex;
+        gap: var(--space-3);
+        align-items: flex-start;
+        font-weight: var(--font-weight-normal);
+        cursor: pointer;
+        font-size: var(--font-size-sm);
+    }
+
+    .checkbox-label input[type="checkbox"] {
+        margin-top: 4px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    .checkbox-label a {
+        color: var(--color-accent);
+        text-decoration: underline;
+    }
+
+    .form-alert {
+        margin-top: var(--space-4);
+    }
+
+    .submit-button {
+        padding: var(--space-4) var(--space-6);
+        background-color: var(--color-accent);
+        color: var(--color-white);
+        border: none;
+        border-radius: var(--radius-base);
+        font-family: var(--font-headline);
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-semibold);
+        cursor: pointer;
+        transition: all var(--transition-base);
+        margin-top: var(--space-4);
+        min-height: 48px; /* Touch-friendly */
+        width: 100%;
+    }
+
+    .submit-button:hover:not(:disabled) {
+        background-color: var(--color-accent-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .submit-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .submit-button:focus-visible {
+        outline: 2px solid var(--color-border-focus);
+        outline-offset: 4px;
+    }
+
+    /* Small smartphones: 375px+ */
+    @media (min-width: 375px) {
+        .form-group label {
+            font-size: var(--font-size-base);
+        }
+
+        .checkbox-label {
+            font-size: var(--font-size-base);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+        }
+
+        .form-error {
+            font-size: var(--font-size-sm);
+        }
+    }
+
+    /* Tablets: 768px+ */
+    @media (min-width: 768px) {
+        .submit-button {
+            font-size: var(--font-size-lg);
+            width: auto;
+            min-width: 200px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            min-height: 44px; /* Standard desktop size */
+        }
+
+        .form-group textarea {
+            min-height: 140px;
+        }
+    }
+
+    /* Desktop: 1024px+ */
+    @media (min-width: 1024px) {
+        .contact-form {
+            gap: var(--space-6);
+        }
+    }
+
+</style>

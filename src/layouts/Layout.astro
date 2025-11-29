@@ -1,0 +1,97 @@
+---
+interface Props {
+	title: string;
+	description: string;
+	image?: string;
+}
+
+const { title, description, image } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImage = image || new URL("/logo.png", Astro.site).toString();
+
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Lightbox from "../components/Lightbox.astro";
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="de">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/png" href="/logo.png" />
+		<link rel="canonical" href={canonicalURL} />
+
+		<!-- SEO Meta Tags -->
+		<title>{title} | ATELIER KL</title>
+		<meta name="description" content={description} />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={`${title} | ATELIER KL`} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={socialImage} />
+		<meta property="og:locale" content="de_DE" />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={canonicalURL} />
+		<meta property="twitter:title" content={`${title} | ATELIER KL`} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={socialImage} />
+
+		<!-- JSON-LD Structured Data -->
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "Organization",
+				name: "ATELIER KL",
+				alternateName: "Katharina Lanvermann Art Studio",
+				url: Astro.site,
+				logo: new URL("/logo.png", Astro.site),
+				description:
+					"Abstraktes Kunst-Atelier für einzigartige Kunstwerke und kreative Workshops",
+				address: {
+					"@type": "PostalAddress",
+					streetAddress: "Hauptstraße 45",
+					addressLocality: "Heek",
+					postalCode: "48619",
+					addressCountry: "DE",
+				},
+				email: "info@atelier-kl.de",
+			})}
+		/>
+
+		<meta name="generator" content={Astro.generator} />
+
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<a href="#main-content" class="skip-to-content"
+			>Zum Hauptinhalt springen</a
+		>
+
+		<Header />
+
+		<main id="main-content">
+			<slot />
+		</main>
+
+		<Footer />
+		<Lightbox images={[]} />
+
+		<!-- Vercel Web Analytics -->
+		<script is:inline>
+			if (window.va) window.va("pageview");
+		</script>
+	</body>
+</html>

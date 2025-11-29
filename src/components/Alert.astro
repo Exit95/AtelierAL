@@ -1,0 +1,62 @@
+---
+interface Props {
+    title?: string;
+    message: string;
+    variant: "success" | "error" | "info";
+    className?: string;
+}
+
+const { title, message, variant, className = "" } = Astro.props;
+---
+
+<div class={`alert alert-${variant} ${className}`} role="alert">
+    {title && <div class="alert-title">{title}</div>}
+    <div class="alert-message">{message}</div>
+</div>
+
+<style>
+    .alert {
+        padding: var(--space-4);
+        border-radius: var(--radius-base);
+        border-left: 4px solid;
+        animation: slideDown var(--transition-slow);
+    }
+
+    .alert-title {
+        font-weight: var(--font-weight-semibold);
+        margin-bottom: var(--space-2);
+    }
+
+    .alert-message {
+        font-size: var(--font-size-sm);
+    }
+
+    .alert-success {
+        background-color: var(--color-success-light);
+        color: var(--color-success);
+        border-color: var(--color-success);
+    }
+
+    .alert-error {
+        background-color: var(--color-error-light);
+        color: var(--color-error);
+        border-color: var(--color-error);
+    }
+
+    .alert-info {
+        background-color: var(--color-info-light);
+        color: var(--color-info);
+        border-color: var(--color-info);
+    }
+
+    @keyframes slideDown {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+</style>
