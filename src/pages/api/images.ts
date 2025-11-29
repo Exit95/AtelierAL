@@ -9,7 +9,7 @@ export const GET: APIRoute = async () => {
             ? join(process.cwd(), 'uploads')
             : join(process.cwd(), 'public', 'uploads');
 
-        const files = await readdir(uploadsDir);
+        const files = (await readdir(uploadsDir)).filter(file => !file.startsWith('.'));
 
         const images = await Promise.all(
             files.map(async (file) => {

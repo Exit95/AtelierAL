@@ -6,7 +6,7 @@ const GET = async () => {
   try {
     const isProd = true;
     const uploadsDir = isProd ? join(process.cwd(), "uploads") : join(process.cwd(), "public", "uploads");
-    const files = await readdir(uploadsDir);
+    const files = (await readdir(uploadsDir)).filter((file) => !file.startsWith("."));
     const images = await Promise.all(
       files.map(async (file) => {
         const filePath = join(uploadsDir, file);
