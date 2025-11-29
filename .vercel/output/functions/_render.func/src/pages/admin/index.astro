@@ -1,0 +1,148 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { getCollection } from "astro:content";
+
+const workshops = await getCollection("workshops");
+const artworks = await getCollection("artworks");
+---
+
+<AdminLayout title="Dashboard">
+    <div class="dashboard-grid">
+        <div class="stat-card">
+            <div class="stat-icon">🎨</div>
+            <div class="stat-content">
+                <div class="stat-number">{workshops.length}</div>
+                <div class="stat-label">Workshops</div>
+            </div>
+            <a href="/admin/workshops" class="stat-link">Verwalten →</a>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🖼️</div>
+            <div class="stat-content">
+                <div class="stat-number">{artworks.length}</div>
+                <div class="stat-label">Werke</div>
+            </div>
+            <a href="/admin/artworks" class="stat-link">Verwalten →</a>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📁</div>
+            <div class="stat-content">
+                <div class="stat-number">-</div>
+                <div class="stat-label">Bilder</div>
+            </div>
+            <a href="/admin/images" class="stat-link">Verwalten →</a>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h3>Schnellzugriff</h3>
+        <div class="action-buttons">
+            <a href="/admin/workshops/create" class="action-btn primary"
+                >+ Neuer Workshop</a
+            >
+            <a href="/admin/artworks/create" class="action-btn primary"
+                >+ Neues Werk</a
+            >
+            <a href="/admin/images" class="action-btn secondary"
+                >📤 Bilder hochladen</a
+            >
+        </div>
+    </div>
+</AdminLayout>
+
+<style>
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .stat-icon {
+        font-size: 3rem;
+        opacity: 0.9;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #1a1a2e;
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .stat-link {
+        color: var(--color-brand-beige);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+        align-self: flex-start;
+    }
+
+    .stat-link:hover {
+        color: var(--color-accent);
+    }
+
+    .quick-actions {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .quick-actions h3 {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        color: #1a1a2e;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        padding: 0.875rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s;
+        display: inline-block;
+    }
+
+    .action-btn.primary {
+        background: var(--color-brand-beige);
+        color: white;
+    }
+
+    .action-btn.primary:hover {
+        background: var(--color-accent);
+        transform: translateY(-2px);
+    }
+
+    .action-btn.secondary {
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    .action-btn.secondary:hover {
+        background: #e0e0e0;
+    }
+</style>

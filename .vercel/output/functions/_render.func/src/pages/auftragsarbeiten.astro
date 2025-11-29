@@ -1,0 +1,337 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ContactForm from "../components/ContactForm.astro";
+---
+
+<Layout
+    title="Auftragsarbeiten"
+    description="Individuelle Kunstwerke nach Ihren Wünschen. Katharina Lanvermann erschafft abstrakte Kunst, die perfekt zu Ihren Räumen passt."
+>
+    <section class="page-hero">
+        <div class="container">
+            <h1>Auftragsarbeiten</h1>
+            <p class="hero-subtitle">
+                Ihr persönliches Kunstwerk – individuell und einzigartig
+            </p>
+        </div>
+    </section>
+
+    <!-- Process Steps -->
+    <section class="section py-16">
+        <div class="container">
+            <h2 class="section-title">Der Weg zu Ihrem Kunstwerk</h2>
+
+            <div class="process-timeline">
+                <div class="timeline-step">
+                    <div class="step-marker">1</div>
+                    <div class="step-content">
+                        <h3>Anfrage & Erstgespräch</h3>
+                        <p>
+                            Senden Sie mir eine Anfrage mit Ihren Vorstellungen.
+                            Teilen Sie mir Ihre Farbwünsche, bevorzugten Stile
+                            und Raummaße mit. optional können Sie auch
+                            Referenzbilder hinzufügen, die Ihnen gefallen.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-marker">2</div>
+                    <div class="step-content">
+                        <h3>Konzeptentwicklung</h3>
+                        <p>
+                            Basierend auf Ihren Wünschen erstelle ich ein
+                            Farbkonzept und bespreche mit Ihnen die Details.
+                            Gemeinsam entwickeln wir eine Vision für Ihr
+                            individuelles Kunstwerk.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-marker">3</div>
+                    <div class="step-content">
+                        <h3>Umsetzung</h3>
+                        <p>
+                            Ich erschaffe Ihr Werk mit großer Sorgfalt und
+                            Leidenschaft. Der Entstehungsprozess dauert je nach
+                            Größe und Komplexität zwischen 2 und 6 Wochen. Gerne
+                            halte ich Sie über den Fortschritt auf dem
+                            Laufenden.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-marker">4</div>
+                    <div class="step-content">
+                        <h3>Übergabe</h3>
+                        <p>
+                            Nach Fertigstellung können Sie Ihr Kunstwerk im
+                            Atelier abholen oder ich organisiere die Lieferung
+                            zu Ihnen. Ich sorge für eine sichere Verpackung und
+                            professionellen Transport.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section
+        class="section py-16"
+        style="background-color: var(--color-surface);"
+    >
+        <div class="container">
+            <h2 class="section-title">Beispiele für Auftragsarbeiten</h2>
+
+            <div class="examples-grid">
+                <div class="example-card">
+                    <div
+                        class="example-image placeholder-image"
+                        style="background: linear-gradient(135deg, #C9BCB3, #8B8B6B); aspect-ratio: 4/3;"
+                        role="img"
+                        aria-label="Beispielbild Bürogestaltung"
+                    >
+                    </div>
+                    <div class="example-content">
+                        <h3>Bürogestaltung</h3>
+                        <p>
+                            Großformatige abstrakte Landschaft in Grün- und
+                            Beigetönen für ein Architekturbüro. 150 × 100 cm.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div
+                        class="example-image placeholder-image"
+                        style="background: linear-gradient(135deg, #A39A92, #C9BCB3); aspect-ratio: 4/3;"
+                        role="img"
+                        aria-label="Beispielbild Wohnraumgestaltung"
+                    >
+                    </div>
+                    <div class="example-content">
+                        <h3>Wohnraumgestaltung</h3>
+                        <p>
+                            Farbharmonie in Erdtönen als Diptychon für einen
+                            Wohnbereich. 2 × (80 × 100 cm).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div
+                        class="example-image placeholder-image"
+                        style="background: linear-gradient(135deg, #8B8B6B, #A5A589); aspect-ratio: 4/3;"
+                        role="img"
+                        aria-label="Beispielbild Hotellobby"
+                    >
+                    </div>
+                    <div class="example-content">
+                        <h3>Hotellobby</h3>
+                        <p>
+                            Statement-Piece für eine Hotellobby mit mediterranen
+                            Farben. 200 × 150 cm.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Info -->
+    <section class="section py-16">
+        <div class="container">
+            <div class="pricing-info">
+                <h2>Preisgestaltung</h2>
+                <p class="lead-text">
+                    Die Preise für Auftragsarbeiten richten sich nach Größe,
+                    Komplexität und verwendeten Materialien. Nach unserem
+                    Erstgespräch erhalten Sie ein unverbindliches Angebot.
+                </p>
+                <p>
+                    <strong>Richtwerte:</strong> Kleine Formate (bis 60 × 80 cm)
+                    ab 450€, mittlere Formate (bis 100 × 120 cm) ab 800€, große Formate
+                    auf Anfrage.
+                </p>
+                <p class="text-sm text-secondary">
+                    * Alle Preise verstehen sich inklusive Leinwand, Farben und
+                    Versiegelung. Lieferung innerhalb Deutschlands optional
+                    gegen Aufpreis.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section
+        class="section py-16"
+        style="background-color: var(--color-surface);"
+    >
+        <div class="container">
+            <div class="form-section">
+                <div class="form-intro">
+                    <h2>Unverbindliche Anfrage</h2>
+                    <p>
+                        Beschreiben Sie mir Ihre Vorstellungen und ich melde
+                        mich zeitnah bei Ihnen für ein persönliches Gespräch.
+                    </p>
+                </div>
+                <ContactForm
+                    formTitle="Anfrage für Auftragsarbeit"
+                    showPreferredDate={true}
+                />
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .page-hero {
+        padding: var(--space-16) 0 var(--space-8);
+        background: linear-gradient(
+            135deg,
+            var(--color-brand-beige-light),
+            var(--color-surface)
+        );
+        text-align: center;
+    }
+
+    .page-hero h1 {
+        margin-bottom: var(--space-4);
+    }
+
+    .hero-subtitle {
+        font-size: var(--font-size-xl);
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: var(--space-12);
+    }
+
+    .process-timeline {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-8);
+    }
+
+    .timeline-step {
+        display: flex;
+        gap: var(--space-6);
+        align-items: flex-start;
+    }
+
+    .step-marker {
+        flex-shrink: 0;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(
+            135deg,
+            var(--color-accent),
+            var(--color-accent-dark)
+        );
+        color: var(--color-white);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-headline);
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+    }
+
+    .step-content h3 {
+        margin-bottom: var(--space-3);
+    }
+
+    .step-content p {
+        line-height: var(--line-height-relaxed);
+        color: var(--color-text-secondary);
+    }
+
+    .examples-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--space-8);
+    }
+
+    .example-card {
+        background-color: var(--color-surface-elevated);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-base);
+    }
+
+    .example-image {
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .example-content {
+        padding: var(--space-6);
+    }
+
+    .example-content h3 {
+        margin-bottom: var(--space-3);
+    }
+
+    .example-content p {
+        font-size: var(--font-size-sm);
+        line-height: var(--line-height-relaxed);
+        color: var(--color-text-secondary);
+    }
+
+    .pricing-info {
+        max-width: 700px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .pricing-info h2 {
+        margin-bottom: var(--space-6);
+    }
+
+    .lead-text {
+        font-size: var(--font-size-lg);
+        line-height: var(--line-height-relaxed);
+        margin-bottom: var(--space-4);
+    }
+
+    .pricing-info p {
+        margin-bottom: var(--space-4);
+    }
+
+    .form-section {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .form-intro {
+        text-align: center;
+        margin-bottom: var(--space-8);
+    }
+
+    .form-intro h2 {
+        margin-bottom: var(--space-4);
+    }
+
+    @media (max-width: 640px) {
+        .timeline-step {
+            flex-direction: column;
+        }
+
+        .step-marker {
+            width: 50px;
+            height: 50px;
+            font-size: var(--font-size-xl);
+        }
+    }
+</style>

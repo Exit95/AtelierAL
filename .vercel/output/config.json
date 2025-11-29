@@ -10,6 +10,114 @@
 				"cache-control": "public, max-age=31536000, immutable"
 			},
 			"continue": true
+		},
+		{
+			"src": "^/_server-islands/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/_image/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/admin/artworks/create/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/admin/artworks/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/admin/images/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/admin/login/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/admin/workshops/create/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/admin/workshops/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/admin/workshops/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/admin/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/artworks/create/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/artworks/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/auth/login/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/auth/logout/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/upload/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/workshops/create/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/workshops/([^/]+?)/delete/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/workshops/([^/]+?)/update/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/auftragsarbeiten/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/datenschutz/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/impressum/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/kontakt/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/rechtliches/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/team/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/werke/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/workshops/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/$",
+			"dest": "_render"
 		}
 	],
 	"images": {

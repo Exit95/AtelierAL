@@ -1,0 +1,280 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+
+const defaultData = {
+    title: "",
+    description: "",
+    date: new Date().toISOString().split("T")[0],
+    time: "10:00 - 16:00",
+    duration: "6 Stunden",
+    location: "ATELIER KL, Hauptstraße 45, 48619 Heek",
+    maxParticipants: "8",
+    currentParticipants: "0",
+    materials: "",
+    price: "129",
+    image: "/placeholders/workshop-1.jpg",
+    bookingEnabled: true,
+};
+---
+
+<AdminLayout title="Neuen Workshop erstellen">
+    <form id="workshopForm" class="admin-form">
+        <div class="form-group">
+            <label for="title">Titel*</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                required
+                value={defaultData.title}
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="description">Beschreibung*</label>
+            <textarea id="description" name="description" required rows="5"
+                >{defaultData.description}</textarea
+            >
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="date">Datum*</label>
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    required
+                    value={defaultData.date}
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="time">Uhrzeit*</label>
+                <input
+                    type="text"
+                    id="time"
+                    name="time"
+                    required
+                    value={defaultData.time}
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="duration">Dauer*</label>
+            <input
+                type="text"
+                id="duration"
+                name="duration"
+                required
+                value={defaultData.duration}
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="location">Ort*</label>
+            <input
+                type="text"
+                id="location"
+                name="location"
+                required
+                value={defaultData.location}
+            />
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="maxParticipants">Max. Teilnehmer*</label>
+                <input
+                    type="number"
+                    id="maxParticipants"
+                    name="maxParticipants"
+                    required
+                    value={defaultData.maxParticipants}
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="currentParticipants">Aktuelle Teilnehmer</label>
+                <input
+                    type="number"
+                    id="currentParticipants"
+                    name="currentParticipants"
+                    value={defaultData.currentParticipants}
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Preis (€)*</label>
+            <input
+                type="number"
+                id="price"
+                name="price"
+                step="0.01"
+                required
+                value={defaultData.price}
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="image">Bild-URL*</label>
+            <input
+                type="text"
+                id="image"
+                name="image"
+                required
+                value={defaultData.image}
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="materials">Materialien (eine pro Zeile)*</label>
+            <textarea id="materials" name="materials" rows="5" required
+                >{defaultData.materials}</textarea
+            >
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input
+                    type="checkbox"
+                    id="bookingEnabled"
+                    name="bookingEnabled"
+                    checked={defaultData.bookingEnabled}
+                />
+                Buchung aktiviert
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <a href="/admin/workshops" class="btn btn-secondary">Abbrechen</a>
+            <button type="submit" class="btn btn-primary"
+                >Workshop erstellen</button
+            >
+        </div>
+
+        <div id="message" class="message"></div>
+    </form>
+</AdminLayout>
+
+<script>
+    const form = document.getElementById("workshopForm") as HTMLFormElement;
+    const messageDiv = document.getElementById("message") as HTMLDivElement;
+
+    form?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        messageDiv.textContent = "";
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const res = await fetch("/api/workshops/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                window.location.href = "/admin/workshops";
+            } else {
+                messageDiv.textContent =
+                    result.error || "Fehler beim Erstellen";
+                messageDiv.className = "message error";
+            }
+        } catch (e) {
+            messageDiv.textContent = "Fehler beim Erstellen des Workshops";
+            messageDiv.className = "message error";
+        }
+    });
+</script>
+
+<style>
+    .admin-form {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        max-width: 800px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--color-brand-beige);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn {
+        padding: 0.875rem 1.5rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-primary {
+        background: var(--color-brand-beige);
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    .message {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 6px;
+    }
+
+    .message.error {
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    @media (max-width: 768px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

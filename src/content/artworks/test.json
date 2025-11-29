@@ -1,0 +1,20 @@
+{
+  "title": "Test",
+  "description": "Test",
+  "technique": "acryl",
+  "size": {
+    "width": 120,
+    "height": 120,
+    "unit": "cm"
+  },
+  "availability": "available",
+  "price": "200€",
+  "images": [
+    "/uploads/1764444951239.png"
+  ],
+  "tags": [
+    "abstrakt"
+  ],
+  "featured": false,
+  "createdDate": "2025-11-29T19:36:24.941Z"
+}

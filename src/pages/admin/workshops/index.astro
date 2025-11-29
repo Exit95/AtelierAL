@@ -1,0 +1,189 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import { getCollection } from "astro:content";
+
+const workshops = await getCollection("workshops");
+const sortedWorkshops = workshops.sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+---
+
+<AdminLayout title="Workshops">
+    <div class="page-actions">
+        <a href="/admin/workshops/create" class="btn btn-primary"
+            >+ Neuer Workshop</a
+        >
+    </div>
+
+    <div class="workshops-list">
+        {
+            sortedWorkshops.map((workshop) => (
+                <div class="workshop-card">
+                    <div class="workshop-info">
+                        <h3>{workshop.data.title}</h3>
+                        <p class="workshop-date">
+                            📅{" "}
+                            {new Date(workshop.data.date).toLocaleDateString(
+                                "de-DE",
+                            )}{" "}
+                            | {workshop.data.time}
+                        </p>
+                        <p class="workshop-participants">
+                            👥 {workshop.data.currentParticipants}/
+                            {workshop.data.maxParticipants} Teilnehmer
+                        </p>
+                    </div>
+                    <div class="workshop-actions">
+                        <a
+                            href={`/admin/workshops/${workshop.id}`}
+                            class="btn btn-secondary"
+                        >
+                            Bearbeiten
+                        </a>
+                        <button
+                            class="btn btn-danger"
+                            data-id={workshop.id}
+                            onclick="deleteWorkshop(this)"
+                        >
+                            Löschen
+                        </button>
+                    </div>
+                </div>
+            ))
+        }
+
+        {
+            workshops.length === 0 && (
+                <p class="empty-state">Noch keine Workshops erstellt.</p>
+            )
+        }
+    </div>
+</AdminLayout>
+
+<script>
+    declare global {
+        interface Window {
+            deleteWorkshop: (button: HTMLElement) => void;
+        }
+    }
+
+    window.deleteWorkshop = async function (button: HTMLElement) {
+        const id = button.dataset.id;
+        if (!id || !confirm("Workshop wirklich löschen?")) return;
+
+        try {
+            const res = await fetch(`/api/workshops/${id}/delete`, {
+                method: "DELETE",
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                window.location.reload();
+            } else {
+                alert("Fehler beim Löschen");
+            }
+        } catch (e) {
+            alert("Fehler beim Löschen");
+        }
+    };
+</script>
+
+<style>
+    .page-actions {
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn {
+        padding: 0.625rem 1.25rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-primary {
+        background: var(--color-brand-beige);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: var(--color-accent);
+    }
+
+    .btn-secondary {
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    .btn-secondary:hover {
+        background: #e0e0e0;
+    }
+
+    .btn-danger {
+        background: #d32f2f;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #b71c1c;
+    }
+
+    .workshops-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .workshop-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        gap: 2rem;
+    }
+
+    .workshop-info h3 {
+        margin: 0 0 0.5rem 0;
+        color: #1a1a2e;
+    }
+
+    .workshop-date,
+    .workshop-participants {
+        margin: 0.25rem 0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .workshop-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #999;
+    }
+
+    @media (max-width: 768px) {
+        .workshop-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .workshop-actions {
+            width: 100%;
+        }
+
+        .workshop-actions .btn {
+            flex: 1;
+        }
+    }
+</style>

@@ -5,8 +5,8 @@ import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://atelier-kl.de',
-  output: 'static',
+  site: 'https://test-danapfel-digital.de',
+  output: 'server',
   adapter: vercel({
     webAnalytics: {
       enabled: true

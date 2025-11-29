@@ -1,0 +1,489 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+    const workshops = await getCollection("workshops");
+    return workshops.map((workshop) => ({
+        params: { slug: workshop.id },
+        props: { workshop },
+    }));
+}
+
+const { workshop } = Astro.props;
+const { data } = workshop;
+
+const isFullyBooked = data.currentParticipants >= data.maxParticipants;
+const isPast = new Date(data.date) < new Date();
+const canBook = data.bookingEnabled && !isFullyBooked && !isPast;
+
+const formattedDate = new Date(data.date).toLocaleDateString("de-DE", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+});
+---
+
+<Layout title={`${data.title} - Workshop`} description={data.description}>
+    <div class="workshop-detail-page">
+        <div class="container">
+            <a href="/workshops" class="back-link">← Zurück zur Übersicht</a>
+
+            <div class="workshop-grid">
+                <div class="workshop-content">
+                    <div class="workshop-image-container">
+                        <img
+                            src={data.image}
+                            alt={data.title}
+                            class="workshop-image"
+                        />
+                        {
+                            isFullyBooked && (
+                                <div class="badge badge-sold">Ausgebucht</div>
+                            )
+                        }
+                    </div>
+
+                    <h1 class="workshop-title">{data.title}</h1>
+
+                    <div class="workshop-meta">
+                        <div class="meta-item">
+                            <span class="icon">📅</span>
+                            <span class="text">{formattedDate}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="icon">⏰</span>
+                            <span class="text"
+                                >{data.time} ({data.duration})</span
+                            >
+                        </div>
+                        <div class="meta-item">
+                            <span class="icon">📍</span>
+                            <span class="text">{data.location}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="icon">👥</span>
+                            <span class="text"
+                                >{data.currentParticipants} / {
+                                    data.maxParticipants
+                                } Plätze belegt</span
+                            >
+                        </div>
+                        <div class="meta-item price">
+                            <span class="icon">💶</span>
+                            <span class="text">{data.price} €</span>
+                        </div>
+                    </div>
+
+                    <div class="workshop-description">
+                        <h3>Über den Workshop</h3>
+                        <p>{data.description}</p>
+
+                        <h3>Enthaltene Materialien</h3>
+                        <ul>
+                            {data.materials.map((item) => <li>{item}</li>)}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="workshop-sidebar">
+                    <div class="booking-card">
+                        <h3>Workshop buchen</h3>
+
+                        {
+                            canBook ? (
+                                <form id="bookingForm" class="booking-form">
+                                    <input
+                                        type="hidden"
+                                        name="workshopId"
+                                        value={workshop.id}
+                                    />
+                                    <input
+                                        type="hidden"
+                                        name="workshopTitle"
+                                        value={data.title}
+                                    />
+
+                                    <div class="form-group">
+                                        <label for="name">Name *</label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            required
+                                            placeholder="Ihr Name"
+                                        />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">E-Mail *</label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            required
+                                            placeholder="ihre@email.de"
+                                        />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="phone">
+                                            Telefon (optional)
+                                        </label>
+                                        <input
+                                            type="tel"
+                                            id="phone"
+                                            name="phone"
+                                            placeholder="Für Rückfragen"
+                                        />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="message">
+                                            Nachricht (optional)
+                                        </label>
+                                        <textarea
+                                            id="message"
+                                            name="message"
+                                            rows="3"
+                                            placeholder="Anmerkungen, Fragen..."
+                                        />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="participants">
+                                            Anzahl Personen *
+                                        </label>
+                                        <select
+                                            id="participants"
+                                            name="participants"
+                                            required
+                                        >
+                                            <option value="1">1 Person</option>
+                                            <option value="2">
+                                                2 Personen
+                                            </option>
+                                            <option value="3">
+                                                3 Personen
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-primary btn-block"
+                                    >
+                                        Jetzt verbindlich anfragen
+                                    </button>
+
+                                    <p class="form-note">
+                                        Sie erhalten zeitnah eine Bestätigung
+                                        per E-Mail.
+                                    </p>
+                                </form>
+                            ) : (
+                                <div class="booking-closed">
+                                    {isPast ? (
+                                        <p>
+                                            Dieser Workshop hat bereits
+                                            stattgefunden.
+                                        </p>
+                                    ) : isFullyBooked ? (
+                                        <p>
+                                            Leider sind alle Plätze ausgebucht.{" "}
+                                            <a href="/kontakt">
+                                                Schreiben Sie mir
+                                            </a>{" "}
+                                            für die Warteliste.
+                                        </p>
+                                    ) : (
+                                        <p>
+                                            Buchung ist derzeit nicht möglich.
+                                        </p>
+                                    )}
+                                </div>
+                            )
+                        }
+                        <div id="bookingMessage" class="message hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    const form = document.getElementById("bookingForm") as HTMLFormElement;
+    const messageDiv = document.getElementById(
+        "bookingMessage",
+    ) as HTMLDivElement;
+
+    form?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const submitBtn = form.querySelector(
+            'button[type="submit"]',
+        ) as HTMLButtonElement;
+
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Wird gesendet...";
+        }
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const res = await fetch("/api/workshops/book", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await res.json();
+
+            messageDiv.classList.remove("hidden");
+
+            if (res.ok && result.success) {
+                messageDiv.textContent =
+                    "Vielen Dank! Ihre Anfrage wurde gesendet. Sie erhalten bald eine Bestätigung.";
+                messageDiv.className = "message success";
+                form.reset();
+            } else {
+                messageDiv.textContent =
+                    result.error || "Fehler beim Senden der Anfrage.";
+                messageDiv.className = "message error";
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Jetzt verbindlich anfragen";
+                }
+            }
+        } catch (error) {
+            messageDiv.classList.remove("hidden");
+            messageDiv.textContent =
+                "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
+            messageDiv.className = "message error";
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Jetzt verbindlich anfragen";
+            }
+        }
+    });
+</script>
+
+<style>
+    .workshop-detail-page {
+        padding: var(--space-8) 0 var(--space-16);
+        background: var(--color-surface);
+        min-height: 80vh;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: var(--space-6);
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        font-weight: var(--font-weight-medium);
+        transition: color var(--transition-base);
+    }
+
+    .back-link:hover {
+        color: var(--color-accent);
+    }
+
+    .workshop-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+    }
+
+    @media (min-width: 1024px) {
+        .workshop-grid {
+            grid-template-columns: 2fr 1fr;
+        }
+    }
+
+    .workshop-content {
+        background: white;
+        padding: var(--space-8);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .workshop-image-container {
+        position: relative;
+        margin-bottom: var(--space-6);
+        border-radius: var(--radius-base);
+        overflow: hidden;
+        aspect-ratio: 16/9;
+    }
+
+    .workshop-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .badge {
+        position: absolute;
+        top: var(--space-4);
+        right: var(--space-4);
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-full);
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .badge-sold {
+        background: var(--color-error);
+        color: white;
+    }
+
+    .workshop-title {
+        font-size: var(--font-size-3xl);
+        margin-bottom: var(--space-6);
+        color: var(--color-text-primary);
+    }
+
+    .workshop-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-4);
+        margin-bottom: var(--space-8);
+        padding-bottom: var(--space-8);
+        border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        color: var(--color-text-secondary);
+    }
+
+    .meta-item.price {
+        color: var(--color-accent);
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-lg);
+    }
+
+    .meta-item .icon {
+        font-size: 1.5rem;
+    }
+
+    .workshop-description h3 {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--space-4);
+        margin-top: var(--space-8);
+    }
+
+    .workshop-description h3:first-child {
+        margin-top: 0;
+    }
+
+    .workshop-description ul {
+        padding-left: 1.5rem;
+        color: var(--color-text-secondary);
+    }
+
+    .workshop-description li {
+        margin-bottom: 0.5rem;
+    }
+
+    .workshop-sidebar {
+        position: sticky;
+        top: var(--space-8);
+        height: fit-content;
+    }
+
+    .booking-card {
+        background: white;
+        padding: var(--space-6);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        border-top: 4px solid var(--color-brand-beige);
+    }
+
+    .booking-card h3 {
+        margin-top: 0;
+        margin-bottom: var(--space-6);
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: var(--space-4);
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-sm);
+        color: var(--color-text-primary);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        font-family: var(--font-body);
+        transition: border-color var(--transition-base);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--color-accent);
+    }
+
+    .btn-block {
+        width: 100%;
+        margin-top: var(--space-4);
+        padding: 1rem;
+    }
+
+    .form-note {
+        margin-top: var(--space-4);
+        font-size: var(--font-size-xs);
+        color: var(--color-text-tertiary);
+        text-align: center;
+    }
+
+    .booking-closed {
+        text-align: center;
+        padding: var(--space-4);
+        background: var(--color-gray-50);
+        border-radius: var(--radius-sm);
+        color: var(--color-text-secondary);
+    }
+
+    .message {
+        margin-top: var(--space-4);
+        padding: 1rem;
+        border-radius: var(--radius-sm);
+        text-align: center;
+        font-size: var(--font-size-sm);
+    }
+
+    .message.hidden {
+        display: none;
+    }
+
+    .message.success {
+        background: var(--color-success-light);
+        color: var(--color-success);
+    }
+
+    .message.error {
+        background: var(--color-error-light);
+        color: var(--color-error);
+    }
+</style>
