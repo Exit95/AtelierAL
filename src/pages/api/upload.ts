@@ -14,8 +14,12 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
-        // Create uploads directory if it doesn't exist
-        const uploadsDir = join(process.cwd(), 'public', 'uploads');
+        // Determine upload directory based on environment
+        const isProd = import.meta.env.PROD;
+        const uploadsDir = isProd
+            ? join(process.cwd(), 'uploads')
+            : join(process.cwd(), 'public', 'uploads');
+
         await mkdir(uploadsDir, { recursive: true });
 
         // Generate unique filename

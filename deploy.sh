@@ -20,6 +20,18 @@ npm run build -- --config astro.config.local.mjs
 # Check if build was successful
 if [ $? -eq 0 ]; then
     echo "✅ Build successful!"
+    
+    # Setup persistent uploads directory
+    echo "📂 Setting up uploads directory..."
+    mkdir -p uploads
+    
+    # Create symlink in dist/client
+    # Remove existing uploads directory in dist if it exists (it shouldn't, but just in case)
+    rm -rf dist/client/uploads
+    # Create symlink
+    ln -s ../../uploads dist/client/uploads
+    
+    echo "🔗 Symlinked uploads directory"
     echo ""
     echo "📋 Next steps:"
     echo "1. Start with PM2: pm2 start ecosystem.config.cjs"
