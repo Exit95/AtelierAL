@@ -9,8 +9,12 @@ echo "🎨 ATELIER KL - Building for test-danapfel-digital.de..."
 export NODE_ENV=production
 export ASTRO_TELEMETRY_DISABLED=1
 
+# Install dependencies
+echo "📦 Installing dependencies..."
+npm install
+
 # Use the local config (gitignored astro.config.mjs will be used if it exists)
-echo "📦 Building Astro site..."
+echo "🏗️ Building Astro site..."
 npm run build
 
 # Check if build was successful
