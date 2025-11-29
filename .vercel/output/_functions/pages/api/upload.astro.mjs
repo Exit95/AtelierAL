@@ -1,63 +1,58 @@
-import { mkdir } from 'fs/promises';
+import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
-import { IncomingForm } from 'formidable';
 export { renderers } from '../../renderers.mjs';
 
 const POST = async ({ request }) => {
   console.log("📸 Upload request received");
+  console.log("📋 Headers:", Object.fromEntries(request.headers.entries()));
   try {
+    const formData = await request.formData();
+    const file = formData.get("file");
+    if (!file) {
+      console.log("❌ No file found in request");
+      return new Response(JSON.stringify({ error: "Keine Datei hochgeladen" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    console.log(`📂 Processing file: ${file.name}, Size: ${file.size} bytes (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
+    const maxSize = 25 * 1024 * 1024;
+    if (file.size > maxSize) {
+      console.log(`❌ File too large: ${file.size} > ${maxSize}`);
+      return new Response(JSON.stringify({
+        error: `Datei zu groß. Maximum: 25MB, Ihre Datei: ${(file.size / 1024 / 1024).toFixed(2)}MB`
+      }), {
+        status: 413,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
     const isProd = true;
     const uploadsDir = isProd ? join(process.cwd(), "uploads") : join(process.cwd(), "public", "uploads");
+    console.log(`📂 Target directory: ${uploadsDir}`);
     await mkdir(uploadsDir, { recursive: true });
-    return new Promise((resolve) => {
-      const form = new IncomingForm({
-        uploadDir: uploadsDir,
-        keepExtensions: true,
-        maxFileSize: 25 * 1024 * 1024,
-        // 25MB
-        filename: (name, ext) => {
-          const timestamp = Date.now();
-          return `${timestamp}${ext}`;
-        }
-      });
-      const req = request;
-      form.parse(req, async (err, fields, files) => {
-        if (err) {
-          console.error("❌ Upload error:", err);
-          resolve(new Response(JSON.stringify({
-            error: "Upload fehlgeschlagen",
-            details: err.message
-          }), {
-            status: 500,
-            headers: { "Content-Type": "application/json" }
-          }));
-          return;
-        }
-        const file = Array.isArray(files.file) ? files.file[0] : files.file;
-        if (!file) {
-          resolve(new Response(JSON.stringify({ error: "Keine Datei hochgeladen" }), {
-            status: 400,
-            headers: { "Content-Type": "application/json" }
-          }));
-          return;
-        }
-        const filename = file.newFilename || `${Date.now()}.${file.originalFilename?.split(".").pop()}`;
-        const url = `/uploads/${filename}`;
-        console.log(`✅ File uploaded: ${filename}`);
-        resolve(new Response(JSON.stringify({
-          success: true,
-          url,
-          filename
-        }), {
-          status: 200,
-          headers: { "Content-Type": "application/json" }
-        }));
-      });
+    const timestamp = Date.now();
+    const ext = file.name.split(".").pop();
+    const filename = `${timestamp}.${ext}`;
+    const filepath = join(uploadsDir, filename);
+    console.log(`📝 Writing to: ${filepath}`);
+    const buffer = Buffer.from(await file.arrayBuffer());
+    await writeFile(filepath, buffer);
+    console.log(`✅ File written successfully: ${filename}`);
+    const url = `/uploads/${filename}`;
+    return new Response(JSON.stringify({
+      success: true,
+      url,
+      filename
+    }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
     });
   } catch (error) {
     console.error("❌ Upload error:", error);
+    console.error("Error stack:", error instanceof Error ? error.stack : "No stack");
     return new Response(JSON.stringify({
-      error: "Interner Serverfehler"
+      error: "Upload fehlgeschlagen",
+      details: error instanceof Error ? error.message : String(error)
     }), {
       status: 500,
       headers: { "Content-Type": "application/json" }
