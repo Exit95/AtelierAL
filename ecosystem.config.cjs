@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'atelieral',
       cwd: './',
-      script: '.vercel/output/functions/_render.func/dist/server/entry.mjs',
+      script: './dist/server/entry.mjs',
       interpreter: 'node',
       args: '--port=3000 --host=0.0.0.0',
       instances: 1,
