@@ -1,16 +1,16 @@
 {
-  "title": "Testetexya",
-  "description": "asdsdafsdfsdfsfs",
+  "title": "test123",
+  "description": "dsasdsfsdffs",
   "date": "2025-11-30T00:00:00.000Z",
   "time": "10:00 - 16:00",
   "duration": "6 Stunden",
   "location": "ATELIER KL, Hauptstraße 45, 48619 Heek",
   "maxParticipants": 8,
-  "currentParticipants": 8,
+  "currentParticipants": 3,
   "materials": [
-    "adadsfsdfs<fds"
+    "addsafdsfsf"
   ],
-  "price": 30,
+  "price": 129,
   "image": "/placeholders/workshop-1.jpg",
   "bookingEnabled": true
 }

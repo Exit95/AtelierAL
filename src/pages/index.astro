@@ -166,7 +166,7 @@ const allTestimonials = await getCollection("testimonials");
 					<>
 						<div class="grid grid-cols-1 grid-cols-md-3">
 							{upcomingWorkshops.map((workshop) => (
-								<WorkshopCard workshop={workshop.data} />
+								<WorkshopCard workshop={workshop} />
 							))}
 						</div>
 						<div class="section-cta">

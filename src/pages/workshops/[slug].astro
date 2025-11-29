@@ -131,14 +131,13 @@ const formattedDate = new Date(data.date).toLocaleDateString("de-DE", {
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="phone">
-                                            Telefon (optional)
-                                        </label>
+                                        <label for="phone">Telefon *</label>
                                         <input
                                             type="tel"
                                             id="phone"
                                             name="phone"
-                                            placeholder="Für Rückfragen"
+                                            required
+                                            placeholder="Ihre Telefonnummer"
                                         />
                                     </div>
 
