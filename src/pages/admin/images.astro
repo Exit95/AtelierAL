@@ -199,7 +199,9 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 
     async function loadGallery() {
         try {
-            const res = await fetch("/api/images");
+            const res = await fetch(
+                "https://proxy.danapfel-digital.de/gallery-api.php",
+            );
             if (!res.ok) throw new Error("Failed to load images");
             const images = await res.json();
 
