@@ -6,13 +6,13 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<!doctype html>
+import '../styles/global.css'; ---
+
 <html lang="de">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{title} - Admin | ATELIER KL</title>
-        <link rel="stylesheet" href="/src/styles/design-system.css" />
     </head>
     <body>
         <div class="admin-container">
