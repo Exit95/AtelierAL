@@ -1,7 +1,7 @@
 import { f as createAstro, c as createComponent, r as renderComponent, a as renderScript, b as renderTemplate, m as maybeRenderHead, d as addAttribute } from '../../chunks/astro/server_DTZ0Lt1g.mjs';
 import 'piccolore';
 import { $ as $$Layout } from '../../chunks/Layout_DOK6i4VX.mjs';
-import { g as getEntry } from '../../chunks/_astro_content_BBnBT17u.mjs';
+import { a as getItem } from '../../chunks/storage_ARbyxPSG.mjs';
 /* empty css                                     */
 export { renderers } from '../../renderers.mjs';
 
@@ -13,11 +13,11 @@ const $$slug = createComponent(async ($$result, $$props, $$slots) => {
   if (!slug) {
     return Astro2.redirect("/404");
   }
-  const workshop = await getEntry("workshops", slug);
+  const workshop = await getItem("workshops", slug);
   if (!workshop) {
     return Astro2.redirect("/404");
   }
-  const { data } = workshop;
+  const data = workshop;
   const isFullyBooked = data.currentParticipants >= data.maxParticipants;
   const isPast = new Date(data.date) < /* @__PURE__ */ new Date();
   const canBook = data.bookingEnabled && !isFullyBooked && !isPast;

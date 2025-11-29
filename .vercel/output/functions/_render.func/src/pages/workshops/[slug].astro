@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { getItem, type Workshop } from "../../lib/storage";
 
 const { slug } = Astro.params;
 
@@ -8,13 +9,13 @@ if (!slug) {
     return Astro.redirect("/404");
 }
 
-const workshop = await getEntry("workshops", slug);
+const workshop = await getItem<Workshop>("workshops", slug);
 
 if (!workshop) {
     return Astro.redirect("/404");
 }
 
-const { data } = workshop;
+const data = workshop;
 
 const isFullyBooked = data.currentParticipants >= data.maxParticipants;
 const isPast = new Date(data.date) < new Date();
