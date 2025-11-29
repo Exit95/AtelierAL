@@ -7,6 +7,9 @@ import node from '@astrojs/node';
 export default defineConfig({
     site: 'https://test-danapfel-digital.de',
     output: 'server',
+    security: {
+        checkOrigin: false
+    },
     adapter: node({
         mode: 'standalone'
     }),
