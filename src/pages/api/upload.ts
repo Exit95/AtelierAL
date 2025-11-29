@@ -1,64 +1,77 @@
 import type { APIRoute } from 'astro';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
+import { IncomingForm } from 'formidable';
+import type { IncomingMessage } from 'http';
 
 export const POST: APIRoute = async ({ request }) => {
     console.log('📸 Upload request received');
+
     try {
-        const formData = await request.formData();
-        const file = formData.get('file') as File;
-
-        if (!file) {
-            console.log('❌ No file found in request');
-            return new Response(JSON.stringify({ error: 'Keine Datei hochgeladen' }), {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
-
-        console.log(`📂 Processing file: ${file.name}, Size: ${file.size}`);
-
-        // Determine upload directory based on environment
         const isProd = import.meta.env.PROD;
-        console.log(`🌍 Environment: ${isProd ? 'PRODUCTION' : 'DEVELOPMENT'}`);
-        console.log(`📍 CWD: ${process.cwd()}`);
-
         const uploadsDir = isProd
             ? join(process.cwd(), 'uploads')
             : join(process.cwd(), 'public', 'uploads');
 
-        console.log(`📂 Target directory: ${uploadsDir}`);
-
         await mkdir(uploadsDir, { recursive: true });
-        console.log('✅ Directory created/verified');
 
-        // Generate unique filename
-        const timestamp = Date.now();
-        const ext = file.name.split('.').pop();
-        const filename = `${timestamp}.${ext}`;
-        const filepath = join(uploadsDir, filename);
-        console.log(`📝 Writing to: ${filepath}`);
+        // Use formidable for handling large file uploads
+        return new Promise((resolve) => {
+            const form = new IncomingForm({
+                uploadDir: uploadsDir,
+                keepExtensions: true,
+                maxFileSize: 25 * 1024 * 1024, // 25MB
+                filename: (name, ext) => {
+                    const timestamp = Date.now();
+                    return `${timestamp}${ext}`;
+                }
+            });
 
-        // Write file
-        const buffer = Buffer.from(await file.arrayBuffer());
-        await writeFile(filepath, buffer);
-        console.log('✅ File written successfully');
+            // Convert Request to IncomingMessage-like object
+            const req = request as unknown as IncomingMessage;
 
-        const url = `/uploads/${filename}`;
-        console.log(`🔗 Generated URL: ${url}`);
+            form.parse(req, async (err, fields, files) => {
+                if (err) {
+                    console.error('❌ Upload error:', err);
+                    resolve(new Response(JSON.stringify({
+                        error: 'Upload fehlgeschlagen',
+                        details: err.message
+                    }), {
+                        status: 500,
+                        headers: { 'Content-Type': 'application/json' }
+                    }));
+                    return;
+                }
 
-        return new Response(JSON.stringify({
-            success: true,
-            url,
-            filename
-        }), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
+                const file = Array.isArray(files.file) ? files.file[0] : files.file;
+
+                if (!file) {
+                    resolve(new Response(JSON.stringify({ error: 'Keine Datei hochgeladen' }), {
+                        status: 400,
+                        headers: { 'Content-Type': 'application/json' }
+                    }));
+                    return;
+                }
+
+                const filename = file.newFilename || `${Date.now()}.${file.originalFilename?.split('.').pop()}`;
+                const url = `/uploads/${filename}`;
+
+                console.log(`✅ File uploaded: ${filename}`);
+
+                resolve(new Response(JSON.stringify({
+                    success: true,
+                    url,
+                    filename
+                }), {
+                    status: 200,
+                    headers: { 'Content-Type': 'application/json' }
+                }));
+            });
         });
     } catch (error) {
         console.error('❌ Upload error:', error);
         return new Response(JSON.stringify({
-            error: 'Fehler beim Hochladen der Datei: ' + (error instanceof Error ? error.message : String(error))
+            error: 'Interner Serverfehler'
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }

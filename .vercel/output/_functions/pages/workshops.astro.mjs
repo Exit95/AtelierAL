@@ -2,7 +2,7 @@ import { c as createComponent, r as renderComponent, b as renderTemplate, m as m
 import 'piccolore';
 import { $ as $$Layout } from '../chunks/Layout_BDMwxAWC.mjs';
 import { $ as $$WorkshopCard } from '../chunks/WorkshopCard_DB8dJbuy.mjs';
-import { g as getItems } from '../chunks/storage_Coa8lX9P.mjs';
+import { g as getItems } from '../chunks/storage_ARbyxPSG.mjs';
 /* empty css                                     */
 export { renderers } from '../renderers.mjs';
 

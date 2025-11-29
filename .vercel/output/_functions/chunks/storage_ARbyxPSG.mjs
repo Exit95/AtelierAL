@@ -29,6 +29,19 @@ async function getItems(collection) {
   }
   return items;
 }
+async function getItem(collection, id) {
+  const filepath = join(DATA_DIR, collection, `${id}.json`);
+  try {
+    if (!existsSync(filepath)) return null;
+    const content = await readFile(filepath, "utf-8");
+    const item = JSON.parse(content);
+    item.id = id;
+    return item;
+  } catch (err) {
+    console.error(`Error reading ${collection} item ${id}:`, err);
+    return null;
+  }
+}
 async function saveItem(collection, id, data) {
   const dir = join(DATA_DIR, collection);
   await ensureDir(dir);
@@ -42,4 +55,4 @@ async function deleteItem(collection, id) {
   }
 }
 
-export { deleteItem as d, getItems as g, saveItem as s };
+export { getItem as a, deleteItem as d, getItems as g, saveItem as s };

@@ -3,7 +3,7 @@ import 'piccolore';
 import { $ as $$Layout } from '../chunks/Layout_BDMwxAWC.mjs';
 import { $ as $$Badge } from '../chunks/Badge_CwACIffN.mjs';
 /* empty css                                 */
-import { g as getItems } from '../chunks/storage_Coa8lX9P.mjs';
+import { g as getItems } from '../chunks/storage_ARbyxPSG.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro("https://test-danapfel-digital.de");

@@ -1,5 +1,4 @@
-import { readFile, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { a as getItem, s as saveItem } from '../../../chunks/storage_ARbyxPSG.mjs';
 export { renderers } from '../../../renderers.mjs';
 
 const POST = async ({ request }) => {
@@ -14,10 +13,14 @@ const POST = async ({ request }) => {
     }
     const participantCount = parseInt(participants);
     let workshop;
-    const workshopPath = join(process.cwd(), "src/content/workshops", `${workshopId}.json`);
     try {
-      const fileContent = await readFile(workshopPath, "utf-8");
-      workshop = JSON.parse(fileContent);
+      workshop = await getItem("workshops", workshopId);
+      if (!workshop) {
+        return new Response(JSON.stringify({ error: "Workshop nicht gefunden." }), {
+          status: 404,
+          headers: { "Content-Type": "application/json" }
+        });
+      }
       if (workshop.currentParticipants + participantCount > workshop.maxParticipants) {
         return new Response(JSON.stringify({ error: "Nicht genügend freie Plätze verfügbar." }), {
           status: 400,
@@ -25,7 +28,7 @@ const POST = async ({ request }) => {
         });
       }
       workshop.currentParticipants += participantCount;
-      await writeFile(workshopPath, JSON.stringify(workshop, null, 2));
+      await saveItem("workshops", workshopId, workshop);
     } catch (error) {
       console.error("Error updating workshop:", error);
       return new Response(JSON.stringify({ error: "Workshop nicht gefunden oder Fehler beim Speichern." }), {
