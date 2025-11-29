@@ -13,9 +13,9 @@ export ASTRO_TELEMETRY_DISABLED=1
 echo "📦 Installing dependencies..."
 npm install
 
-# Use the local config (gitignored astro.config.mjs will be used if it exists)
+# Use the local config
 echo "🏗️ Building Astro site..."
-npm run build
+npm run build -- --config astro.config.local.mjs
 
 # Check if build was successful
 if [ $? -eq 0 ]; then
