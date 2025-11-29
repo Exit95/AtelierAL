@@ -16,7 +16,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
                     <span class="file-text"
                         >Bild auswählen oder hier ablegen</span
                     >
-                    <span class="file-formats">JPG, PNG, WebP (max. 10MB)</span>
+                    <span class="file-formats">JPG, PNG, WebP (max. 25MB)</span>
                 </label>
                 <input type="file" id="fileInput" accept="image/*" />
             </div>
@@ -123,9 +123,9 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
             return;
         }
 
-        // Client-side size check (10MB)
-        if (file.size > 10 * 1024 * 1024) {
-            messageDiv.textContent = "Datei ist zu groß (Max. 10MB)";
+        // Client-side size check (25MB)
+        if (file.size > 25 * 1024 * 1024) {
+            messageDiv.textContent = "Datei ist zu groß (Max. 25MB)";
             messageDiv.className = "message error";
             return;
         }
