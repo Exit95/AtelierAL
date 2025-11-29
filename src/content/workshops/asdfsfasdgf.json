@@ -12,5 +12,5 @@
   ],
   "price": 20,
   "image": "/uploads/1764445087392.png",
-  "bookingEnabled": false
+  "bookingEnabled": true
 }

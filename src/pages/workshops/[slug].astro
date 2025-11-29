@@ -1,16 +1,19 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCollection } from "astro:content";
+import { getEntry } from "astro:content";
 
-export async function getStaticPaths() {
-    const workshops = await getCollection("workshops");
-    return workshops.map((workshop) => ({
-        params: { slug: workshop.id },
-        props: { workshop },
-    }));
+const { slug } = Astro.params;
+
+if (!slug) {
+    return Astro.redirect("/404");
 }
 
-const { workshop } = Astro.props;
+const workshop = await getEntry("workshops", slug);
+
+if (!workshop) {
+    return Astro.redirect("/404");
+}
+
 const { data } = workshop;
 
 const isFullyBooked = data.currentParticipants >= data.maxParticipants;

@@ -71,7 +71,7 @@ const pastWorkshops = allWorkshops
                 upcomingWorkshops.length > 0 ? (
                     <div class="grid grid-cols-1 grid-cols-md-3">
                         {upcomingWorkshops.map((workshop) => (
-                            <WorkshopCard workshop={workshop.data} />
+                            <WorkshopCard workshop={workshop} />
                         ))}
                     </div>
                 ) : (
@@ -138,8 +138,11 @@ const pastWorkshops = allWorkshops
                         {pastWorkshops.slice(0, 3).map((workshop) => (
                             <WorkshopCard
                                 workshop={{
-                                    ...workshop.data,
-                                    bookingEnabled: false,
+                                    ...workshop,
+                                    data: {
+                                        ...workshop.data,
+                                        bookingEnabled: false,
+                                    },
                                 }}
                             />
                         ))}

@@ -1,235 +1,214 @@
 ---
+import Badge from "./Badge.astro";
+import type { CollectionEntry } from "astro:content";
+
 interface Props {
-    workshop: {
-        title: string;
-        description: string;
-        date: Date;
-        time: string;
-        location: string;
-        maxParticipants: number;
-        currentParticipants: number;
-        price: number;
-        image: string;
-        bookingEnabled: boolean;
-    };
+    workshop:
+        | CollectionEntry<"workshops">
+        | {
+              id: string;
+              data: CollectionEntry<"workshops">["data"];
+              slug?: string;
+              body?: string;
+              collection?: "workshops";
+          };
 }
 
 const { workshop } = Astro.props;
-import Badge from "./Badge.astro";
-import CTAButton from "./CTAButton.astro";
+const { data } = workshop;
 
-const availableSpots = workshop.maxParticipants - workshop.currentParticipants;
-const isFull = availableSpots === 0;
+const isFull = data.currentParticipants >= data.maxParticipants;
+const availableSpots = data.maxParticipants - data.currentParticipants;
 
-// Format date for display
-const dateFormatter = new Intl.DateTimeFormat("de-DE", {
-    day: "2-digit",
-    month: "long",
+const formattedDate = new Date(data.date).toLocaleDateString("de-DE", {
+    weekday: "long",
     year: "numeric",
+    month: "long",
+    day: "numeric",
 });
-const formattedDate = dateFormatter.format(new Date(workshop.date));
 ---
 
 <article class="workshop-card">
-    <div class="workshop-image">
-        <img src={workshop.image} alt={workshop.title} loading="lazy" />
-        {
-            isFull ? (
-                <Badge
-                    variant="sold"
-                    label="Ausgebucht"
-                    className="workshop-badge"
-                />
-            ) : (
-                <Badge
-                    variant="available"
-                    label={`${availableSpots} Plätze frei`}
-                    className="workshop-badge"
-                />
-            )
-        }
-    </div>
-    <div class="workshop-content">
-        <h3 class="workshop-title">{workshop.title}</h3>
-        <div class="workshop-meta">
-            <div class="meta-item">
-                <span class="meta-icon">📅</span>
-                <span>{formattedDate}</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-icon">🕒</span>
-                <span>{workshop.time}</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-icon">📍</span>
-                <span>{workshop.location}</span>
-            </div>
-        </div>
-        <p class="workshop-description">{workshop.description}</p>
-        <div class="workshop-footer">
-            <div class="workshop-price">{workshop.price}€</div>
+    <a href={`/workshops/${workshop.id}`} class="card-link">
+        <div class="card-image">
+            <img src={data.image} alt={data.title} loading="lazy" />
             {
-                workshop.bookingEnabled && !isFull && (
-                    <CTAButton
-                        label="Jetzt buchen"
-                        href="/workshops#booking"
-                        type="primary"
+                isFull ? (
+                    <Badge
+                        variant="sold"
+                        label="Ausgebucht"
+                        className="workshop-badge"
+                    />
+                ) : (
+                    <Badge
+                        variant="available"
+                        label={`${availableSpots} Plätze frei`}
+                        className="workshop-badge"
                     />
                 )
             }
+            <div class="card-date">
+                <span class="day">{new Date(data.date).getDate()}</span>
+                <span class="month">
+                    {
+                        new Date(data.date).toLocaleDateString("de-DE", {
+                            month: "short",
+                        })
+                    }
+                </span>
+            </div>
         </div>
-    </div>
+        <div class="card-content">
+            <h3>{data.title}</h3>
+            <div class="card-meta">
+                <span>⏰ {data.time}</span>
+                <span>📍 {data.location}</span>
+            </div>
+            <p class="description">{data.description}</p>
+            <div class="card-footer">
+                <span class="price">{data.price} €</span>
+                <span class="btn-text">Details & Buchung →</span>
+            </div>
+        </div>
+    </a>
 </article>
 
 <style>
     .workshop-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition:
+            transform var(--transition-base),
+            box-shadow var(--transition-base);
+        height: 100%;
         display: flex;
         flex-direction: column;
-        background: var(--color-surface-elevated);
-        border-radius: var(--radius-base);
-        overflow: hidden;
-        box-shadow: var(--shadow-base);
-        transition: all var(--transition-base);
-        height: 100%;
     }
 
     .workshop-card:hover {
-        box-shadow: var(--shadow-lg);
         transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
     }
 
-    .workshop-image {
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .card-image {
         position: relative;
-        width: 100%;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 3/2;
         overflow: hidden;
-        background-color: var(--color-brand-beige-light);
     }
 
-    .workshop-image img {
+    .card-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 0;
+        transition: transform var(--transition-slow);
+    }
+
+    .workshop-card:hover .card-image img {
+        transform: scale(1.05);
     }
 
     .workshop-badge {
         position: absolute;
         top: var(--space-3);
         right: var(--space-3);
+        z-index: 1;
     }
 
-    .workshop-content {
-        padding: var(--space-4);
+    .card-date {
+        position: absolute;
+        bottom: var(--space-3);
+        left: var(--space-3);
+        background: rgba(255, 255, 255, 0.95);
+        padding: 0.5rem 0.75rem;
+        border-radius: var(--radius-sm);
         display: flex;
         flex-direction: column;
-        gap: var(--space-3);
-        flex-grow: 1;
-    }
-
-    .workshop-title {
-        margin: 0;
-        font-size: var(--font-size-lg);
-        line-height: var(--line-height-tight);
-    }
-
-    .workshop-meta {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-2);
-    }
-
-    .meta-item {
-        display: flex;
         align-items: center;
-        gap: var(--space-2);
+        box-shadow: var(--shadow-sm);
+        min-width: 3.5rem;
+    }
+
+    .card-date .day {
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-bold);
+        line-height: 1;
+        color: var(--color-text-primary);
+    }
+
+    .card-date .month {
         font-size: var(--font-size-xs);
+        text-transform: uppercase;
         color: var(--color-text-secondary);
+        margin-top: 0.125rem;
     }
 
-    .meta-icon {
-        font-size: 1.1em;
-        flex-shrink: 0;
+    .card-content {
+        padding: var(--space-5);
+        display: flex;
+        flex-direction: column;
+        flex: 1;
     }
 
-    .workshop-description {
+    .card-content h3 {
+        margin: 0 0 var(--space-3);
+        font-size: var(--font-size-lg);
+        line-height: var(--line-height-snug);
+        color: var(--color-text-primary);
+    }
+
+    .card-meta {
+        display: flex;
+        gap: var(--space-4);
+        margin-bottom: var(--space-4);
         font-size: var(--font-size-sm);
         color: var(--color-text-secondary);
-        line-height: var(--line-height-relaxed);
-        flex-grow: 1;
     }
 
-    .workshop-footer {
+    .description {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        line-height: var(--line-height-relaxed);
+        margin-bottom: var(--space-5);
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        flex: 1;
+    }
+
+    .card-footer {
         display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: var(--space-3);
-        padding-top: var(--space-3);
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+        padding-top: var(--space-4);
         border-top: 1px solid var(--color-border-light);
     }
 
-    .workshop-price {
-        font-size: var(--font-size-xl);
+    .price {
         font-weight: var(--font-weight-bold);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-lg);
+    }
+
+    .btn-text {
         color: var(--color-accent);
-        text-align: center;
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-sm);
+        transition: transform var(--transition-fast);
     }
 
-    /* Small smartphones: 375px+ */
-    @media (min-width: 375px) {
-        .workshop-content {
-            padding: var(--space-5);
-        }
-
-        .workshop-title {
-            font-size: var(--font-size-xl);
-        }
-
-        .meta-item {
-            font-size: var(--font-size-sm);
-        }
-
-        .workshop-price {
-            font-size: var(--font-size-2xl);
-        }
-    }
-
-    /* Tablets: 768px+ */
-    @media (min-width: 768px) {
-        .workshop-card {
-            border-radius: var(--radius-lg);
-        }
-
-        .workshop-badge {
-            top: var(--space-4);
-            right: var(--space-4);
-        }
-
-        .workshop-content {
-            padding: var(--space-6);
-            gap: var(--space-4);
-        }
-
-        .workshop-footer {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: var(--space-4);
-        }
-
-        .workshop-price {
-            text-align: left;
-        }
-    }
-
-    /* Desktop: 1024px+ */
-    @media (min-width: 1024px) {
-        .workshop-title {
-            font-size: var(--font-size-2xl);
-        }
-
-        .workshop-description {
-            font-size: var(--font-size-base);
-        }
+    .workshop-card:hover .btn-text {
+        transform: translateX(4px);
     }
 </style>

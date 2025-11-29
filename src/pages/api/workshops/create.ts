@@ -29,7 +29,7 @@ export const POST: APIRoute = async ({ request }) => {
             materials: data.materials.split('\n').filter((m: string) => m.trim()),
             price: parseFloat(data.price),
             image: data.image,
-            bookingEnabled: data.bookingEnabled === 'true' || data.bookingEnabled === true
+            bookingEnabled: data.bookingEnabled === 'on' || data.bookingEnabled === 'true' || data.bookingEnabled === true
         };
 
         // Write to file
