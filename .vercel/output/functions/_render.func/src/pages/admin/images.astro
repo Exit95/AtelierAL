@@ -5,22 +5,26 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 <AdminLayout title="Bilderverwaltung">
     <div class="upload-section">
         <h3>📤 Bild hochladen</h3>
-        <p class="upload-hint">Laden Sie Bilder hoch, um sie in Workshops und Werken zu verwenden</p>
-        
+        <p class="upload-hint">
+            Laden Sie Bilder hoch, um sie in Workshops und Werken zu verwenden
+        </p>
+
         <form id="uploadForm" class="upload-form">
             <div class="file-input-wrapper">
                 <label for="fileInput" class="file-input-label">
                     <span class="file-icon">🖼️</span>
-                    <span class="file-text">Bild auswählen oder hier ablegen</span>
+                    <span class="file-text"
+                        >Bild auswählen oder hier ablegen</span
+                    >
                     <span class="file-formats">JPG, PNG, WebP (max. 10MB)</span>
                 </label>
-                <input type="file" id="fileInput" accept="image/*" required />
+                <input type="file" id="fileInput" accept="image/*" />
             </div>
-            <button type="submit" class="btn btn-upload">
+            <button type="button" id="uploadBtn" class="btn btn-upload">
                 <span>⬆️</span> Jetzt hochladen
             </button>
         </form>
-        
+
         <div id="uploadMessage" class="message"></div>
         <div id="lastUpload" class="last-upload"></div>
     </div>
@@ -28,8 +32,13 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
     <div class="images-info">
         <h4>💡 Hinweise</h4>
         <ul>
-            <li>Hochgeladene Bilder werden im Verzeichnis <code>/uploads/</code> gespeichert</li>
-            <li>Nach dem Upload erhalten Sie eine URL, die Sie kopieren können</li>
+            <li>
+                Hochgeladene Bilder werden im Verzeichnis <code>/uploads/</code>
+                gespeichert
+            </li>
+            <li>
+                Nach dem Upload erhalten Sie eine URL, die Sie kopieren können
+            </li>
             <li>Verwenden Sie diese URL in Workshop- und Werk-Formularen</li>
         </ul>
     </div>
@@ -37,6 +46,11 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 
 <script>
     const form = document.getElementById("uploadForm") as HTMLFormElement;
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    const fileLabel = document.querySelector(
+        ".file-input-label",
+    ) as HTMLLabelElement;
+    const fileText = document.querySelector(".file-text") as HTMLSpanElement;
     const messageDiv = document.getElementById(
         "uploadMessage",
     ) as HTMLDivElement;
@@ -44,17 +58,77 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         "lastUpload",
     ) as HTMLDivElement;
 
-    form?.addEventListener("submit", async (e) => {
+    // Visual feedback for file selection
+    fileInput?.addEventListener("change", () => {
+        if (fileInput.files && fileInput.files[0]) {
+            fileText.textContent = `✅ ${fileInput.files[0].name}`;
+            fileLabel.classList.add("has-file");
+        }
+    });
+
+    // Drag and Drop support
+    ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        fileLabel?.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e: Event) {
         e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ["dragenter", "dragover"].forEach((eventName) => {
+        fileLabel?.addEventListener(eventName, highlight, false);
+    });
+
+    ["dragleave", "drop"].forEach((eventName) => {
+        fileLabel?.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight() {
+        fileLabel.classList.add("highlight");
+    }
+
+    function unhighlight() {
+        fileLabel.classList.remove("highlight");
+    }
+
+    fileLabel?.addEventListener("drop", handleDrop, false);
+
+    function handleDrop(e: DragEvent) {
+        const dt = e.dataTransfer;
+        const files = dt?.files;
+
+        if (files && files.length > 0) {
+            fileInput.files = files;
+            // Trigger change event manually
+            const event = new Event("change");
+            fileInput.dispatchEvent(event);
+        }
+    }
+
+    const uploadBtn = document.getElementById("uploadBtn") as HTMLButtonElement;
+
+    uploadBtn?.addEventListener("click", async (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // Stop bubbling just in case
+
         messageDiv.textContent = "";
         lastUploadDiv.innerHTML = "";
 
-        const fileInput = document.getElementById(
-            "fileInput",
-        ) as HTMLInputElement;
         const file = fileInput.files?.[0];
 
-        if (!file) return;
+        if (!file) {
+            messageDiv.textContent = "Bitte wählen Sie zuerst ein Bild aus.";
+            messageDiv.className = "message error";
+            return;
+        }
+
+        // Client-side size check (10MB)
+        if (file.size > 10 * 1024 * 1024) {
+            messageDiv.textContent = "Datei ist zu groß (Max. 10MB)";
+            messageDiv.className = "message error";
+            return;
+        }
 
         const formData = new FormData();
         formData.append("file", file);
@@ -62,15 +136,22 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         try {
             messageDiv.textContent = "Hochladen...";
             messageDiv.className = "message";
+            uploadBtn.disabled = true; // Prevent double click
 
             const res = await fetch("/api/upload", {
                 method: "POST",
                 body: formData,
             });
 
-            const result = await res.json();
+            let result;
+            try {
+                result = await res.json();
+            } catch (err) {
+                console.error("JSON Parse Error:", err);
+                throw new Error("Ungültige Server-Antwort");
+            }
 
-            if (result.success) {
+            if (res.ok && result.success) {
                 messageDiv.textContent = "Bild erfolgreich hochgeladen!";
                 messageDiv.className = "message success";
 
@@ -84,14 +165,22 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         `;
 
                 form.reset();
+                fileText.textContent = "Bild auswählen oder hier ablegen";
+                fileLabel.classList.remove("has-file");
             } else {
+                console.error("Upload failed:", result);
                 messageDiv.textContent =
-                    result.error || "Fehler beim Hochladen";
+                    result.error || `Fehler beim Hochladen (${res.status})`;
                 messageDiv.className = "message error";
             }
         } catch (e) {
-            messageDiv.textContent = "Fehler beim Hochladen";
+            console.error("Upload error:", e);
+            messageDiv.textContent =
+                "Fehler beim Hochladen: " +
+                (e instanceof Error ? e.message : String(e));
             messageDiv.className = "message error";
+        } finally {
+            uploadBtn.disabled = false;
         }
     });
 </script>
@@ -151,11 +240,18 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         transition: all var(--transition-base);
     }
 
-    .file-input-label:hover, 
-    .file-input-wrapper:has(input:focus) .file-input-label {
+    .file-input-label:hover,
+    .file-input-wrapper:has(input:focus) .file-input-label,
+    .file-input-label.highlight {
         background: var(--color-brand-beige);
         border-color: var(--color-accent);
         transform: translateY(-2px);
+    }
+
+    .file-input-label.has-file {
+        background: var(--color-success-light);
+        border-color: var(--color-success);
+        border-style: solid;
     }
 
     .file-icon {
@@ -196,6 +292,8 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         width: 100%;
         font-size: var(--font-size-lg);
         padding: 1.25rem;
+        position: relative;
+        z-index: 10;
     }
 
     .btn-upload:hover {
@@ -261,7 +359,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         padding: 0.5rem 1rem;
         border-radius: var(--radius-sm);
         font-size: var(--font-size-sm);
-        font-family: 'Courier New', monospace;
+        font-family: "Courier New", monospace;
         display: inline-block;
         margin: 0.5rem 0;
     }
@@ -295,7 +393,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         background: white;
         padding: 0.25rem 0.5rem;
         border-radius: var(--radius-sm);
-        font-family: 'Courier New', monospace;
+        font-family: "Courier New", monospace;
         color: var(--color-accent);
         font-weight: var(--font-weight-semibold);
     }

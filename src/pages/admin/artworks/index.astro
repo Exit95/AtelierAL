@@ -1,8 +1,8 @@
 ---
 import AdminLayout from "../../../layouts/AdminLayout.astro";
-import { getCollection } from "astro:content";
+import { getItems, type Artwork } from "../../../lib/storage";
 
-const artworks = await getCollection("artworks");
+const artworks = await getItems<Artwork>("artworks");
 ---
 
 <AdminLayout title="Werke">
@@ -15,28 +15,24 @@ const artworks = await getCollection("artworks");
         {
             artworks.map((artwork) => (
                 <div class="artwork-card">
-                    {artwork.data.images && artwork.data.images[0] && (
+                    {artwork.images && artwork.images[0] && (
                         <img
-                            src={artwork.data.images[0]}
-                            alt={artwork.data.title}
+                            src={artwork.images[0]}
+                            alt={artwork.title}
                             class="artwork-image"
                         />
                     )}
                     <div class="artwork-info">
-                        <h3>{artwork.data.title}</h3>
-                        <p class="artwork-technique">
-                            {artwork.data.technique}
-                        </p>
+                        <h3>{artwork.title}</h3>
+                        <p class="artwork-technique">{artwork.technique}</p>
                         <p class="artwork-size">
-                            {artwork.data.size.width} ×{" "}
-                            {artwork.data.size.height} {artwork.data.size.unit}
+                            {artwork.size.width} × {artwork.size.height}{" "}
+                            {artwork.size.unit}
                         </p>
-                        <span
-                            class={`status status-${artwork.data.availability}`}
-                        >
-                            {artwork.data.availability === "available"
+                        <span class={`status status-${artwork.availability}`}>
+                            {artwork.availability === "available"
                                 ? "Verfügbar"
-                                : artwork.data.availability === "sold"
+                                : artwork.availability === "sold"
                                   ? "Verkauft"
                                   : "Reserviert"}
                         </span>

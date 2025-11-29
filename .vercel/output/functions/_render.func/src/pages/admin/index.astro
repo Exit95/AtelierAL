@@ -1,9 +1,9 @@
 ---
 import AdminLayout from "../../layouts/AdminLayout.astro";
-import { getCollection } from "astro:content";
+import { getItems, type Workshop, type Artwork } from "../../lib/storage";
 
-const workshops = await getCollection("workshops");
-const artworks = await getCollection("artworks");
+const workshops = await getItems<Workshop>("workshops");
+const artworks = await getItems<Artwork>("artworks");
 ---
 
 <AdminLayout title="Dashboard">

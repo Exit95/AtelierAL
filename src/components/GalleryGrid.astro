@@ -1,18 +1,5 @@
 ---
-interface Artwork {
-    id: string;
-    data: {
-        title: string;
-        images: string[];
-        availability: "available" | "reserved" | "sold";
-        technique: string;
-        size: {
-            width: number;
-            height: number;
-            unit: string;
-        };
-    };
-}
+import type { Artwork } from "../lib/storage";
 
 interface Props {
     artworks: Artwork[];
@@ -22,12 +9,8 @@ const { artworks } = Astro.props;
 import Badge from "./Badge.astro";
 
 // Extract unique tags for filtering
-const allTags = [
-    ...new Set(artworks.flatMap((artwork) => artwork.data.tags || [])),
-];
-const techniques = [
-    ...new Set(artworks.map((artwork) => artwork.data.technique)),
-];
+const allTags = [...new Set(artworks.flatMap((artwork) => artwork.tags || []))];
+const techniques = [...new Set(artworks.map((artwork) => artwork.technique))];
 ---
 
 <div class="gallery-container">
@@ -77,20 +60,20 @@ const techniques = [
                 artworks.map((artwork, index) => (
                     <div
                         class="masonry-item gallery-item"
-                        data-availability={artwork.data.availability}
-                        data-technique={artwork.data.technique}
+                        data-availability={artwork.availability}
+                        data-technique={artwork.technique}
                         data-artwork-index={index}
                     >
                         <a
                             href={`/werke/${artwork.id}`}
                             class="artwork-link"
                             data-lightbox-trigger
-                            data-image-url={artwork.data.images[0]}
+                            data-image-url={artwork.images[0]}
                         >
                             <div class="artwork-image">
                                 <img
-                                    src={artwork.data.images[0]}
-                                    alt={artwork.data.title}
+                                    src={artwork.images[0]}
+                                    alt={artwork.title}
                                     loading="lazy"
                                 />
                                 <div class="artwork-overlay">
@@ -98,23 +81,19 @@ const techniques = [
                                 </div>
                             </div>
                             <div class="artwork-info">
-                                <h3 class="artwork-title">
-                                    {artwork.data.title}
-                                </h3>
+                                <h3 class="artwork-title">{artwork.title}</h3>
                                 <p class="artwork-meta">
-                                    {artwork.data.technique}
+                                    {artwork.technique}
                                     <br />
-                                    {artwork.data.size.width} ×{" "}
-                                    {artwork.data.size.height}{" "}
-                                    {artwork.data.size.unit}
+                                    {artwork.size.width} × {artwork.size.height}{" "}
+                                    {artwork.size.unit}
                                 </p>
                                 <Badge
-                                    variant={artwork.data.availability}
+                                    variant={artwork.availability}
                                     label={
-                                        artwork.data.availability ===
-                                        "available"
+                                        artwork.availability === "available"
                                             ? "Verfügbar"
-                                            : artwork.data.availability ===
+                                            : artwork.availability ===
                                                 "reserved"
                                               ? "Reserviert"
                                               : "Verkauft"
@@ -419,5 +398,4 @@ const techniques = [
             font-size: var(--font-size-xl);
         }
     }
-
 </style>

@@ -1,12 +1,11 @@
-import { unlink } from 'fs/promises';
-import { join } from 'path';
+import { d as deleteItem } from '../../../../chunks/storage_Coa8lX9P.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
 const DELETE = async ({ params }) => {
   try {
     const { id } = params;
-    const filePath = join(process.cwd(), "src", "content", "workshops", `${id}.json`);
-    await unlink(filePath);
+    if (!id) throw new Error("No ID provided");
+    await deleteItem("workshops", id);
     return new Response(JSON.stringify({
       success: true,
       message: "Workshop erfolgreich gelöscht"

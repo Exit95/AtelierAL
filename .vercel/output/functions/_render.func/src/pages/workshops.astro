@@ -1,25 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import WorkshopCard from "../components/WorkshopCard.astro";
-import { getCollection } from "astro:content";
+import { getItems, type Workshop } from "../lib/storage";
 
-const allWorkshops = await getCollection("workshops");
+const allWorkshops = await getItems<Workshop>("workshops");
 
 // Separate upcoming and past workshops
 const now = new Date();
 const upcomingWorkshops = allWorkshops
-    .filter((w) => new Date(w.data.date) >= now)
-    .sort(
-        (a, b) =>
-            new Date(a.data.date).getTime() - new Date(b.data.date).getTime(),
-    );
+    .filter((w) => new Date(w.date) >= now)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
 const pastWorkshops = allWorkshops
-    .filter((w) => new Date(w.data.date) < now)
-    .sort(
-        (a, b) =>
-            new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-    );
+    .filter((w) => new Date(w.date) < now)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 
 <Layout
@@ -71,7 +65,7 @@ const pastWorkshops = allWorkshops
                 upcomingWorkshops.length > 0 ? (
                     <div class="grid grid-cols-1 grid-cols-md-3">
                         {upcomingWorkshops.map((workshop) => (
-                            <WorkshopCard workshop={workshop.data} />
+                            <WorkshopCard workshop={workshop} />
                         ))}
                     </div>
                 ) : (
@@ -138,7 +132,7 @@ const pastWorkshops = allWorkshops
                         {pastWorkshops.slice(0, 3).map((workshop) => (
                             <WorkshopCard
                                 workshop={{
-                                    ...workshop.data,
+                                    ...workshop,
                                     bookingEnabled: false,
                                 }}
                             />

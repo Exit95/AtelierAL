@@ -1,13 +1,15 @@
 import type { APIRoute } from 'astro';
-import { writeFile, unlink } from 'fs/promises';
-import { join } from 'path';
+import { saveItem, deleteItem, type Artwork } from '../../../lib/storage';
 
 export const PUT: APIRoute = async ({ params, request }) => {
     try {
         const { id } = params;
+        if (!id) throw new Error('No ID provided');
+
         const data = await request.json();
 
-        const artwork = {
+        const artwork: Artwork = {
+            id,
             title: data.title,
             description: data.description,
             technique: data.technique,
@@ -24,8 +26,7 @@ export const PUT: APIRoute = async ({ params, request }) => {
             createdDate: data.createdDate || new Date().toISOString()
         };
 
-        const filePath = join(process.cwd(), 'src', 'content', 'artworks', `${id}.json`);
-        await writeFile(filePath, JSON.stringify(artwork, null, 2), 'utf-8');
+        await saveItem('artworks', id, artwork);
 
         return new Response(JSON.stringify({ success: true }), {
             status: 200,
@@ -42,8 +43,9 @@ export const PUT: APIRoute = async ({ params, request }) => {
 export const DELETE: APIRoute = async ({ params }) => {
     try {
         const { id } = params;
-        const filePath = join(process.cwd(), 'src', 'content', 'artworks', `${id}.json`);
-        await unlink(filePath);
+        if (!id) throw new Error('No ID provided');
+
+        await deleteItem('artworks', id);
 
         return new Response(JSON.stringify({ success: true }), {
             status: 200,

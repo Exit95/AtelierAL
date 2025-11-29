@@ -1,5 +1,4 @@
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { s as saveItem } from '../../../chunks/storage_Coa8lX9P.mjs';
 export { renderers } from '../../../renderers.mjs';
 
 const POST = async ({ request }) => {
@@ -7,6 +6,7 @@ const POST = async ({ request }) => {
     const data = await request.json();
     const id = data.title.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     const artwork = {
+      id,
       title: data.title,
       description: data.description,
       technique: data.technique,
@@ -22,8 +22,7 @@ const POST = async ({ request }) => {
       featured: data.featured === "true" || data.featured === true,
       createdDate: (/* @__PURE__ */ new Date()).toISOString()
     };
-    const filePath = join(process.cwd(), "src", "content", "artworks", `${id}.json`);
-    await writeFile(filePath, JSON.stringify(artwork, null, 2), "utf-8");
+    await saveItem("artworks", id, artwork);
     return new Response(JSON.stringify({
       success: true,
       id,

@@ -1,12 +1,13 @@
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { s as saveItem } from '../../../../chunks/storage_Coa8lX9P.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
 const PUT = async ({ params, request }) => {
   try {
     const { id } = params;
+    if (!id) throw new Error("No ID provided");
     const data = await request.json();
     const workshop = {
+      id,
       title: data.title,
       description: data.description,
       date: new Date(data.date).toISOString(),
@@ -20,8 +21,7 @@ const PUT = async ({ params, request }) => {
       image: data.image,
       bookingEnabled: data.bookingEnabled === "true" || data.bookingEnabled === true
     };
-    const filePath = join(process.cwd(), "src", "content", "workshops", `${id}.json`);
-    await writeFile(filePath, JSON.stringify(workshop, null, 2), "utf-8");
+    await saveItem("workshops", id, workshop);
     return new Response(JSON.stringify({
       success: true,
       message: "Workshop erfolgreich aktualisiert"

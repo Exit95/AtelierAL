@@ -1,23 +1,19 @@
-import { c as createComponent, r as renderComponent, b as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_DyuB9JmO.mjs';
+import { c as createComponent, r as renderComponent, b as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_DD7gXx_F.mjs';
 import 'piccolore';
-import { $ as $$Layout } from '../chunks/Layout_3x2nP2bH.mjs';
-import { $ as $$WorkshopCard } from '../chunks/WorkshopCard_DjJt4ikW.mjs';
-import { g as getCollection } from '../chunks/_astro_content_Bo7bC6JI.mjs';
+import { $ as $$Layout } from '../chunks/Layout_BDMwxAWC.mjs';
+import { $ as $$WorkshopCard } from '../chunks/WorkshopCard_DB8dJbuy.mjs';
+import { g as getItems } from '../chunks/storage_Coa8lX9P.mjs';
 /* empty css                                     */
 export { renderers } from '../renderers.mjs';
 
 const $$Workshops = createComponent(async ($$result, $$props, $$slots) => {
-  const allWorkshops = await getCollection("workshops");
+  const allWorkshops = await getItems("workshops");
   const now = /* @__PURE__ */ new Date();
-  const upcomingWorkshops = allWorkshops.filter((w) => new Date(w.data.date) >= now).sort(
-    (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()
-  );
-  const pastWorkshops = allWorkshops.filter((w) => new Date(w.data.date) < now).sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-  );
+  const upcomingWorkshops = allWorkshops.filter((w) => new Date(w.date) >= now).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const pastWorkshops = allWorkshops.filter((w) => new Date(w.date) < now).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Workshops", "description": "Kreative Mal-Workshops bei ATELIER KL in Heek. Entdecken Sie Ihre k\xFCnstlerische Seite in kleinen Gruppen mit pers\xF6nlicher Betreuung.", "data-astro-cid-hoipuplh": true }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="page-hero" data-astro-cid-hoipuplh> <div class="container" data-astro-cid-hoipuplh> <h1 data-astro-cid-hoipuplh>Workshops</h1> <p class="hero-subtitle" data-astro-cid-hoipuplh>
 Entdecken Sie Ihre Kreativität in inspirierender Atmosphäre
-</p> </div> </section>  <section class="section py-12" style="background-color: var(--color-surface);" data-astro-cid-hoipuplh> <div class="container" data-astro-cid-hoipuplh> <div class="benefits-grid" data-astro-cid-hoipuplh> <div class="benefit" data-astro-cid-hoipuplh> <h3 data-astro-cid-hoipuplh>Kleine Gruppen</h3> <p data-astro-cid-hoipuplh>Maximal 8 Teilnehmer für persönliche Betreuung</p> </div> <div class="benefit" data-astro-cid-hoipuplh> <h3 data-astro-cid-hoipuplh>Alle Materialien inkl.</h3> <p data-astro-cid-hoipuplh>Hochwertige Farben, Leinwände und Werkzeuge</p> </div> <div class="benefit" data-astro-cid-hoipuplh> <h3 data-astro-cid-hoipuplh>Für Alle</h3> <p data-astro-cid-hoipuplh>Keine Vorkenntnisse erforderlich</p> </div> <div class="benefit" data-astro-cid-hoipuplh> <h3 data-astro-cid-hoipuplh>Wohlfühlatmosphäre</h3> <p data-astro-cid-hoipuplh>Getränke und Snacks inklusive</p> </div> </div> </div> </section>  <section class="section py-16" data-astro-cid-hoipuplh> <div class="container" data-astro-cid-hoipuplh> <h2 class="section-title" data-astro-cid-hoipuplh>Kommende Workshops</h2> ${upcomingWorkshops.length > 0 ? renderTemplate`<div class="grid grid-cols-1 grid-cols-md-3" data-astro-cid-hoipuplh> ${upcomingWorkshops.map((workshop) => renderTemplate`${renderComponent($$result2, "WorkshopCard", $$WorkshopCard, { "workshop": workshop.data, "data-astro-cid-hoipuplh": true })}`)} </div>` : renderTemplate`<p class="text-center text-secondary" data-astro-cid-hoipuplh>
+</p> </div> </section>  <section class="section py-12" style="background-color: var(--color-surface);" data-astro-cid-hoipuplh> <div class="container" data-astro-cid-hoipuplh> <div class="benefits-grid" data-astro-cid-hoipuplh> <div class="benefit" data-astro-cid-hoipuplh> <h3 data-astro-cid-hoipuplh>Kleine Gruppen</h3> <p data-astro-cid-hoipuplh>Maximal 8 Teilnehmer für persönliche Betreuung</p> </div> <div class="benefit" data-astro-cid-hoipuplh> <h3 data-astro-cid-hoipuplh>Alle Materialien inkl.</h3> <p data-astro-cid-hoipuplh>Hochwertige Farben, Leinwände und Werkzeuge</p> </div> <div class="benefit" data-astro-cid-hoipuplh> <h3 data-astro-cid-hoipuplh>Für Alle</h3> <p data-astro-cid-hoipuplh>Keine Vorkenntnisse erforderlich</p> </div> <div class="benefit" data-astro-cid-hoipuplh> <h3 data-astro-cid-hoipuplh>Wohlfühlatmosphäre</h3> <p data-astro-cid-hoipuplh>Getränke und Snacks inklusive</p> </div> </div> </div> </section>  <section class="section py-16" data-astro-cid-hoipuplh> <div class="container" data-astro-cid-hoipuplh> <h2 class="section-title" data-astro-cid-hoipuplh>Kommende Workshops</h2> ${upcomingWorkshops.length > 0 ? renderTemplate`<div class="grid grid-cols-1 grid-cols-md-3" data-astro-cid-hoipuplh> ${upcomingWorkshops.map((workshop) => renderTemplate`${renderComponent($$result2, "WorkshopCard", $$WorkshopCard, { "workshop": workshop, "data-astro-cid-hoipuplh": true })}`)} </div>` : renderTemplate`<p class="text-center text-secondary" data-astro-cid-hoipuplh>
 Aktuell sind keine Workshops geplant. Schauen Sie bald
                         wieder vorbei oder
 <a href="/kontakt" data-astro-cid-hoipuplh>kontaktieren Sie mich</a> für private
@@ -35,7 +31,7 @@ Verstehen Sie, wie Farben zusammenwirken und
 Nehmen Sie Ihr eigenes, fertig gerahmtes Kunstwerk
                             mit nach Hause
 </p> </div> </div> </div> </div> </section>  ${pastWorkshops.length > 0 && renderTemplate`<section class="section py-16" data-astro-cid-hoipuplh> <div class="container" data-astro-cid-hoipuplh> <h2 class="section-title" data-astro-cid-hoipuplh>Vergangene Workshops</h2> <div class="grid grid-cols-1 grid-cols-md-3" data-astro-cid-hoipuplh> ${pastWorkshops.slice(0, 3).map((workshop) => renderTemplate`${renderComponent($$result2, "WorkshopCard", $$WorkshopCard, { "workshop": {
-    ...workshop.data,
+    ...workshop,
     bookingEnabled: false
   }, "data-astro-cid-hoipuplh": true })}`)} </div> </div> </section>`}` })} `;
 }, "/home/exit/Musik/AtelierKL/project/src/pages/workshops.astro", void 0);

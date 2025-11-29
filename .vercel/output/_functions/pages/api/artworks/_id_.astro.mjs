@@ -1,12 +1,13 @@
-import { writeFile, unlink } from 'fs/promises';
-import { join } from 'path';
+import { s as saveItem, d as deleteItem } from '../../../chunks/storage_Coa8lX9P.mjs';
 export { renderers } from '../../../renderers.mjs';
 
 const PUT = async ({ params, request }) => {
   try {
     const { id } = params;
+    if (!id) throw new Error("No ID provided");
     const data = await request.json();
     const artwork = {
+      id,
       title: data.title,
       description: data.description,
       technique: data.technique,
@@ -22,8 +23,7 @@ const PUT = async ({ params, request }) => {
       featured: data.featured === "true" || data.featured === true,
       createdDate: data.createdDate || (/* @__PURE__ */ new Date()).toISOString()
     };
-    const filePath = join(process.cwd(), "src", "content", "artworks", `${id}.json`);
-    await writeFile(filePath, JSON.stringify(artwork, null, 2), "utf-8");
+    await saveItem("artworks", id, artwork);
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: { "Content-Type": "application/json" }
@@ -38,8 +38,8 @@ const PUT = async ({ params, request }) => {
 const DELETE = async ({ params }) => {
   try {
     const { id } = params;
-    const filePath = join(process.cwd(), "src", "content", "artworks", `${id}.json`);
-    await unlink(filePath);
+    if (!id) throw new Error("No ID provided");
+    await deleteItem("artworks", id);
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: { "Content-Type": "application/json" }

@@ -1,26 +1,17 @@
 ---
 import Badge from "./Badge.astro";
-import type { CollectionEntry } from "astro:content";
+import type { Workshop } from "../lib/storage";
 
 interface Props {
-    workshop:
-        | CollectionEntry<"workshops">
-        | {
-              id: string;
-              data: CollectionEntry<"workshops">["data"];
-              slug?: string;
-              body?: string;
-              collection?: "workshops";
-          };
+    workshop: Workshop;
 }
 
 const { workshop } = Astro.props;
-const { data } = workshop;
 
-const isFull = data.currentParticipants >= data.maxParticipants;
-const availableSpots = data.maxParticipants - data.currentParticipants;
+const isFull = workshop.currentParticipants >= workshop.maxParticipants;
+const availableSpots = workshop.maxParticipants - workshop.currentParticipants;
 
-const formattedDate = new Date(data.date).toLocaleDateString("de-DE", {
+const formattedDate = new Date(workshop.date).toLocaleDateString("de-DE", {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -31,7 +22,7 @@ const formattedDate = new Date(data.date).toLocaleDateString("de-DE", {
 <article class="workshop-card">
     <a href={`/workshops/${workshop.id}`} class="card-link">
         <div class="card-image">
-            <img src={data.image} alt={data.title} loading="lazy" />
+            <img src={workshop.image} alt={workshop.title} loading="lazy" />
             {
                 isFull ? (
                     <Badge
@@ -48,10 +39,10 @@ const formattedDate = new Date(data.date).toLocaleDateString("de-DE", {
                 )
             }
             <div class="card-date">
-                <span class="day">{new Date(data.date).getDate()}</span>
+                <span class="day">{new Date(workshop.date).getDate()}</span>
                 <span class="month">
                     {
-                        new Date(data.date).toLocaleDateString("de-DE", {
+                        new Date(workshop.date).toLocaleDateString("de-DE", {
                             month: "short",
                         })
                     }
@@ -59,14 +50,14 @@ const formattedDate = new Date(data.date).toLocaleDateString("de-DE", {
             </div>
         </div>
         <div class="card-content">
-            <h3>{data.title}</h3>
+            <h3>{workshop.title}</h3>
             <div class="card-meta">
-                <span>⏰ {data.time}</span>
-                <span>📍 {data.location}</span>
+                <span>⏰ {workshop.time}</span>
+                <span>📍 {workshop.location}</span>
             </div>
-            <p class="description">{data.description}</p>
+            <p class="description">{workshop.description}</p>
             <div class="card-footer">
-                <span class="price">{data.price} €</span>
+                <span class="price">{workshop.price} €</span>
                 <span class="btn-text">Details & Buchung →</span>
             </div>
         </div>

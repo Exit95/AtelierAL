@@ -1,13 +1,12 @@
 import type { APIRoute } from 'astro';
-import { unlink } from 'fs/promises';
-import { join } from 'path';
+import { deleteItem } from '../../../../lib/storage';
 
 export const DELETE: APIRoute = async ({ params }) => {
     try {
         const { id } = params;
+        if (!id) throw new Error('No ID provided');
 
-        const filePath = join(process.cwd(), 'src', 'content', 'workshops', `${id}.json`);
-        await unlink(filePath);
+        await deleteItem('workshops', id);
 
         return new Response(JSON.stringify({
             success: true,

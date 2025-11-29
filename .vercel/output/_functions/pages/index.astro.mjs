@@ -1,11 +1,21 @@
-import { f as createAstro, c as createComponent, m as maybeRenderHead, d as addAttribute, b as renderTemplate, r as renderComponent, F as Fragment } from '../chunks/astro/server_DyuB9JmO.mjs';
+import { f as createAstro, c as createComponent, m as maybeRenderHead, d as addAttribute, b as renderTemplate, r as renderComponent, F as Fragment } from '../chunks/astro/server_DD7gXx_F.mjs';
 import 'piccolore';
-import { $ as $$Layout } from '../chunks/Layout_3x2nP2bH.mjs';
-import { a as $$CTAButton, $ as $$WorkshopCard } from '../chunks/WorkshopCard_DjJt4ikW.mjs';
+import { $ as $$Layout } from '../chunks/Layout_BDMwxAWC.mjs';
+import 'clsx';
 /* empty css                                 */
-import { $ as $$Badge } from '../chunks/Badge_BLeQNuh5.mjs';
-import { g as getCollection } from '../chunks/_astro_content_Bo7bC6JI.mjs';
+import { $ as $$WorkshopCard } from '../chunks/WorkshopCard_DB8dJbuy.mjs';
+import { $ as $$Badge } from '../chunks/Badge_CwACIffN.mjs';
+import { g as getItems } from '../chunks/storage_Coa8lX9P.mjs';
+import { a as getCollection } from '../chunks/_astro_content_BW2y2Sn-.mjs';
 export { renderers } from '../renderers.mjs';
+
+const $$Astro$1 = createAstro("https://test-danapfel-digital.de");
+const $$CTAButton = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
+  Astro2.self = $$CTAButton;
+  const { label, href, type = "primary", icon, className = "" } = Astro2.props;
+  return renderTemplate`${maybeRenderHead()}<a${addAttribute(href, "href")}${addAttribute(`cta-button cta-button-${type} ${className}`, "class")} data-astro-cid-pxxnplno> ${label} ${icon && renderTemplate`<span class="icon" data-astro-cid-pxxnplno>${icon}</span>`} </a> `;
+}, "/home/exit/Musik/AtelierKL/project/src/components/CTAButton.astro", void 0);
 
 const $$Astro = createAstro("https://test-danapfel-digital.de");
 const $$HeroSection = createComponent(($$result, $$props, $$slots) => {
@@ -16,12 +26,10 @@ const $$HeroSection = createComponent(($$result, $$props, $$slots) => {
 }, "/home/exit/Musik/AtelierKL/project/src/components/HeroSection.astro", void 0);
 
 const $$Index = createComponent(async ($$result, $$props, $$slots) => {
-  const allArtworks = await getCollection("artworks");
-  const featuredArtworks = allArtworks.filter((artwork) => artwork.data.featured).slice(0, 6);
-  const allWorkshops = await getCollection("workshops");
-  const upcomingWorkshops = allWorkshops.filter((workshop) => new Date(workshop.data.date) > /* @__PURE__ */ new Date()).sort(
-    (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()
-  ).slice(0, 3);
+  const allArtworks = await getItems("artworks");
+  const featuredArtworks = allArtworks.filter((artwork) => artwork.featured).slice(0, 6);
+  const allWorkshops = await getItems("workshops");
+  const upcomingWorkshops = allWorkshops.filter((workshop) => new Date(workshop.date) > /* @__PURE__ */ new Date()).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).slice(0, 3);
   const allTestimonials = await getCollection("testimonials");
   return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Home", "description": "ATELIER KL - Abstrakte Kunst von Katharina Lanvermann. Entdecken Sie einzigartige Kunstwerke und kreative Workshops in Heek.", "data-astro-cid-j7pv25f6": true }, { "default": async ($$result2) => renderTemplate` ${renderComponent($$result2, "HeroSection", $$HeroSection, { "title": "Kunst, die R\xE4ume verwandelt", "subtitle": "Abstrakte Kunstwerke und inspirierende Workshops von Katharina Lanvermann", "primaryCTA": { label: "Werke entdecken", href: "/werke" }, "secondaryCTA": { label: "Workshop buchen", href: "/workshops" }, "data-astro-cid-j7pv25f6": true })}  ${maybeRenderHead()}<section class="section py-16" data-astro-cid-j7pv25f6> <div class="container" data-astro-cid-j7pv25f6> <div class="intro-grid" data-astro-cid-j7pv25f6> <div class="intro-text" data-astro-cid-j7pv25f6> <h2 data-astro-cid-j7pv25f6>Über das Atelier</h2> <p class="lead-text" data-astro-cid-j7pv25f6>
 Willkommen im ATELIER KL – einem Ort, an dem abstrakte
@@ -42,11 +50,11 @@ Neben meinen eigenen Werken biete ich auch
 						Ihre kreative Seite entdecken.
 </p> <div class="intro-ctas" data-astro-cid-j7pv25f6> ${renderComponent($$result2, "CTAButton", $$CTAButton, { "label": "Mehr \xFCber mich", "href": "/team", "type": "secondary", "data-astro-cid-j7pv25f6": true })} </div> </div> <div class="intro-image" data-astro-cid-j7pv25f6> <img src="/katharina-profile.jpg" alt="Katharina Lanvermann, Künstlerin von ATELIER KL" class="profile-image" loading="lazy" data-astro-cid-j7pv25f6> </div> </div> </div> </section>  <section class="section py-16" style="background-color: var(--color-surface);" data-astro-cid-j7pv25f6> <div class="container" data-astro-cid-j7pv25f6> <div class="section-header" data-astro-cid-j7pv25f6> <h2 data-astro-cid-j7pv25f6>Ausgewählte Werke</h2> <p class="text-secondary" data-astro-cid-j7pv25f6>
 Eine Auswahl meiner neuesten abstrakten Kunstwerke
-</p> </div> ${featuredArtworks.length > 0 ? renderTemplate`${renderComponent($$result2, "Fragment", Fragment, { "data-astro-cid-j7pv25f6": true }, { "default": async ($$result3) => renderTemplate` <div class="grid grid-cols-1 grid-cols-md-2 grid-cols-lg-3" data-astro-cid-j7pv25f6> ${featuredArtworks.map((artwork) => renderTemplate`<a${addAttribute(`/werke/${artwork.id}`, "href")} class="artwork-preview" data-astro-cid-j7pv25f6> <div class="artwork-preview-image" data-astro-cid-j7pv25f6> <img${addAttribute(artwork.data.images[0], "src")}${addAttribute(artwork.data.title, "alt")} loading="lazy" data-astro-cid-j7pv25f6> ${renderComponent($$result3, "Badge", $$Badge, { "variant": artwork.data.availability, "label": artwork.data.availability === "available" ? "Verf\xFCgbar" : artwork.data.availability === "reserved" ? "Reserviert" : "Verkauft", "data-astro-cid-j7pv25f6": true })} </div> <h3 class="artwork-preview-title" data-astro-cid-j7pv25f6> ${artwork.data.title} </h3> <p class="artwork-preview-meta" data-astro-cid-j7pv25f6> ${artwork.data.size.width} ×${" "} ${artwork.data.size.height}${" "} ${artwork.data.size.unit} </p> </a>`)} </div> <div class="section-cta" data-astro-cid-j7pv25f6> ${renderComponent($$result3, "CTAButton", $$CTAButton, { "label": "Alle Werke ansehen", "href": "/werke", "type": "primary", "data-astro-cid-j7pv25f6": true })} </div> ` })}` : renderTemplate`<p class="text-center text-secondary" data-astro-cid-j7pv25f6>
+</p> </div> ${featuredArtworks.length > 0 ? renderTemplate`${renderComponent($$result2, "Fragment", Fragment, { "data-astro-cid-j7pv25f6": true }, { "default": async ($$result3) => renderTemplate` <div class="grid grid-cols-1 grid-cols-md-2 grid-cols-lg-3" data-astro-cid-j7pv25f6> ${featuredArtworks.map((artwork) => renderTemplate`<a${addAttribute(`/werke/${artwork.id}`, "href")} class="artwork-preview" data-astro-cid-j7pv25f6> <div class="artwork-preview-image" data-astro-cid-j7pv25f6> <img${addAttribute(artwork.images[0], "src")}${addAttribute(artwork.title, "alt")} loading="lazy" data-astro-cid-j7pv25f6> ${renderComponent($$result3, "Badge", $$Badge, { "variant": artwork.availability, "label": artwork.availability === "available" ? "Verf\xFCgbar" : artwork.availability === "reserved" ? "Reserviert" : "Verkauft", "data-astro-cid-j7pv25f6": true })} </div> <h3 class="artwork-preview-title" data-astro-cid-j7pv25f6> ${artwork.title} </h3> <p class="artwork-preview-meta" data-astro-cid-j7pv25f6> ${artwork.size.width} ×${" "} ${artwork.size.height}${" "} ${artwork.size.unit} </p> </a>`)} </div> <div class="section-cta" data-astro-cid-j7pv25f6> ${renderComponent($$result3, "CTAButton", $$CTAButton, { "label": "Alle Werke ansehen", "href": "/werke", "type": "primary", "data-astro-cid-j7pv25f6": true })} </div> ` })}` : renderTemplate`<p class="text-center text-secondary" data-astro-cid-j7pv25f6>
 Demnächst finden Sie hier ausgewählte Kunstwerke.
 </p>`} </div> </section>  <section class="section py-16" data-astro-cid-j7pv25f6> <div class="container" data-astro-cid-j7pv25f6> <div class="section-header" data-astro-cid-j7pv25f6> <h2 data-astro-cid-j7pv25f6>Workshops, die Kreativität wecken</h2> <p class="text-secondary" data-astro-cid-j7pv25f6>
 Entdecken Sie Ihre künstlerische Seite in kleinen Gruppen
-</p> </div> ${upcomingWorkshops.length > 0 ? renderTemplate`${renderComponent($$result2, "Fragment", Fragment, { "data-astro-cid-j7pv25f6": true }, { "default": async ($$result3) => renderTemplate` <div class="grid grid-cols-1 grid-cols-md-3" data-astro-cid-j7pv25f6> ${upcomingWorkshops.map((workshop) => renderTemplate`${renderComponent($$result3, "WorkshopCard", $$WorkshopCard, { "workshop": workshop.data, "data-astro-cid-j7pv25f6": true })}`)} </div> <div class="section-cta" data-astro-cid-j7pv25f6> ${renderComponent($$result3, "CTAButton", $$CTAButton, { "label": "Alle Workshops", "href": "/workshops", "type": "primary", "data-astro-cid-j7pv25f6": true })} </div> ` })}` : renderTemplate`<p class="text-center text-secondary" data-astro-cid-j7pv25f6>
+</p> </div> ${upcomingWorkshops.length > 0 ? renderTemplate`${renderComponent($$result2, "Fragment", Fragment, { "data-astro-cid-j7pv25f6": true }, { "default": async ($$result3) => renderTemplate` <div class="grid grid-cols-1 grid-cols-md-3" data-astro-cid-j7pv25f6> ${upcomingWorkshops.map((workshop) => renderTemplate`${renderComponent($$result3, "WorkshopCard", $$WorkshopCard, { "workshop": workshop, "data-astro-cid-j7pv25f6": true })}`)} </div> <div class="section-cta" data-astro-cid-j7pv25f6> ${renderComponent($$result3, "CTAButton", $$CTAButton, { "label": "Alle Workshops", "href": "/workshops", "type": "primary", "data-astro-cid-j7pv25f6": true })} </div> ` })}` : renderTemplate`<p class="text-center text-secondary" data-astro-cid-j7pv25f6>
 Neue Workshops werden in Kürze angekündigt. Schauen Sie
 						bald wieder vorbei!
 </p>`} </div> </section>  <section class="section py-16" style="background-color: var(--color-surface);" data-astro-cid-j7pv25f6> <div class="container" data-astro-cid-j7pv25f6> <div class="section-header text-center" data-astro-cid-j7pv25f6> <h2 data-astro-cid-j7pv25f6>Ihr persönliches Kunstwerk</h2> <p class="text-secondary" data-astro-cid-j7pv25f6>

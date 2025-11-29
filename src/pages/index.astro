@@ -4,21 +4,19 @@ import HeroSection from "../components/HeroSection.astro";
 import WorkshopCard from "../components/WorkshopCard.astro";
 import CTAButton from "../components/CTAButton.astro";
 import Badge from "../components/Badge.astro";
-import { getCollection } from "astro:content";
+import { getItems, type Artwork, type Workshop } from "../lib/storage";
+import { getCollection } from "astro:content"; // Keep for testimonials if they are still static
 
 // Get featured artworks and upcoming workshops
-const allArtworks = await getCollection("artworks");
+const allArtworks = await getItems<Artwork>("artworks");
 const featuredArtworks = allArtworks
-	.filter((artwork) => artwork.data.featured)
+	.filter((artwork) => artwork.featured)
 	.slice(0, 6);
 
-const allWorkshops = await getCollection("workshops");
+const allWorkshops = await getItems<Workshop>("workshops");
 const upcomingWorkshops = allWorkshops
-	.filter((workshop) => new Date(workshop.data.date) > new Date())
-	.sort(
-		(a, b) =>
-			new Date(a.data.date).getTime() - new Date(b.data.date).getTime(),
-	)
+	.filter((workshop) => new Date(workshop.date) > new Date())
+	.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 	.slice(0, 3);
 
 const allTestimonials = await getCollection("testimonials");
@@ -105,18 +103,17 @@ const allTestimonials = await getCollection("testimonials");
 								>
 									<div class="artwork-preview-image">
 										<img
-											src={artwork.data.images[0]}
-											alt={artwork.data.title}
+											src={artwork.images[0]}
+											alt={artwork.title}
 											loading="lazy"
 										/>
 										<Badge
-											variant={artwork.data.availability}
+											variant={artwork.availability}
 											label={
-												artwork.data.availability ===
+												artwork.availability ===
 												"available"
 													? "Verfügbar"
-													: artwork.data
-																.availability ===
+													: artwork.availability ===
 														  "reserved"
 														? "Reserviert"
 														: "Verkauft"
@@ -124,12 +121,12 @@ const allTestimonials = await getCollection("testimonials");
 										/>
 									</div>
 									<h3 class="artwork-preview-title">
-										{artwork.data.title}
+										{artwork.title}
 									</h3>
 									<p class="artwork-preview-meta">
-										{artwork.data.size.width} ×{" "}
-										{artwork.data.size.height}{" "}
-										{artwork.data.size.unit}
+										{artwork.size.width} ×{" "}
+										{artwork.size.height}{" "}
+										{artwork.size.unit}
 									</p>
 								</a>
 							))}

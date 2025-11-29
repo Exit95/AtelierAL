@@ -25,6 +25,22 @@ if [ $? -eq 0 ]; then
     echo "📂 Setting up uploads directory..."
     mkdir -p uploads
     
+    # Setup persistent data directory
+    echo "📂 Setting up data directory..."
+    mkdir -p data/workshops
+    mkdir -p data/artworks
+    
+    # Copy initial content if data directories are empty
+    if [ -z "$(ls -A data/workshops)" ]; then
+       echo "📥 Migrating initial workshops data..."
+       cp src/content/workshops/*.json data/workshops/ 2>/dev/null || true
+    fi
+    
+    if [ -z "$(ls -A data/artworks)" ]; then
+       echo "📥 Migrating initial artworks data..."
+       cp src/content/artworks/*.json data/artworks/ 2>/dev/null || true
+    fi
+    
     # Create symlink in dist/client
     # Remove existing uploads directory in dist if it exists (it shouldn't, but just in case)
     rm -rf dist/client/uploads

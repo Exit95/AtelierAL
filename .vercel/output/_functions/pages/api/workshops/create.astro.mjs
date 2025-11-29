@@ -1,5 +1,4 @@
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { s as saveItem } from '../../../chunks/storage_Coa8lX9P.mjs';
 export { renderers } from '../../../renderers.mjs';
 
 const POST = async ({ request }) => {
@@ -7,6 +6,7 @@ const POST = async ({ request }) => {
     const data = await request.json();
     const id = data.title.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     const workshop = {
+      id,
       title: data.title,
       description: data.description,
       date: new Date(data.date).toISOString(),
@@ -18,10 +18,9 @@ const POST = async ({ request }) => {
       materials: data.materials.split("\n").filter((m) => m.trim()),
       price: parseFloat(data.price),
       image: data.image,
-      bookingEnabled: data.bookingEnabled === "true" || data.bookingEnabled === true
+      bookingEnabled: data.bookingEnabled === "on" || data.bookingEnabled === "true" || data.bookingEnabled === true
     };
-    const filePath = join(process.cwd(), "src", "content", "workshops", `${id}.json`);
-    await writeFile(filePath, JSON.stringify(workshop, null, 2), "utf-8");
+    await saveItem("workshops", id, workshop);
     return new Response(JSON.stringify({
       success: true,
       id,

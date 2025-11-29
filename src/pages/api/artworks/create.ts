@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { saveItem, type Artwork } from '../../../lib/storage';
 
 export const POST: APIRoute = async ({ request }) => {
     try {
@@ -15,7 +14,8 @@ export const POST: APIRoute = async ({ request }) => {
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-+|-+$/g, '');
 
-        const artwork = {
+        const artwork: Artwork = {
+            id,
             title: data.title,
             description: data.description,
             technique: data.technique,
@@ -32,8 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
             createdDate: new Date().toISOString()
         };
 
-        const filePath = join(process.cwd(), 'src', 'content', 'artworks', `${id}.json`);
-        await writeFile(filePath, JSON.stringify(artwork, null, 2), 'utf-8');
+        await saveItem('artworks', id, artwork);
 
         return new Response(JSON.stringify({
             success: true,

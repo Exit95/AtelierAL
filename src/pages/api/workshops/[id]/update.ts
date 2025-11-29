@@ -1,14 +1,16 @@
 import type { APIRoute } from 'astro';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { saveItem, type Workshop } from '../../../../lib/storage';
 
 export const PUT: APIRoute = async ({ params, request }) => {
     try {
         const { id } = params;
+        if (!id) throw new Error('No ID provided');
+
         const data = await request.json();
 
         // Prepare workshop data
-        const workshop = {
+        const workshop: Workshop = {
+            id,
             title: data.title,
             description: data.description,
             date: new Date(data.date).toISOString(),
@@ -24,8 +26,7 @@ export const PUT: APIRoute = async ({ params, request }) => {
         };
 
         // Write to file
-        const filePath = join(process.cwd(), 'src', 'content', 'workshops', `${id}.json`);
-        await writeFile(filePath, JSON.stringify(workshop, null, 2), 'utf-8');
+        await saveItem('workshops', id, workshop);
 
         return new Response(JSON.stringify({
             success: true,

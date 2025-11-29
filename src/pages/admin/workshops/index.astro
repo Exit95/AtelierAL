@@ -1,10 +1,10 @@
 ---
 import AdminLayout from "../../../layouts/AdminLayout.astro";
-import { getCollection } from "astro:content";
+import { getItems, type Workshop } from "../../../lib/storage";
 
-const workshops = await getCollection("workshops");
+const workshops = await getItems<Workshop>("workshops");
 const sortedWorkshops = workshops.sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
 );
 ---
 
@@ -20,17 +20,17 @@ const sortedWorkshops = workshops.sort(
             sortedWorkshops.map((workshop) => (
                 <div class="workshop-card">
                     <div class="workshop-info">
-                        <h3>{workshop.data.title}</h3>
+                        <h3>{workshop.title}</h3>
                         <p class="workshop-date">
                             📅{" "}
-                            {new Date(workshop.data.date).toLocaleDateString(
+                            {new Date(workshop.date).toLocaleDateString(
                                 "de-DE",
                             )}{" "}
-                            | {workshop.data.time}
+                            | {workshop.time}
                         </p>
                         <p class="workshop-participants">
-                            👥 {workshop.data.currentParticipants}/
-                            {workshop.data.maxParticipants} Teilnehmer
+                            👥 {workshop.currentParticipants}/
+                            {workshop.maxParticipants} Teilnehmer
                         </p>
                     </div>
                     <div class="workshop-actions">

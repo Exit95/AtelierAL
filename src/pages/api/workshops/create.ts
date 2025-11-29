@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { saveItem, type Workshop } from '../../../lib/storage';
 
 export const POST: APIRoute = async ({ request }) => {
     try {
@@ -17,7 +16,8 @@ export const POST: APIRoute = async ({ request }) => {
             .replace(/^-+|-+$/g, '');
 
         // Prepare workshop data
-        const workshop = {
+        const workshop: Workshop = {
+            id,
             title: data.title,
             description: data.description,
             date: new Date(data.date).toISOString(),
@@ -33,8 +33,7 @@ export const POST: APIRoute = async ({ request }) => {
         };
 
         // Write to file
-        const filePath = join(process.cwd(), 'src', 'content', 'workshops', `${id}.json`);
-        await writeFile(filePath, JSON.stringify(workshop, null, 2), 'utf-8');
+        await saveItem('workshops', id, workshop);
 
         return new Response(JSON.stringify({
             success: true,

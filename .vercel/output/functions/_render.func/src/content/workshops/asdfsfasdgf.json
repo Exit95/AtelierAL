@@ -1,0 +1,16 @@
+{
+  "title": "asdfsfasdgf",
+  "description": "sdfgvgadfvbeagf",
+  "date": "2025-11-29T00:00:00.000Z",
+  "time": "10:00 - 16:00",
+  "duration": "6 Stunden",
+  "location": "ATELIER KL, Hauptstraße 45, 48619 Heek",
+  "maxParticipants": 8,
+  "currentParticipants": 0,
+  "materials": [
+    "asdfsdfsfsf"
+  ],
+  "price": 20,
+  "image": "/uploads/1764445087392.png",
+  "bookingEnabled": true
+}
