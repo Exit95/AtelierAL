@@ -29,6 +29,13 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         <div id="lastUpload" class="last-upload"></div>
     </div>
 
+    <div class="gallery-section">
+        <h3>📂 Bildergalerie</h3>
+        <div id="galleryGrid" class="gallery-grid">
+            <p>Lade Bilder...</p>
+        </div>
+    </div>
+
     <div class="images-info">
         <h4>💡 Hinweise</h4>
         <ul>
@@ -186,6 +193,47 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
             uploadBtn.disabled = false;
         }
     });
+
+    // Gallery Logic
+    const galleryGrid = document.getElementById("galleryGrid");
+
+    async function loadGallery() {
+        try {
+            const res = await fetch("/api/images");
+            if (!res.ok) throw new Error("Failed to load images");
+            const images = await res.json();
+
+            if (images.length === 0) {
+                galleryGrid.innerHTML = "<p>Noch keine Bilder hochgeladen.</p>";
+                return;
+            }
+
+            galleryGrid.innerHTML = images
+                .map(
+                    (img) => `
+                <div class="gallery-item">
+                    <div class="img-wrapper">
+                        <img src="${img.url}" alt="${img.name}" loading="lazy" />
+                    </div>
+                    <div class="img-info">
+                        <span class="img-name" title="${img.name}">${img.name}</span>
+                        <button onclick="navigator.clipboard.writeText('${img.url}')" class="btn-copy" title="URL kopieren">
+                            📋
+                        </button>
+                    </div>
+                </div>
+            `,
+                )
+                .join("");
+        } catch (error) {
+            console.error("Gallery error:", error);
+            galleryGrid.innerHTML =
+                '<p class="error">Fehler beim Laden der Galerie.</p>';
+        }
+    }
+
+    // Load gallery on start
+    loadGallery();
 </script>
 
 <style>
@@ -203,6 +251,78 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         font-size: var(--font-size-2xl);
         color: var(--color-text-primary);
         font-family: var(--font-headline);
+    }
+
+    .gallery-section {
+        background: white;
+        border-radius: var(--radius-lg);
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-md);
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .gallery-item {
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        background: var(--color-bg-subtle);
+    }
+
+    .img-wrapper {
+        aspect-ratio: 1;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f0f0f0;
+    }
+
+    .img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.2s;
+    }
+
+    .gallery-item:hover .img-wrapper img {
+        transform: scale(1.05);
+    }
+
+    .img-info {
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        border-top: 1px solid var(--color-border);
+    }
+
+    .img-name {
+        font-size: 0.75rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--color-text-muted);
+    }
+
+    .btn-copy {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 4px;
+        transition: background 0.2s;
+    }
+
+    .btn-copy:hover {
+        background: var(--color-bg-hover);
     }
 
     .upload-hint {
