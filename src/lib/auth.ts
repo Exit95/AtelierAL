@@ -3,7 +3,15 @@ import { serialize, parse } from 'cookie';
 
 const ADMIN_USERNAME = 'admin';
 // TODO: Change this password to a secure one!
-const ADMIN_PASSWORD_HASH = await bcrypt.hash('admin123', 10);
+let ADMIN_PASSWORD_HASH = '';
+
+async function getAdminHash() {
+    if (!ADMIN_PASSWORD_HASH) {
+        ADMIN_PASSWORD_HASH = await bcrypt.hash('admin123', 10);
+    }
+    return ADMIN_PASSWORD_HASH;
+}
+
 const SESSION_SECRET = 'atelier-kl-secret-key-change-me-in-production';
 
 export interface Session {
@@ -20,7 +28,8 @@ export async function verifyCredentials(username: string, password: string): Pro
     if (username !== ADMIN_USERNAME) {
         return false;
     }
-    return await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+    const hash = await getAdminHash();
+    return await bcrypt.compare(password, hash);
 }
 
 /**
