@@ -1,4 +1,4 @@
-import { readdir, readFile, mkdir, writeFile, unlink } from 'fs/promises';
+import { readFile, readdir, mkdir, writeFile, unlink } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
 
@@ -55,4 +55,4 @@ async function deleteItem(collection, id) {
   }
 }
 
-export { getItem as a, deleteItem as d, getItems as g, saveItem as s };
+export { getItems as a, deleteItem as d, getItem as g, saveItem as s };

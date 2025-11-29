@@ -1,8 +1,8 @@
-import { f as createAstro, c as createComponent, m as maybeRenderHead, a as renderScript, d as addAttribute, b as renderTemplate, r as renderComponent, h as renderSlot, e as renderHead, ak as unescapeHTML } from './astro/server_DTZ0Lt1g.mjs';
+import { d as createAstro, c as createComponent, m as maybeRenderHead, a as renderScript, f as addAttribute, b as renderTemplate, r as renderComponent, h as renderSlot, g as renderHead, ak as unescapeHTML } from './astro/server_BSfH3IVW.mjs';
 import 'piccolore';
 import 'clsx';
 /* empty css                                    */
-/* empty css                          */
+/* empty css                        */
 
 const $$Astro$2 = createAstro("https://test-danapfel-digital.de");
 const $$Header = createComponent(($$result, $$props, $$slots) => {

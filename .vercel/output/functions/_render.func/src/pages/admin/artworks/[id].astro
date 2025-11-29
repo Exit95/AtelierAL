@@ -1,0 +1,285 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import { getItem, type Artwork } from "../../../lib/storage";
+
+const { id } = Astro.params;
+const artwork = id ? await getItem<Artwork>("artworks", id) : null;
+
+if (!artwork) {
+    return Astro.redirect("/admin/artworks");
+}
+
+const data = artwork;
+const imagesStr = Array.isArray(data.images)
+    ? data.images.join(", ")
+    : "";
+const tagsStr = Array.isArray(data.tags)
+    ? data.tags.join(", ")
+    : "";
+---
+
+<AdminLayout title="Werk bearbeiten">
+    <form id="artworkForm" class="admin-form">
+        <div class="form-group">
+            <label for="title">Titel*</label>
+            <input type="text" id="title" name="title" required value={data.title} />
+        </div>
+
+        <div class="form-group">
+            <label for="description">Beschreibung*</label>
+            <textarea
+                id="description"
+                name="description"
+                required
+                rows="4"
+            >{data.description}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="technique">Technik*</label>
+            <input
+                type="text"
+                id="technique"
+                name="technique"
+                required
+                value={data.technique}
+            />
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="width">Breite*</label>
+                <input
+                    type="number"
+                    id="width"
+                    name="width"
+                    required
+                    value={data.size.width}
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="height">Höhe*</label>
+                <input
+                    type="number"
+                    id="height"
+                    name="height"
+                    required
+                    value={data.size.height}
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="unit">Einheit*</label>
+                <select id="unit" name="unit">
+                    <option value="cm" selected={data.size.unit === "cm"}>cm</option>
+                    <option value="mm" selected={data.size.unit === "mm"}>mm</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="availability">Verfügbarkeit*</label>
+                <select id="availability" name="availability" required>
+                    <option
+                        value="available"
+                        selected={data.availability === "available"}
+                    >Verfügbar</option>
+                    <option
+                        value="reserved"
+                        selected={data.availability === "reserved"}
+                    >Reserviert</option>
+                    <option
+                        value="sold"
+                        selected={data.availability === "sold"}
+                    >Verkauft</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Preis*</label>
+                <input
+                    type="text"
+                    id="price"
+                    name="price"
+                    required
+                    value={data.price}
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="images">Bild-URL(s)*</label>
+            <input
+                type="text"
+                id="images"
+                name="images"
+                required
+                value={imagesStr}
+                placeholder="/uploads/... oder mehrere, komma-getrennt"
+            />
+            <small
+                >Tipp: <a href="/admin/images" target="_blank">Bild hochladen</a
+                ></small
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="tags">Tags (komma-getrennt)*</label>
+            <input
+                type="text"
+                id="tags"
+                name="tags"
+                required
+                value={tagsStr}
+            />
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input
+                    type="checkbox"
+                    id="featured"
+                    name="featured"
+                    checked={data.featured}
+                />
+                Als Featured markieren
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <a href="/admin/artworks" class="btn btn-secondary">Abbrechen</a>
+            <button type="submit" class="btn btn-primary">
+                Änderungen speichern
+            </button>
+        </div>
+
+        <div id="message" class="message"></div>
+    </form>
+</AdminLayout>
+
+<script define:vars={{ artworkId: id }}>
+    const form = document.getElementById("artworkForm") as HTMLFormElement;
+    const messageDiv = document.getElementById("message") as HTMLDivElement;
+
+    form?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        messageDiv.textContent = "";
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const res = await fetch(`/api/artworks/${artworkId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                messageDiv.textContent = "Werk erfolgreich aktualisiert!";
+                messageDiv.className = "message success";
+                setTimeout(
+                    () => (window.location.href = "/admin/artworks"),
+                    1500,
+                );
+            } else {
+                messageDiv.textContent =
+                    result.error || "Fehler beim Speichern";
+                messageDiv.className = "message error";
+            }
+        } catch (e) {
+            messageDiv.textContent = "Fehler beim Speichern der Änderungen";
+            messageDiv.className = "message error";
+        }
+    });
+</script>
+
+<style>
+    .admin-form {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        max-width: 800px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+
+    .form-group small {
+        display: block;
+        margin-top: 0.5rem;
+        color: #666;
+        font-size: 0.875rem;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn {
+        padding: 0.875rem 1.5rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: var(--color-brand-beige);
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    .message {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 6px;
+    }
+
+    .message.success {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .message.error {
+        background: #ffebee;
+        color: #c62828;
+    }
+</style>

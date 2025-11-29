@@ -1,0 +1,43 @@
+import { d as createAstro, c as createComponent, b as renderTemplate, e as defineScriptVars, r as renderComponent, m as maybeRenderHead, f as addAttribute } from '../../../chunks/astro/server_BSfH3IVW.mjs';
+import 'piccolore';
+import { $ as $$AdminLayout } from '../../../chunks/AdminLayout_D54clBox.mjs';
+import { g as getItem } from '../../../chunks/storage_BxzIridr.mjs';
+/* empty css                                      */
+export { renderers } from '../../../renderers.mjs';
+
+var __freeze = Object.freeze;
+var __defProp = Object.defineProperty;
+var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(raw || cooked.slice()) }));
+var _a;
+const $$Astro = createAstro("https://test-danapfel-digital.de");
+const $$id = createComponent(async ($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
+  Astro2.self = $$id;
+  const { id } = Astro2.params;
+  const artwork = id ? await getItem("artworks", id) : null;
+  if (!artwork) {
+    return Astro2.redirect("/admin/artworks");
+  }
+  const data = artwork;
+  const imagesStr = Array.isArray(data.images) ? data.images.join(", ") : "";
+  const tagsStr = Array.isArray(data.tags) ? data.tags.join(", ") : "";
+  return renderTemplate(_a || (_a = __template(["", " <script>(function(){", '\n    const form = document.getElementById("artworkForm") as HTMLFormElement;\n    const messageDiv = document.getElementById("message") as HTMLDivElement;\n\n    form?.addEventListener("submit", async (e) => {\n        e.preventDefault();\n        messageDiv.textContent = "";\n\n        const formData = new FormData(form);\n        const data = Object.fromEntries(formData.entries());\n\n        try {\n            const res = await fetch(`/api/artworks/${artworkId}`, {\n                method: "PUT",\n                headers: { "Content-Type": "application/json" },\n                body: JSON.stringify(data),\n            });\n\n            const result = await res.json();\n\n            if (result.success) {\n                messageDiv.textContent = "Werk erfolgreich aktualisiert!";\n                messageDiv.className = "message success";\n                setTimeout(\n                    () => (window.location.href = "/admin/artworks"),\n                    1500,\n                );\n            } else {\n                messageDiv.textContent =\n                    result.error || "Fehler beim Speichern";\n                messageDiv.className = "message error";\n            }\n        } catch (e) {\n            messageDiv.textContent = "Fehler beim Speichern der \xC4nderungen";\n            messageDiv.className = "message error";\n        }\n    });\n})();<\/script> '], ["", " <script>(function(){", '\n    const form = document.getElementById("artworkForm") as HTMLFormElement;\n    const messageDiv = document.getElementById("message") as HTMLDivElement;\n\n    form?.addEventListener("submit", async (e) => {\n        e.preventDefault();\n        messageDiv.textContent = "";\n\n        const formData = new FormData(form);\n        const data = Object.fromEntries(formData.entries());\n\n        try {\n            const res = await fetch(\\`/api/artworks/\\${artworkId}\\`, {\n                method: "PUT",\n                headers: { "Content-Type": "application/json" },\n                body: JSON.stringify(data),\n            });\n\n            const result = await res.json();\n\n            if (result.success) {\n                messageDiv.textContent = "Werk erfolgreich aktualisiert!";\n                messageDiv.className = "message success";\n                setTimeout(\n                    () => (window.location.href = "/admin/artworks"),\n                    1500,\n                );\n            } else {\n                messageDiv.textContent =\n                    result.error || "Fehler beim Speichern";\n                messageDiv.className = "message error";\n            }\n        } catch (e) {\n            messageDiv.textContent = "Fehler beim Speichern der \xC4nderungen";\n            messageDiv.className = "message error";\n        }\n    });\n})();<\/script> '])), renderComponent($$result, "AdminLayout", $$AdminLayout, { "title": "Werk bearbeiten", "data-astro-cid-c3qida7j": true }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<form id="artworkForm" class="admin-form" data-astro-cid-c3qida7j> <div class="form-group" data-astro-cid-c3qida7j> <label for="title" data-astro-cid-c3qida7j>Titel*</label> <input type="text" id="title" name="title" required${addAttribute(data.title, "value")} data-astro-cid-c3qida7j> </div> <div class="form-group" data-astro-cid-c3qida7j> <label for="description" data-astro-cid-c3qida7j>Beschreibung*</label> <textarea id="description" name="description" required rows="4" data-astro-cid-c3qida7j>${data.description}</textarea> </div> <div class="form-group" data-astro-cid-c3qida7j> <label for="technique" data-astro-cid-c3qida7j>Technik*</label> <input type="text" id="technique" name="technique" required${addAttribute(data.technique, "value")} data-astro-cid-c3qida7j> </div> <div class="form-row" data-astro-cid-c3qida7j> <div class="form-group" data-astro-cid-c3qida7j> <label for="width" data-astro-cid-c3qida7j>Breite*</label> <input type="number" id="width" name="width" required${addAttribute(data.size.width, "value")} data-astro-cid-c3qida7j> </div> <div class="form-group" data-astro-cid-c3qida7j> <label for="height" data-astro-cid-c3qida7j>Höhe*</label> <input type="number" id="height" name="height" required${addAttribute(data.size.height, "value")} data-astro-cid-c3qida7j> </div> <div class="form-group" data-astro-cid-c3qida7j> <label for="unit" data-astro-cid-c3qida7j>Einheit*</label> <select id="unit" name="unit" data-astro-cid-c3qida7j> <option value="cm"${addAttribute(data.size.unit === "cm", "selected")} data-astro-cid-c3qida7j>cm</option> <option value="mm"${addAttribute(data.size.unit === "mm", "selected")} data-astro-cid-c3qida7j>mm</option> </select> </div> </div> <div class="form-row" data-astro-cid-c3qida7j> <div class="form-group" data-astro-cid-c3qida7j> <label for="availability" data-astro-cid-c3qida7j>Verfügbarkeit*</label> <select id="availability" name="availability" required data-astro-cid-c3qida7j> <option value="available"${addAttribute(data.availability === "available", "selected")} data-astro-cid-c3qida7j>Verfügbar</option> <option value="reserved"${addAttribute(data.availability === "reserved", "selected")} data-astro-cid-c3qida7j>Reserviert</option> <option value="sold"${addAttribute(data.availability === "sold", "selected")} data-astro-cid-c3qida7j>Verkauft</option> </select> </div> <div class="form-group" data-astro-cid-c3qida7j> <label for="price" data-astro-cid-c3qida7j>Preis*</label> <input type="text" id="price" name="price" required${addAttribute(data.price, "value")} data-astro-cid-c3qida7j> </div> </div> <div class="form-group" data-astro-cid-c3qida7j> <label for="images" data-astro-cid-c3qida7j>Bild-URL(s)*</label> <input type="text" id="images" name="images" required${addAttribute(imagesStr, "value")} placeholder="/uploads/... oder mehrere, komma-getrennt" data-astro-cid-c3qida7j> <small data-astro-cid-c3qida7j>Tipp: <a href="/admin/images" target="_blank" data-astro-cid-c3qida7j>Bild hochladen</a></small> </div> <div class="form-group" data-astro-cid-c3qida7j> <label for="tags" data-astro-cid-c3qida7j>Tags (komma-getrennt)*</label> <input type="text" id="tags" name="tags" required${addAttribute(tagsStr, "value")} data-astro-cid-c3qida7j> </div> <div class="form-group" data-astro-cid-c3qida7j> <label data-astro-cid-c3qida7j> <input type="checkbox" id="featured" name="featured"${addAttribute(data.featured, "checked")} data-astro-cid-c3qida7j>
+Als Featured markieren
+</label> </div> <div class="form-actions" data-astro-cid-c3qida7j> <a href="/admin/artworks" class="btn btn-secondary" data-astro-cid-c3qida7j>Abbrechen</a> <button type="submit" class="btn btn-primary" data-astro-cid-c3qida7j>
+Änderungen speichern
+</button> </div> <div id="message" class="message" data-astro-cid-c3qida7j></div> </form> ` }), defineScriptVars({ artworkId: id }));
+}, "/home/exit/Musik/AtelierKL/project/src/pages/admin/artworks/[id].astro", void 0);
+
+const $$file = "/home/exit/Musik/AtelierKL/project/src/pages/admin/artworks/[id].astro";
+const $$url = "/admin/artworks/[id]";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+    __proto__: null,
+    default: $$id,
+    file: $$file,
+    url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

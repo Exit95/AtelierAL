@@ -1,4 +1,4 @@
-import { d as deleteItem } from '../../../../chunks/storage_ARbyxPSG.mjs';
+import { d as deleteItem } from '../../../../chunks/storage_BxzIridr.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
 const DELETE = async ({ params }) => {

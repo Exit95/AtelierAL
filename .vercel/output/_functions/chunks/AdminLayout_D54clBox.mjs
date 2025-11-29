@@ -1,8 +1,8 @@
-import { f as createAstro, c as createComponent, e as renderHead, h as renderSlot, a as renderScript, b as renderTemplate } from './astro/server_DTZ0Lt1g.mjs';
+import { d as createAstro, c as createComponent, g as renderHead, h as renderSlot, a as renderScript, b as renderTemplate } from './astro/server_BSfH3IVW.mjs';
 import 'piccolore';
 import 'clsx';
-/* empty css                          */
-/* empty css                          */
+/* empty css                        */
+/* empty css                        */
 
 const $$Astro = createAstro("https://test-danapfel-digital.de");
 const $$AdminLayout = createComponent(async ($$result, $$props, $$slots) => {

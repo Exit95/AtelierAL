@@ -1,15 +1,15 @@
 ---
 import AdminLayout from "../../../layouts/AdminLayout.astro";
-import { getEntry } from "astro:content";
+import { getItem, type Workshop } from "../../../lib/storage";
 
 const { id } = Astro.params;
-const workshop = id ? await getEntry("workshops", id) : null;
+const workshop = id ? await getItem<Workshop>("workshops", id) : null;
 
 if (!workshop) {
     return Astro.redirect("/admin/workshops");
 }
 
-const data = workshop.data;
+const data = workshop;
 const dateStr = new Date(data.date).toISOString().split("T")[0];
 const materialsStr = Array.isArray(data.materials)
     ? data.materials.join("\n")

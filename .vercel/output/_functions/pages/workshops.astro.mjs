@@ -1,8 +1,8 @@
-import { c as createComponent, r as renderComponent, b as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_DTZ0Lt1g.mjs';
+import { c as createComponent, r as renderComponent, b as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_BSfH3IVW.mjs';
 import 'piccolore';
-import { $ as $$Layout } from '../chunks/Layout_DOK6i4VX.mjs';
-import { $ as $$WorkshopCard } from '../chunks/WorkshopCard_C_cyjpWd.mjs';
-import { g as getItems } from '../chunks/storage_ARbyxPSG.mjs';
+import { $ as $$Layout } from '../chunks/Layout_fKTd5u-i.mjs';
+import { $ as $$WorkshopCard } from '../chunks/WorkshopCard_YDjNRJkq.mjs';
+import { a as getItems } from '../chunks/storage_BxzIridr.mjs';
 /* empty css                                     */
 export { renderers } from '../renderers.mjs';
 
