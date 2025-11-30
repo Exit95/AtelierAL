@@ -45,7 +45,17 @@ export interface Artwork {
     createdDate: string;
 }
 
-export async function getItems<T>(collection: 'workshops' | 'artworks'): Promise<T[]> {
+export interface Review {
+    id: string;
+    name: string;
+    email?: string;
+    rating: number; // 1-5
+    text: string;
+    date: string;
+    status: 'pending' | 'approved' | 'rejected';
+}
+
+export async function getItems<T>(collection: 'workshops' | 'artworks' | 'reviews'): Promise<T[]> {
     const dir = join(DATA_DIR, collection);
     await ensureDir(dir);
 
@@ -71,7 +81,7 @@ export async function getItems<T>(collection: 'workshops' | 'artworks'): Promise
     return items;
 }
 
-export async function getItem<T>(collection: 'workshops' | 'artworks', id: string): Promise<T | null> {
+export async function getItem<T>(collection: 'workshops' | 'artworks' | 'reviews', id: string): Promise<T | null> {
     const filepath = join(DATA_DIR, collection, `${id}.json`);
     try {
         if (!existsSync(filepath)) return null;
@@ -85,16 +95,33 @@ export async function getItem<T>(collection: 'workshops' | 'artworks', id: strin
     }
 }
 
-export async function saveItem<T>(collection: 'workshops' | 'artworks', id: string, data: T): Promise<void> {
+export async function saveItem<T>(collection: 'workshops' | 'artworks' | 'reviews', id: string, data: T): Promise<void> {
     const dir = join(DATA_DIR, collection);
     await ensureDir(dir);
     const filepath = join(dir, `${id}.json`);
     await writeFile(filepath, JSON.stringify(data, null, 2), 'utf-8');
 }
 
-export async function deleteItem(collection: 'workshops' | 'artworks', id: string): Promise<void> {
+export async function deleteItem(collection: 'workshops' | 'artworks' | 'reviews', id: string): Promise<void> {
     const filepath = join(DATA_DIR, collection, `${id}.json`);
     if (existsSync(filepath)) {
         await unlink(filepath);
+    }
+}
+
+// Review-specific functions
+export async function approveReview(id: string): Promise<void> {
+    const review = await getItem<Review>('reviews', id);
+    if (review) {
+        review.status = 'approved';
+        await saveItem('reviews', id, review);
+    }
+}
+
+export async function rejectReview(id: string): Promise<void> {
+    const review = await getItem<Review>('reviews', id);
+    if (review) {
+        review.status = 'rejected';
+        await saveItem('reviews', id, review);
     }
 }

@@ -1,0 +1,196 @@
+---
+interface Review {
+    id: string;
+    name: string;
+    email?: string;
+    rating: number;
+    text: string;
+    date: string;
+    status: "pending" | "approved" | "rejected";
+}
+
+interface Props {
+    ttitle?: string;
+}
+
+const { ttitle = "Kundenbewertungen" } = Astro.props;
+
+// Fetch approved reviews
+let reviews: Review[] = [];
+try {
+    const response = await fetch(`${Astro.url.origin}/api/reviews`);
+    if (response.ok) {
+        reviews = await response.json();
+    }
+} catch (error) {
+    console.error("Error fetching reviews:", error);
+}
+---
+
+<div class="reviews-section">
+    <div class="section-header text-center">
+        <h2>{ttitle}</h2>
+        {
+            reviews.length > 0 && (
+                <p class="text-secondary">Das sagen unsere Kunden über uns</p>
+            )
+        }
+    </div>
+
+    {
+        reviews.length > 0 ? (
+            <div class="reviews-grid">
+                {reviews.map((review) => (
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-stars">
+                                {Array.from({ length: review.rating }).map(
+                                    () => (
+                                        <span class="star filled">★</span>
+                                    ),
+                                )}
+                                {Array.from({ length: 5 - review.rating }).map(
+                                    () => (
+                                        <span class="star empty">★</span>
+                                    ),
+                                )}
+                            </div>
+                            <div class="review-date">
+                                {new Date(review.date).toLocaleDateString(
+                                    "de-DE",
+                                    {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    },
+                                )}
+                            </div>
+                        </div>
+                        <p class="review-text">{review.text}</p>
+                        <div class="review-author">
+                            <strong>{review.name}</strong>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <p class="no-reviews text-center text-secondary">
+                Noch keine Bewertungen vorhanden. Seien Sie der Erste, der eine
+                Bewertung abgibt!
+            </p>
+        )
+    }
+</div>
+
+<style>
+    .reviews-section {
+        width: 100%;
+    }
+
+    .section-header {
+        margin-bottom: var(--space-10);
+    }
+
+    .section-header h2 {
+        margin-bottom: var(--space-3);
+    }
+
+    .reviews-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+    }
+
+    @media (min-width: 768px) {
+        .reviews-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .reviews-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .review-card {
+        padding: var(--space-6);
+        background: var(--color-surface-elevated);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-base);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        transition:
+            transform var(--transition-base),
+            box-shadow var(--transition-base);
+    }
+
+    .review-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-2);
+        flex-wrap: wrap;
+    }
+
+    .review-stars {
+        display: flex;
+        gap: 2px;
+    }
+
+    .star {
+        font-size: var(--font-size-lg);
+    }
+
+    .star.filled {
+        color: #fbbf24;
+    }
+
+    .star.empty {
+        color: #ddd;
+    }
+
+    .review-date {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+    }
+
+    .review-text {
+        line-height: var(--line-height-relaxed);
+        flex-grow: 1;
+        color: var(--color-text-primary);
+    }
+
+    .review-author {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
+        padding-top: var(--space-3);
+        border-top: 1px solid var(--color-border);
+    }
+
+    .review-author strong {
+        color: var(--color-text-primary);
+    }
+
+    .no-reviews {
+        padding: var(--space-8);
+    }
+
+    @media (max-width: 768px) {
+        .review-card {
+            padding: var(--space-4);
+        }
+
+        .review-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>

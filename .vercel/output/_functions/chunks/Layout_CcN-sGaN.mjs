@@ -51,15 +51,25 @@ const $$Layout = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$Layout;
   const { title, description, image } = Astro2.props;
-  const canonicalURL = new URL(Astro2.url.pathname, Astro2.site);
-  const socialImage = image || new URL("/logo.png", Astro2.site).toString();
+  const site = Astro2.site;
+  const pathname = Astro2.url.pathname;
+  let canonicalURL;
+  let socialImage;
+  if (site) {
+    const base = new URL(site);
+    canonicalURL = new URL(pathname, base).toString();
+    socialImage = new URL(image || "/logo.png", base).toString();
+  } else {
+    canonicalURL = pathname;
+    socialImage = image || "/logo.png";
+  }
   return renderTemplate(_a || (_a = __template(['<html lang="de"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/png" href="/logo.png"><link rel="canonical"', "><!-- SEO Meta Tags --><title>", ' | ATELIER KL</title><meta name="description"', '><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url"', '><meta property="og:title"', '><meta property="og:description"', '><meta property="og:image"', '><meta property="og:locale" content="de_DE"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url"', '><meta property="twitter:title"', '><meta property="twitter:description"', '><meta property="twitter:image"', '><!-- JSON-LD Structured Data --><script type="application/ld+json">', '<\/script><meta name="generator"', '><!-- Google Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">', '</head> <body> <a href="#main-content" class="skip-to-content">Zum Hauptinhalt springen</a> ', ' <main id="main-content"> ', " </main> ", " ", ' <!-- Vercel Web Analytics --> <script>\n			if (window.va) window.va("pageview");\n		<\/script> </body> </html>'])), addAttribute(canonicalURL, "href"), title, addAttribute(description, "content"), addAttribute(canonicalURL, "content"), addAttribute(`${title} | ATELIER KL`, "content"), addAttribute(description, "content"), addAttribute(socialImage, "content"), addAttribute(canonicalURL, "content"), addAttribute(`${title} | ATELIER KL`, "content"), addAttribute(description, "content"), addAttribute(socialImage, "content"), unescapeHTML(JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "ATELIER KL",
     alternateName: "Katharina Lanvermann Art Studio",
-    url: Astro2.site,
-    logo: new URL("/logo.png", Astro2.site),
+    url: site || canonicalURL,
+    logo: site ? new URL("/logo.png", site).toString() : "/logo.png",
     description: "Abstraktes Kunst-Atelier f\xFCr einzigartige Kunstwerke und kreative Workshops",
     address: {
       "@type": "PostalAddress",

@@ -4,6 +4,8 @@ import HeroSection from "../components/HeroSection.astro";
 import WorkshopCard from "../components/WorkshopCard.astro";
 import CTAButton from "../components/CTAButton.astro";
 import Badge from "../components/Badge.astro";
+import ReviewsDisplay from "../components/ReviewsDisplay.astro";
+import ReviewForm from "../components/ReviewForm.astro";
 import { getItems, type Artwork, type Workshop } from "../lib/storage";
 import { getCollection } from "astro:content"; // Keep for testimonials if they are still static
 
@@ -272,6 +274,23 @@ const allTestimonials = await getCollection("testimonials");
 			</section>
 		)
 	}
+
+	<!-- Customer Reviews -->
+	<section
+		class="section py-16"
+		style="background-color: var(--color-surface);"
+	>
+		<div class="container">
+			<ReviewsDisplay />
+		</div>
+	</section>
+
+	<!-- Review Form -->
+	<section class="section py-16">
+		<div class="container">
+			<ReviewForm title="Teilen Sie Ihre Erfahrung" />
+		</div>
+	</section>
 
 	<!-- Final CTA -->
 	<section

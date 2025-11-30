@@ -6,8 +6,23 @@ interface Props {
 }
 
 const { title, description, image } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const socialImage = image || new URL("/logo.png", Astro.site).toString();
+
+// Robust URL handling: Astro.site kann auf dem Server undefined sein.
+// In dem Fall verwenden wir relative Pfade, statt new URL() ohne Base zu rufen.
+const site = Astro.site;
+const pathname = Astro.url.pathname;
+
+let canonicalURL: string;
+let socialImage: string;
+
+if (site) {
+	const base = new URL(site);
+	canonicalURL = new URL(pathname, base).toString();
+	socialImage = new URL(image || "/logo.png", base).toString();
+} else {
+	canonicalURL = pathname;
+	socialImage = image || "/logo.png";
+}
 
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -43,27 +58,27 @@ import "../styles/global.css";
 		<meta property="twitter:image" content={socialImage} />
 
 		<!-- JSON-LD Structured Data -->
-		<script
-			type="application/ld+json"
-			set:html={JSON.stringify({
-				"@context": "https://schema.org",
-				"@type": "Organization",
-				name: "ATELIER KL",
-				alternateName: "Katharina Lanvermann Art Studio",
-				url: Astro.site,
-				logo: new URL("/logo.png", Astro.site),
-				description:
-					"Abstraktes Kunst-Atelier für einzigartige Kunstwerke und kreative Workshops",
-				address: {
-					"@type": "PostalAddress",
-					streetAddress: "Hauptstraße 45",
-					addressLocality: "Heek",
-					postalCode: "48619",
-					addressCountry: "DE",
-				},
-				email: "info@atelier-kl.de",
-			})}
-		/>
+			<script
+				type="application/ld+json"
+				set:html={JSON.stringify({
+					"@context": "https://schema.org",
+					"@type": "Organization",
+					name: "ATELIER KL",
+					alternateName: "Katharina Lanvermann Art Studio",
+					url: site || canonicalURL,
+					logo: site ? new URL("/logo.png", site).toString() : "/logo.png",
+					description:
+						"Abstraktes Kunst-Atelier für einzigartige Kunstwerke und kreative Workshops",
+					address: {
+						"@type": "PostalAddress",
+						streetAddress: "Hauptstraße 45",
+						addressLocality: "Heek",
+						postalCode: "48619",
+						addressCountry: "DE",
+					},
+					email: "info@atelier-kl.de",
+				})}
+			/>
 
 		<meta name="generator" content={Astro.generator} />
 

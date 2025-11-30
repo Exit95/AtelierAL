@@ -1,0 +1,291 @@
+---
+interface Props {
+    title?: string;
+}
+
+const { title = "Ihre Bewertung" } = Astro.props;
+---
+
+<div class="review-form-wrapper">
+    <h3>{title}</h3>
+    <form id="review-form" class="review-form">
+        <div class="form-group">
+            <label for="name">Name <span class="required">*</span></label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                minlength="2"
+                maxlength="100"
+                placeholder="Ihr Name"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-Mail (optional)</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="ihre@email.de"
+            />
+        </div>
+
+        <div class="form-group">
+            <label>Bewertung <span class="required">*</span></label>
+            <div class="star-rating">
+                {
+                    [5, 4, 3, 2, 1].map((star) => (
+                        <>
+                            <input
+                                type="radio"
+                                id={`star-${star}`}
+                                name="rating"
+                                value={star}
+                                required
+                            />
+                            <label for={`star-${star}`} class="star">
+                                ★
+                            </label>
+                        </>
+                    ))
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text"
+                >Ihre Bewertung <span class="required">*</span></label
+            >
+            <textarea
+                id="text"
+                name="text"
+                required
+                minlength="10"
+                maxlength="1000"
+                rows="5"
+                placeholder="Teilen Sie Ihre Erfahrung mit uns..."></textarea>
+            <div class="char-count">
+                <span id="char-count">0</span>/1000
+            </div>
+        </div>
+
+        <div id="form-message" class="form-message"></div>
+
+        <button type="submit" class="submit-btn"> Bewertung abgeben </button>
+    </form>
+</div>
+
+<style>
+    .review-form-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: var(--space-6);
+        background: var(--color-surface-elevated);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-base);
+    }
+
+    .review-form-wrapper h3 {
+        margin-bottom: var(--space-6);
+        text-align: center;
+    }
+
+    .review-form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-5);
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .form-group label {
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-primary);
+    }
+
+    .required {
+        color: var(--color-error);
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group textarea {
+        padding: var(--space-3);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        font-family: var(--font-body);
+        font-size: var(--font-size-base);
+        transition: border-color var(--transition-base);
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group input[type="email"]:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--color-brand-beige);
+        box-shadow: 0 0 0 3px rgba(199, 180, 156, 0.1);
+    }
+
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        gap: var(--space-1);
+    }
+
+    .star-rating input[type="radio"] {
+        display: none;
+    }
+
+    .star-rating .star {
+        font-size: 2rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: color var(--transition-base);
+    }
+
+    .star-rating input[type="radio"]:checked ~ .star,
+    .star-rating .star:hover,
+    .star-rating .star:hover ~ .star {
+        color: #fbbf24;
+    }
+
+    .char-count {
+        text-align: right;
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+    }
+
+    .form-message {
+        padding: var(--space-3);
+        border-radius: var(--radius-md);
+        text-align: center;
+        font-weight: var(--font-weight-semibold);
+        display: none;
+    }
+
+    .form-message.success {
+        display: block;
+        background-color: #d1fae5;
+        color: #065f46;
+        border: 1px solid #10b981;
+    }
+
+    .form-message.error {
+        display: block;
+        background-color: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #ef4444;
+    }
+
+    .submit-btn {
+        padding: var(--space-3) var(--space-6);
+        background: linear-gradient(
+            135deg,
+            var(--color-brand-beige),
+            var(--color-brand-beige-dark)
+        );
+        color: var(--color-white);
+        border: none;
+        border-radius: var(--radius-md);
+        font-family: var(--font-headline);
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-semibold);
+        cursor: pointer;
+        transition:
+            transform var(--transition-base),
+            box-shadow var(--transition-base);
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    @media (max-width: 768px) {
+        .review-form-wrapper {
+            padding: var(--space-4);
+        }
+
+        .star-rating .star {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<script>
+    const form = document.getElementById("review-form") as HTMLFormElement;
+    const textArea = document.getElementById("text") as HTMLTextAreaElement;
+    const charCount = document.getElementById("char-count");
+    const formMessage = document.getElementById("form-message");
+
+    // Character counter
+    if (textArea && charCount) {
+        textArea.addEventListener("input", () => {
+            charCount.textContent = textArea.value.length.toString();
+        });
+    }
+
+    // Form submission
+    if (form && formMessage) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const submitBtn = form.querySelector(
+                'button[type="submit"]',
+            ) as HTMLButtonElement;
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Wird gesendet...";
+
+            const formData = new FormData(form);
+            const data = {
+                name: formData.get("name"),
+                email: formData.get("email"),
+                rating: formData.get("rating"),
+                text: formData.get("text"),
+            };
+
+            try {
+                const response = await fetch("/api/reviews", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    formMessage.className = "form-message success";
+                    formMessage.textContent = result.message;
+                    form.reset();
+                    if (charCount) charCount.textContent = "0";
+                } else {
+                    formMessage.className = "form-message error";
+                    formMessage.textContent =
+                        result.error || "Ein Fehler ist aufgetreten.";
+                }
+            } catch (error) {
+                formMessage.className = "form-message error";
+                formMessage.textContent =
+                    "Verbindungsfehler. Bitte versuchen Sie es später erneut.";
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Bewertung abgeben";
+            }
+        });
+    }
+</script>

@@ -34,6 +34,15 @@ const artworks = await getItems<Artwork>("artworks");
             </div>
             <a href="/admin/images" class="stat-link">Verwalten →</a>
         </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-content">
+                <div class="stat-number">-</div>
+                <div class="stat-label">Bewertungen</div>
+            </div>
+            <a href="/admin/reviews" class="stat-link">Verwalten →</a>
+        </div>
     </div>
 
     <div class="quick-actions">
@@ -47,6 +56,9 @@ const artworks = await getItems<Artwork>("artworks");
             >
             <a href="/admin/images" class="action-btn secondary"
                 >📤 Bilder hochladen</a
+            >
+            <a href="/admin/reviews" class="action-btn secondary"
+                >⭐ Bewertungen</a
             >
         </div>
     </div>
