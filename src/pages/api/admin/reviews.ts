@@ -1,14 +1,11 @@
 import type { APIRoute } from 'astro';
 import { getItems, approveReview, rejectReview, type Review } from '../../../lib/storage';
-import { parse as parseCookie } from 'cookie';
+import { getSessionFromCookies } from '../../../lib/auth';
 
 // Check if user is authenticated
 function isAuthenticated(request: Request): boolean {
     const cookieHeader = request.headers.get('cookie');
-    if (!cookieHeader) return false;
-
-    const cookies = parseCookie(cookieHeader);
-    return cookies.auth === 'true';
+    return !!getSessionFromCookies(cookieHeader);
 }
 
 // GET: Fetch all reviews (including pending)

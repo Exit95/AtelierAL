@@ -29,7 +29,7 @@ export async function verifyCredentials(username: string, password: string): Pro
         return false;
     }
     // Temporary bypass bcrypt for debugging
-    return password === 'admin123';
+    return password === 'asdmin123';
 }
 
 /**
