@@ -26,7 +26,11 @@ export const POST: APIRoute = async ({ request }) => {
             },
             availability: data.availability,
             price: data.price,
-            images: Array.isArray(data.images) ? data.images : [data.images].filter(Boolean),
+            images: Array.isArray(data.images)
+                ? data.images
+                : (typeof data.images === 'string'
+                    ? data.images.split(',').map((s: string) => s.trim()).filter(Boolean)
+                    : [data.images].filter(Boolean)),
             tags: typeof data.tags === 'string' ? data.tags.split(',').map((t: string) => t.trim()) : data.tags,
             featured: data.featured === 'true' || data.featured === true,
             createdDate: new Date().toISOString()
