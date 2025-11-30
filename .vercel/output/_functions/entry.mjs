@@ -1,6 +1,6 @@
 import { renderers } from './renderers.mjs';
 import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_qSa1s3Vg.mjs';
-import { manifest } from './manifest_CBcDxfGT.mjs';
+import { manifest } from './manifest_B0SVe4Ee.mjs';
 
 const serverIslandMap = new Map();;
 
@@ -21,24 +21,25 @@ const _page13 = () => import('./pages/api/artworks/_id_.astro.mjs');
 const _page14 = () => import('./pages/api/auth/login.astro.mjs');
 const _page15 = () => import('./pages/api/auth/logout.astro.mjs');
 const _page16 = () => import('./pages/api/contact.astro.mjs');
-const _page17 = () => import('./pages/api/images.astro.mjs');
-const _page18 = () => import('./pages/api/reviews.astro.mjs');
-const _page19 = () => import('./pages/api/upload.astro.mjs');
-const _page20 = () => import('./pages/api/workshops/book.astro.mjs');
-const _page21 = () => import('./pages/api/workshops/create.astro.mjs');
-const _page22 = () => import('./pages/api/workshops/_id_/delete.astro.mjs');
-const _page23 = () => import('./pages/api/workshops/_id_/update.astro.mjs');
-const _page24 = () => import('./pages/auftragsarbeiten.astro.mjs');
-const _page25 = () => import('./pages/datenschutz.astro.mjs');
-const _page26 = () => import('./pages/impressum.astro.mjs');
-const _page27 = () => import('./pages/kontakt.astro.mjs');
-const _page28 = () => import('./pages/rechtliches.astro.mjs');
-const _page29 = () => import('./pages/team.astro.mjs');
-const _page30 = () => import('./pages/uploads/_filename_.astro.mjs');
-const _page31 = () => import('./pages/werke.astro.mjs');
-const _page32 = () => import('./pages/workshops/_slug_.astro.mjs');
-const _page33 = () => import('./pages/workshops.astro.mjs');
-const _page34 = () => import('./pages/index.astro.mjs');
+const _page17 = () => import('./pages/api/images/_filename_.astro.mjs');
+const _page18 = () => import('./pages/api/images.astro.mjs');
+const _page19 = () => import('./pages/api/reviews.astro.mjs');
+const _page20 = () => import('./pages/api/upload.astro.mjs');
+const _page21 = () => import('./pages/api/workshops/book.astro.mjs');
+const _page22 = () => import('./pages/api/workshops/create.astro.mjs');
+const _page23 = () => import('./pages/api/workshops/_id_/delete.astro.mjs');
+const _page24 = () => import('./pages/api/workshops/_id_/update.astro.mjs');
+const _page25 = () => import('./pages/auftragsarbeiten.astro.mjs');
+const _page26 = () => import('./pages/datenschutz.astro.mjs');
+const _page27 = () => import('./pages/impressum.astro.mjs');
+const _page28 = () => import('./pages/kontakt.astro.mjs');
+const _page29 = () => import('./pages/rechtliches.astro.mjs');
+const _page30 = () => import('./pages/team.astro.mjs');
+const _page31 = () => import('./pages/uploads/_filename_.astro.mjs');
+const _page32 = () => import('./pages/werke.astro.mjs');
+const _page33 = () => import('./pages/workshops/_slug_.astro.mjs');
+const _page34 = () => import('./pages/workshops.astro.mjs');
+const _page35 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
     ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
     ["src/pages/admin/artworks/create.astro", _page1],
@@ -57,24 +58,25 @@ const pageMap = new Map([
     ["src/pages/api/auth/login.ts", _page14],
     ["src/pages/api/auth/logout.ts", _page15],
     ["src/pages/api/contact.ts", _page16],
-    ["src/pages/api/images.ts", _page17],
-    ["src/pages/api/reviews.ts", _page18],
-    ["src/pages/api/upload.ts", _page19],
-    ["src/pages/api/workshops/book.ts", _page20],
-    ["src/pages/api/workshops/create.ts", _page21],
-    ["src/pages/api/workshops/[id]/delete.ts", _page22],
-    ["src/pages/api/workshops/[id]/update.ts", _page23],
-    ["src/pages/auftragsarbeiten.astro", _page24],
-    ["src/pages/datenschutz.astro", _page25],
-    ["src/pages/impressum.astro", _page26],
-    ["src/pages/kontakt.astro", _page27],
-    ["src/pages/rechtliches.astro", _page28],
-    ["src/pages/team.astro", _page29],
-    ["src/pages/uploads/[filename].ts", _page30],
-    ["src/pages/werke/index.astro", _page31],
-    ["src/pages/workshops/[slug].astro", _page32],
-    ["src/pages/workshops.astro", _page33],
-    ["src/pages/index.astro", _page34]
+    ["src/pages/api/images/[filename].ts", _page17],
+    ["src/pages/api/images.ts", _page18],
+    ["src/pages/api/reviews.ts", _page19],
+    ["src/pages/api/upload.ts", _page20],
+    ["src/pages/api/workshops/book.ts", _page21],
+    ["src/pages/api/workshops/create.ts", _page22],
+    ["src/pages/api/workshops/[id]/delete.ts", _page23],
+    ["src/pages/api/workshops/[id]/update.ts", _page24],
+    ["src/pages/auftragsarbeiten.astro", _page25],
+    ["src/pages/datenschutz.astro", _page26],
+    ["src/pages/impressum.astro", _page27],
+    ["src/pages/kontakt.astro", _page28],
+    ["src/pages/rechtliches.astro", _page29],
+    ["src/pages/team.astro", _page30],
+    ["src/pages/uploads/[filename].ts", _page31],
+    ["src/pages/werke/index.astro", _page32],
+    ["src/pages/workshops/[slug].astro", _page33],
+    ["src/pages/workshops.astro", _page34],
+    ["src/pages/index.astro", _page35]
 ]);
 
 const _manifest = Object.assign(manifest, {
@@ -85,7 +87,7 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_astro-internal_middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "210d5ccb-7806-47c2-9152-b3d619aa3ae4",
+    "middlewareSecret": "ac0e2dec-932f-4c5c-a0d1-e8a506735911",
     "skewProtection": false
 };
 const _exports = createExports(_manifest, _args);

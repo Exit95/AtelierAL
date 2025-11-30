@@ -9,12 +9,18 @@ export const GET: APIRoute = async () => {
             ? join(process.cwd(), 'uploads')
             : join(process.cwd(), 'public', 'uploads');
 
-        const files = (await readdir(uploadsDir)).filter(file => !file.startsWith('.'));
+        const files = (await readdir(uploadsDir)).filter(file => !file.startsWith('.') && file !== 'temp');
 
         const images = await Promise.all(
             files.map(async (file) => {
                 const filePath = join(uploadsDir, file);
                 const stats = await stat(filePath);
+
+                // Skip directories
+                if (stats.isDirectory()) {
+                    return null;
+                }
+
                 return {
                     name: file,
                     url: `/uploads/${file}`,
@@ -24,10 +30,13 @@ export const GET: APIRoute = async () => {
             })
         );
 
-        // Sort by date desc
-        images.sort((a, b) => b.date.getTime() - a.date.getTime());
+        // Filter out null values (directories)
+        const validImages = images.filter(img => img !== null);
 
-        return new Response(JSON.stringify(images), {
+        // Sort by date desc
+        validImages.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+        return new Response(JSON.stringify(validImages), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });

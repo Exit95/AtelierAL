@@ -12,10 +12,10 @@ const POST = async ({ request }) => {
         headers: { "Content-Type": "application/json" }
       });
     }
-    const maxSize = 25 * 1024 * 1024;
+    const maxSize = 100 * 1024 * 1024;
     if (file.size > maxSize) {
       return new Response(JSON.stringify({
-        error: `Datei zu groß. Maximum: 25MB, Ihre Datei: ${(file.size / 1024 / 1024).toFixed(2)}MB`
+        error: `Datei zu groß. Maximum: 100MB, Ihre Datei: ${(file.size / 1024 / 1024).toFixed(2)}MB`
       }), {
         status: 413,
         headers: { "Content-Type": "application/json" }
