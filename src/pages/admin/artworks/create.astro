@@ -112,8 +112,8 @@ import AdminLayout from "../../../layouts/AdminLayout.astro";
 </AdminLayout>
 
 <script>
-    const form = document.getElementById("artworkForm") as HTMLFormElement;
-    const messageDiv = document.getElementById("message") as HTMLDivElement;
+    const form = document.getElementById("artworkForm");
+    const messageDiv = document.getElementById("message");
 
     form?.addEventListener("submit", async (e) => {
         e.preventDefault();
