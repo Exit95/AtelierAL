@@ -1,6 +1,6 @@
 import { renderers } from './renderers.mjs';
 import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_8AvDgJBX.mjs';
-import { manifest } from './manifest_D9Jg1R8S.mjs';
+import { manifest } from './manifest_9Nx8CeIU.mjs';
 
 const serverIslandMap = new Map();;
 
@@ -30,10 +30,11 @@ const _page22 = () => import('./pages/impressum.astro.mjs');
 const _page23 = () => import('./pages/kontakt.astro.mjs');
 const _page24 = () => import('./pages/rechtliches.astro.mjs');
 const _page25 = () => import('./pages/team.astro.mjs');
-const _page26 = () => import('./pages/werke.astro.mjs');
-const _page27 = () => import('./pages/workshops/_slug_.astro.mjs');
-const _page28 = () => import('./pages/workshops.astro.mjs');
-const _page29 = () => import('./pages/index.astro.mjs');
+const _page26 = () => import('./pages/uploads/_filename_.astro.mjs');
+const _page27 = () => import('./pages/werke.astro.mjs');
+const _page28 = () => import('./pages/workshops/_slug_.astro.mjs');
+const _page29 = () => import('./pages/workshops.astro.mjs');
+const _page30 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
     ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
     ["src/pages/admin/artworks/create.astro", _page1],
@@ -61,10 +62,11 @@ const pageMap = new Map([
     ["src/pages/kontakt.astro", _page23],
     ["src/pages/rechtliches.astro", _page24],
     ["src/pages/team.astro", _page25],
-    ["src/pages/werke/index.astro", _page26],
-    ["src/pages/workshops/[slug].astro", _page27],
-    ["src/pages/workshops.astro", _page28],
-    ["src/pages/index.astro", _page29]
+    ["src/pages/uploads/[filename].ts", _page26],
+    ["src/pages/werke/index.astro", _page27],
+    ["src/pages/workshops/[slug].astro", _page28],
+    ["src/pages/workshops.astro", _page29],
+    ["src/pages/index.astro", _page30]
 ]);
 
 const _manifest = Object.assign(manifest, {
@@ -75,7 +77,7 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_astro-internal_middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "ac2d4d7c-782d-4ab4-9d6c-c5f227f15e85",
+    "middlewareSecret": "b805c958-f4e1-465a-b397-501ce08d86ea",
     "skewProtection": false
 };
 const _exports = createExports(_manifest, _args);
