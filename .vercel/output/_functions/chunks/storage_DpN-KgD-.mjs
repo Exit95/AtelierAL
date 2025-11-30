@@ -54,5 +54,19 @@ async function deleteItem(collection, id) {
     await unlink(filepath);
   }
 }
+async function approveReview(id) {
+  const review = await getItem("reviews", id);
+  if (review) {
+    review.status = "approved";
+    await saveItem("reviews", id, review);
+  }
+}
+async function rejectReview(id) {
+  const review = await getItem("reviews", id);
+  if (review) {
+    review.status = "rejected";
+    await saveItem("reviews", id, review);
+  }
+}
 
-export { getItems as a, deleteItem as d, getItem as g, saveItem as s };
+export { getItems as a, approveReview as b, deleteItem as d, getItem as g, rejectReview as r, saveItem as s };

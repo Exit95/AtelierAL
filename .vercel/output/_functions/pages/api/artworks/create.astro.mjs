@@ -1,4 +1,4 @@
-import { s as saveItem } from '../../../chunks/storage_BxzIridr.mjs';
+import { s as saveItem } from '../../../chunks/storage_DpN-KgD-.mjs';
 export { renderers } from '../../../renderers.mjs';
 
 const POST = async ({ request }) => {
@@ -17,7 +17,7 @@ const POST = async ({ request }) => {
       },
       availability: data.availability,
       price: data.price,
-      images: Array.isArray(data.images) ? data.images : [data.images].filter(Boolean),
+      images: Array.isArray(data.images) ? data.images : typeof data.images === "string" ? data.images.split(",").map((s) => s.trim()).filter(Boolean) : [data.images].filter(Boolean),
       tags: typeof data.tags === "string" ? data.tags.split(",").map((t) => t.trim()) : data.tags,
       featured: data.featured === "true" || data.featured === true,
       createdDate: (/* @__PURE__ */ new Date()).toISOString()

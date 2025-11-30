@@ -1,9 +1,9 @@
-import { d as createAstro, c as createComponent, m as maybeRenderHead, a as renderScript, f as addAttribute, b as renderTemplate, r as renderComponent } from '../chunks/astro/server_BSfH3IVW.mjs';
+import { e as createAstro, f as createComponent, m as maybeRenderHead, l as renderScript, h as addAttribute, r as renderTemplate, k as renderComponent } from '../chunks/astro/server_BEzeNKqC.mjs';
 import 'piccolore';
-import { $ as $$Layout } from '../chunks/Layout_CcN-sGaN.mjs';
-import { $ as $$Badge } from '../chunks/Badge_DZ7cx3Em.mjs';
+import { $ as $$Layout } from '../chunks/Layout_j3a86qGr.mjs';
+import { $ as $$Badge } from '../chunks/Badge_B8qNpxPG.mjs';
 /* empty css                                 */
-import { a as getItems } from '../chunks/storage_BxzIridr.mjs';
+import { a as getItems } from '../chunks/storage_DpN-KgD-.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro("https://test-danapfel-digital.de");

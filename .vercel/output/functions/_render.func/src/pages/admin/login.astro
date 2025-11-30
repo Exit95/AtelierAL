@@ -71,9 +71,7 @@ import "../../styles/global.css";
                         body: formData,
                     });
 
-                    console.log("Response status:", response.status);
                     const data = await response.json();
-                    console.log("Response data:", data);
 
                     if (data.success) {
                         window.location.href = data.redirect || "/admin";

@@ -1,4 +1,4 @@
-import { v as verifyCredentials, c as createSession, a as createSessionCookie } from '../../../chunks/auth_mxHGmgbS.mjs';
+import { v as verifyCredentials, c as createSession, a as createSessionCookie } from '../../../chunks/auth_DMMMreQm.mjs';
 export { renderers } from '../../../renderers.mjs';
 
 const POST = async ({ request }) => {

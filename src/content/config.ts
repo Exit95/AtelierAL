@@ -40,21 +40,8 @@ const workshops = defineCollection({
   })
 });
 
-// Testimonials Collection
-const testimonials = defineCollection({
-  type: 'data',
-  schema: ({ image }) => z.object({
-    author: z.string(),
-    role: z.string().optional(),
-    text: z.string(),
-    rating: z.number().min(1).max(5),
-    image: z.string().optional(), // Changed from image() to string for JSON compatibility
-    date: z.coerce.date() // Use coerce to convert string to date
-  })
-});
-
 export const collections = {
   artworks,
-  workshops,
-  testimonials
+  workshops
 };
+

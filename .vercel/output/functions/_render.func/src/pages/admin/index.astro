@@ -34,6 +34,15 @@ const artworks = await getItems<Artwork>("artworks");
             </div>
             <a href="/admin/images" class="stat-link">Verwalten →</a>
         </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-content">
+                <div class="stat-number">-</div>
+                <div class="stat-label">Bewertungen</div>
+            </div>
+            <a href="/admin/reviews" class="stat-link">Verwalten →</a>
+        </div>
     </div>
 
     <div class="quick-actions">
@@ -48,6 +57,9 @@ const artworks = await getItems<Artwork>("artworks");
             <a href="/admin/images" class="action-btn secondary"
                 >📤 Bilder hochladen</a
             >
+            <a href="/admin/reviews" class="action-btn secondary"
+                >⭐ Bewertungen</a
+            >
         </div>
     </div>
 </AdminLayout>
@@ -55,8 +67,8 @@ const artworks = await getItems<Artwork>("artworks");
 <style>
     .dashboard-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1rem;
         margin-bottom: 2rem;
     }
 
@@ -114,8 +126,20 @@ const artworks = await getItems<Artwork>("artworks");
 
     .action-buttons {
         display: flex;
-        gap: 1rem;
+        gap: 0.75rem;
         flex-wrap: wrap;
+    }
+
+    @media (max-width: 640px) {
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .action-btn {
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
     }
 
     .action-btn {

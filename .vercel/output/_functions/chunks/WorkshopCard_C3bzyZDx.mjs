@@ -1,6 +1,6 @@
-import { d as createAstro, c as createComponent, m as maybeRenderHead, f as addAttribute, r as renderComponent, b as renderTemplate } from './astro/server_BSfH3IVW.mjs';
+import { e as createAstro, f as createComponent, m as maybeRenderHead, h as addAttribute, k as renderComponent, r as renderTemplate } from './astro/server_BEzeNKqC.mjs';
 import 'piccolore';
-import { $ as $$Badge } from './Badge_DZ7cx3Em.mjs';
+import { $ as $$Badge } from './Badge_B8qNpxPG.mjs';
 /* empty css                         */
 
 const $$Astro = createAstro("https://test-danapfel-digital.de");

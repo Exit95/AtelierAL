@@ -1,4 +1,4 @@
-import { g as getItem, s as saveItem } from '../../../chunks/storage_BxzIridr.mjs';
+import { g as getItem, s as saveItem } from '../../../chunks/storage_DpN-KgD-.mjs';
 export { renderers } from '../../../renderers.mjs';
 
 const POST = async ({ request }) => {
@@ -37,7 +37,7 @@ const POST = async ({ request }) => {
       });
     }
     try {
-      const { sendBookingConfirmation, sendAdminNotification } = await import('../../../chunks/email_rr4DQ-N6.mjs');
+      const { sendBookingConfirmation, sendAdminNotification } = await import('../../../chunks/email_BMWGYNOJ.mjs');
       const date = new Date(workshop.date).toLocaleDateString("de-DE", {
         weekday: "long",
         year: "numeric",

@@ -1,4 +1,4 @@
-import { g as getSessionFromCookies, d as deleteSession, b as deleteSessionCookie } from '../../../chunks/auth_mxHGmgbS.mjs';
+import { g as getSessionFromCookies, d as deleteSession, b as deleteSessionCookie } from '../../../chunks/auth_DMMMreQm.mjs';
 export { renderers } from '../../../renderers.mjs';
 
 const POST = async ({ request }) => {

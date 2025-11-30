@@ -1,4 +1,4 @@
-import { d as deleteItem } from '../../../../chunks/storage_BxzIridr.mjs';
+import { d as deleteItem } from '../../../../chunks/storage_DpN-KgD-.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
 const DELETE = async ({ params }) => {

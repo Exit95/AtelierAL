@@ -6,7 +6,7 @@ async function verifyCredentials(username, password) {
   if (username !== ADMIN_USERNAME) {
     return false;
   }
-  return password === "admin123";
+  return password === "asdmin123";
 }
 function createSession(username) {
   const sessionId = generateSessionId();

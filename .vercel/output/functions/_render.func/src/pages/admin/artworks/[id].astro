@@ -10,29 +10,28 @@ if (!artwork) {
 }
 
 const data = artwork;
-const imagesStr = Array.isArray(data.images)
-    ? data.images.join(", ")
-    : "";
-const tagsStr = Array.isArray(data.tags)
-    ? data.tags.join(", ")
-    : "";
+const imagesStr = Array.isArray(data.images) ? data.images.join(", ") : "";
+const tagsStr = Array.isArray(data.tags) ? data.tags.join(", ") : "";
 ---
 
 <AdminLayout title="Werk bearbeiten">
     <form id="artworkForm" class="admin-form">
         <div class="form-group">
             <label for="title">Titel*</label>
-            <input type="text" id="title" name="title" required value={data.title} />
+            <input
+                type="text"
+                id="title"
+                name="title"
+                required
+                value={data.title}
+            />
         </div>
 
         <div class="form-group">
             <label for="description">Beschreibung*</label>
-            <textarea
-                id="description"
-                name="description"
-                required
-                rows="4"
-            >{data.description}</textarea>
+            <textarea id="description" name="description" required rows="4"
+                >{data.description}</textarea
+            >
         </div>
 
         <div class="form-group">
@@ -72,8 +71,12 @@ const tagsStr = Array.isArray(data.tags)
             <div class="form-group">
                 <label for="unit">Einheit*</label>
                 <select id="unit" name="unit">
-                    <option value="cm" selected={data.size.unit === "cm"}>cm</option>
-                    <option value="mm" selected={data.size.unit === "mm"}>mm</option>
+                    <option value="cm" selected={data.size.unit === "cm"}
+                        >cm</option
+                    >
+                    <option value="mm" selected={data.size.unit === "mm"}
+                        >mm</option
+                    >
                 </select>
             </div>
         </div>
@@ -85,15 +88,16 @@ const tagsStr = Array.isArray(data.tags)
                     <option
                         value="available"
                         selected={data.availability === "available"}
-                    >Verfügbar</option>
+                        >Verfügbar</option
+                    >
                     <option
                         value="reserved"
                         selected={data.availability === "reserved"}
-                    >Reserviert</option>
-                    <option
-                        value="sold"
-                        selected={data.availability === "sold"}
-                    >Verkauft</option>
+                        >Reserviert</option
+                    >
+                    <option value="sold" selected={data.availability === "sold"}
+                        >Verkauft</option
+                    >
                 </select>
             </div>
 
@@ -127,13 +131,7 @@ const tagsStr = Array.isArray(data.tags)
 
         <div class="form-group">
             <label for="tags">Tags (komma-getrennt)*</label>
-            <input
-                type="text"
-                id="tags"
-                name="tags"
-                required
-                value={tagsStr}
-            />
+            <input type="text" id="tags" name="tags" required value={tagsStr} />
         </div>
 
         <div class="form-group">
@@ -160,8 +158,8 @@ const tagsStr = Array.isArray(data.tags)
 </AdminLayout>
 
 <script define:vars={{ artworkId: id }}>
-    const form = document.getElementById("artworkForm") as HTMLFormElement;
-    const messageDiv = document.getElementById("message") as HTMLDivElement;
+    const form = document.getElementById("artworkForm");
+    const messageDiv = document.getElementById("message");
 
     form?.addEventListener("submit", async (e) => {
         e.preventDefault();
