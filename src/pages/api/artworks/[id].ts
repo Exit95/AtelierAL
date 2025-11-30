@@ -7,6 +7,7 @@ export const PUT: APIRoute = async ({ params, request }) => {
         if (!id) throw new Error('No ID provided');
 
         const data = await request.json();
+        console.log('Artwork update request:', { id, data });
 
         const artwork: Artwork = {
             id,
