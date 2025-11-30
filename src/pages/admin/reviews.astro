@@ -325,16 +325,47 @@ const sortedReviews = reviews.sort(
     }
 
     @media (max-width: 768px) {
+        .reviews-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .stats {
+            gap: 1rem;
+        }
+
+        .stat {
+            flex: 1 1 calc(50% - 1rem);
+            padding: 0.75rem;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+        }
+
+        .review-item {
+            padding: 1rem;
+        }
+
         .review-header-row {
             flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .review-meta strong {
+            font-size: 1rem;
         }
 
         .review-actions {
             flex-direction: column;
+            gap: 0.5rem;
         }
 
         .action-btn {
             width: 100%;
+            padding: 0.75rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 </style>
