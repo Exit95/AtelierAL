@@ -16,7 +16,10 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
+        console.log('Login attempt:', { username, passwordReceived: !!password });
+
         const isValid = await verifyCredentials(username, password);
+        console.log('Credentials valid:', isValid);
 
         if (!isValid) {
             return new Response(JSON.stringify({
