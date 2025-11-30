@@ -161,3 +161,72 @@ export async function sendAdminNotification(
 
   await transporter.sendMail(mailOptions);
 }
+
+export async function sendContactNotification(
+  name: string,
+  email: string,
+  phone: string,
+  preferredDate: string,
+  message: string
+) {
+  const mailOptions = {
+    from: '"ATELIER KL Kontakt" <office@danapfel-digital.de>',
+    to: 'danapfelmichael7@gmail.com',
+    replyTo: email,
+    subject: `Neue Kontaktanfrage von ${name}`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+          .header { background: #f5f5f5; padding: 15px; border-radius: 6px 6px 0 0; border-bottom: 2px solid #8B7355; }
+          .header h2 { margin: 0; color: #333; font-size: 18px; }
+          .content { padding: 20px; }
+          .field { margin-bottom: 15px; }
+          .label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+          .value { font-size: 16px; font-weight: 500; }
+          .message-box { background: #fff9f0; padding: 15px; border-radius: 4px; border-left: 3px solid #8B7355; margin-top: 20px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h2>Neue Kontaktanfrage</h2>
+          </div>
+          <div class="content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div class="field">
+                <span class="label">Name</span>
+                <div class="value">${name}</div>
+              </div>
+              <div class="field">
+                <span class="label">Wunschtermin</span>
+                <div class="value">${preferredDate || '-'}</div>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="label">E-Mail</span>
+              <div class="value"><a href="mailto:${email}" style="color: #8B7355; text-decoration: none;">${email}</a></div>
+            </div>
+
+            <div class="field">
+              <span class="label">Telefon</span>
+              <div class="value"><a href="tel:${phone}" style="color: #8B7355; text-decoration: none;">${phone || '-'}</a></div>
+            </div>
+
+            <div class="message-box">
+              <span class="label">Nachricht</span>
+              <div style="margin-top: 5px;">${message.replace(/\n/g, '<br>')}</div>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+  };
+
+  await transporter.sendMail(mailOptions);
+}
