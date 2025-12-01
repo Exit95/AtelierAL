@@ -1,30 +1,9 @@
 ---
 import AdminLayout from "../../layouts/AdminLayout.astro";
-import { getItems, type Workshop, type Artwork, type Review } from "../../lib/storage";
-import { readdir } from 'fs/promises';
-import { join } from 'path';
+import { getItems, type Workshop, type Artwork } from "../../lib/storage";
 
 const workshops = await getItems<Workshop>("workshops");
 const artworks = await getItems<Artwork>("artworks");
-const reviews = await getItems<Review>("reviews");
-
-// Count images
-let imageCount = 0;
-try {
-    const isProd = import.meta.env.PROD;
-    const uploadsDir = isProd
-        ? join(process.cwd(), 'uploads')
-        : join(process.cwd(), 'public', 'uploads');
-    
-    const files = await readdir(uploadsDir);
-    imageCount = files.filter(file => 
-        !file.startsWith('.') && 
-        file !== 'temp' && 
-        /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
-    ).length;
-} catch (error) {
-    console.error('Error counting images:', error);
-}
 ---
 
 <AdminLayout title="Dashboard">
@@ -50,7 +29,7 @@ try {
         <div class="stat-card">
             <div class="stat-icon">📁</div>
             <div class="stat-content">
-                <div class="stat-number">{imageCount}</div>
+                <div class="stat-number">-</div>
                 <div class="stat-label">Bilder</div>
             </div>
             <a href="/admin/images" class="stat-link">Verwalten →</a>
@@ -59,7 +38,7 @@ try {
         <div class="stat-card">
             <div class="stat-icon">⭐</div>
             <div class="stat-content">
-                <div class="stat-number">{reviews.length}</div>
+                <div class="stat-number">-</div>
                 <div class="stat-label">Bewertungen</div>
             </div>
             <a href="/admin/reviews" class="stat-link">Verwalten →</a>
@@ -150,7 +129,6 @@ try {
         gap: 0.75rem;
         flex-wrap: wrap;
     }
-
 
     @media (max-width: 640px) {
         .action-buttons {
