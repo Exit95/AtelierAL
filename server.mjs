@@ -1,4 +1,4 @@
-import { handler as ssrHandler } from './server/entry.mjs';
+import { handler as ssrHandler } from './dist/server/entry.mjs';
 import express from 'express';
 
 const app = express();
