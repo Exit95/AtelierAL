@@ -1,6 +1,40 @@
 import type { APIRoute } from 'astro';
-import { unlink } from 'fs/promises';
+import { unlink, readFile } from 'fs/promises';
 import { join } from 'path';
+import { lookup } from 'mime-types';
+
+export const GET: APIRoute = async ({ params }) => {
+    try {
+        const filename = params.filename;
+
+        if (!filename) {
+            return new Response('File not found', { status: 404 });
+        }
+
+        // Determine upload directory based on environment
+        const isProd = import.meta.env.PROD;
+        const uploadsDir = isProd
+            ? join(process.cwd(), 'uploads')
+            : join(process.cwd(), 'public', 'uploads');
+
+        const filepath = join(uploadsDir, filename);
+
+        // Read and serve the file
+        const fileBuffer = await readFile(filepath);
+        const mimeType = lookup(filename) || 'application/octet-stream';
+
+        return new Response(fileBuffer, {
+            status: 200,
+            headers: {
+                'Content-Type': mimeType,
+                'Cache-Control': 'public, max-age=31536000',
+            }
+        });
+    } catch (error) {
+        console.error('❌ File read error:', error);
+        return new Response('File not found', { status: 404 });
+    }
+};
 
 export const DELETE: APIRoute = async ({ params }) => {
     try {

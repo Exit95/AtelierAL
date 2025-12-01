@@ -5,7 +5,7 @@ import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://test-danapfel-digital.de',
+    site: 'https://atelierkl.de',
     output: 'server',
     security: {
         checkOrigin: false

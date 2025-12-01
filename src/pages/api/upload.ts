@@ -78,9 +78,15 @@ export const POST: APIRoute = async ({ request }) => {
 
                             await rename(tempFilePath, finalPath);
 
+                            // In production, serve via API route; in dev, serve from public
+                            const isProd = import.meta.env.PROD;
+                            const imageUrl = isProd
+                                ? `/api/images/${finalFilename}`
+                                : `/uploads/${finalFilename}`;
+
                             resolve(new Response(JSON.stringify({
                                 success: true,
-                                url: `/uploads/${finalFilename}`,
+                                url: imageUrl,
                                 filename: finalFilename,
                                 completed: true
                             }), {
