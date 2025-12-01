@@ -74,8 +74,8 @@ export async function sendBookingConfirmation(
             <p>Mit kreativen Grüßen,<br>Katharina Lanvermann</p>
           </div>
           <div class="footer">
-            <p>ATELIER KL - Hauptstraße 45 - 48619 Heek</p>
-            <p><a href="https://atelier-kl.de" style="color: #8B7355; text-decoration: none;">www.atelier-kl.de</a></p>
+            <p>ATELIER KL - Bockhorn 68 - 48683 Ahaus</p>
+            <p><a href="https://atelierkl.de" style="color: #8B7355; text-decoration: none;">www.atelierkl.de</a></p>
           </div>
         </div>
       </body>
@@ -96,7 +96,7 @@ export async function sendAdminNotification(
 ) {
   const mailOptions = {
     from: '"ATELIER KL System" <office@danapfel-digital.de>',
-    to: 'danapfelmichael7@gmail.com',
+    to: 'studio@atelierkl.de',
     subject: `Neue Buchung: ${workshopTitle}`,
     html: `
       <!DOCTYPE html>
@@ -171,7 +171,7 @@ export async function sendContactNotification(
 ) {
   const mailOptions = {
     from: '"ATELIER KL Kontakt" <office@danapfel-digital.de>',
-    to: 'danapfelmichael7@gmail.com',
+    to: 'studio@atelierkl.de',
     replyTo: email,
     subject: `Neue Kontaktanfrage von ${name}`,
     html: `
@@ -215,6 +215,93 @@ export async function sendContactNotification(
             <div class="field">
               <span class="label">Telefon</span>
               <div class="value"><a href="tel:${phone}" style="color: #8B7355; text-decoration: none;">${phone || '-'}</a></div>
+            </div>
+
+            <div class="message-box">
+              <span class="label">Nachricht</span>
+              <div style="margin-top: 5px;">${message.replace(/\n/g, '<br>')}</div>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+
+export async function sendArtworkInquiry(
+  name: string,
+  email: string,
+  phone: string,
+  message: string,
+  artworkTitle: string,
+  artworkId: string,
+  artworkPrice: string,
+  artworkSize: string
+) {
+  const mailOptions = {
+    from: '"ATELIER KL Werk-Anfrage" <office@danapfel-digital.de>',
+    to: 'studio@atelierkl.de',
+    replyTo: email,
+    subject: `Anfrage zum Werk: ${artworkTitle}`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+          .header { background: #f5f5f5; padding: 15px; border-radius: 6px 6px 0 0; border-bottom: 2px solid #8B7355; }
+          .header h2 { margin: 0; color: #333; font-size: 18px; }
+          .content { padding: 20px; }
+          .field { margin-bottom: 15px; }
+          .label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+          .value { font-size: 16px; font-weight: 500; }
+          .artwork-box { background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 4px solid #8B7355; margin-bottom: 20px; }
+          .message-box { background: #fff9f0; padding: 15px; border-radius: 4px; border-left: 3px solid #8B7355; margin-top: 20px; }
+          .btn { display: inline-block; background: #8B7355; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 15px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h2>🎨 Neue Anfrage zu einem Kunstwerk</h2>
+          </div>
+          <div class="content">
+            <div class="artwork-box">
+              <div class="field">
+                <span class="label">Angefragtes Werk</span>
+                <div class="value" style="font-size: 20px; color: #8B7355;">${artworkTitle}</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                <div class="field" style="margin-bottom: 0;">
+                  <span class="label">Preis</span>
+                  <div class="value">${artworkPrice} €</div>
+                </div>
+                <div class="field" style="margin-bottom: 0;">
+                  <span class="label">Größe</span>
+                  <div class="value">${artworkSize}</div>
+                </div>
+              </div>
+              <a href="https://atelierkl.de/werke/${artworkId}" class="btn">Werk ansehen →</a>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div class="field">
+                <span class="label">Interessent</span>
+                <div class="value">${name}</div>
+              </div>
+              <div class="field">
+                <span class="label">Telefon</span>
+                <div class="value"><a href="tel:${phone}" style="color: #8B7355; text-decoration: none;">${phone || '-'}</a></div>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="label">E-Mail</span>
+              <div class="value"><a href="mailto:${email}" style="color: #8B7355; text-decoration: none;">${email}</a></div>
             </div>
 
             <div class="message-box">

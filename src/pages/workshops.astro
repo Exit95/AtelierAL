@@ -20,44 +20,55 @@ const pastWorkshops = allWorkshops
     title="Workshops"
     description="Kreative Mal-Workshops bei ATELIER KL in Heek. Entdecken Sie Ihre künstlerische Seite in kleinen Gruppen mit persönlicher Betreuung."
 >
-    <section class="page-hero">
+    <!-- Hero Section -->
+    <section class="page-hero dark-section">
         <div class="container">
-            <h1>Workshops</h1>
+            <h1 class="hero-title handwriting">Workshops</h1>
             <p class="hero-subtitle">
-                Entdecken Sie Ihre Kreativität in inspirierender Atmosphäre
+                Entdecke deine kreative Seite! In meinen Workshops lernst du, wie du Farben, Formen und Techniken einsetzt, um deine eigene Kunst zu erschaffen. Ob Anfänger oder Fortgeschrittener – jeder ist willkommen!
             </p>
         </div>
     </section>
 
-    <!-- Workshop Benefits -->
-    <section
-        class="section py-12"
-        style="background-color: var(--color-surface);"
-    >
+    <!-- Info Boxes Section -->
+    <section class="info-section dark-section">
         <div class="container">
-            <div class="benefits-grid">
-                <div class="benefit">
-                    <h3>Kleine Gruppen</h3>
-                    <p>Maximal 8 Teilnehmer für persönliche Betreuung</p>
+            <div class="info-grid">
+                <!-- Was dich erwartet Box -->
+                <div class="info-box">
+                    <h3 class="info-title handwriting">Was dich erwartet:</h3>
+                    <ul class="info-list">
+                        <li>Grundlagen der Malerei: von Skizzen bis hin zu Farbkompositionen</li>
+                        <li>Technik: Experimentiere mit Acrylfarben</li>
+                        <li>Kreativität: Schaffe ein eigenes Kunstwerk in kreativer Atmosphäre.</li>
+                    </ul>
                 </div>
-                <div class="benefit">
-                    <h3>Alle Materialien inkl.</h3>
-                    <p>Hochwertige Farben, Leinwände und Werkzeuge</p>
-                </div>
-                <div class="benefit">
-                    <h3>Für Alle</h3>
-                    <p>Keine Vorkenntnisse erforderlich</p>
-                </div>
-                <div class="benefit">
-                    <h3>Wohlfühlatmosphäre</h3>
-                    <p>Getränke und Snacks inklusive</p>
+
+                <!-- Details Box -->
+                <div class="info-box">
+                    <h3 class="info-title handwriting">Details:</h3>
+                    <p class="info-detail"><strong>Dauer:</strong> 2,5 - 3 Stunden</p>
+                    <p class="info-detail"><strong>Material:</strong> Alles wird bereitgestellt – du brauchst nur deine Kreativität!</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Interest Section -->
+    <section class="interest-section dark-section">
+        <div class="container">
+            <h2 class="interest-title">INTERESSE?</h2>
+            <p class="interest-text handwriting">
+                Schreibe mir eine Nachricht. Aktuelle Termine findest du weiter unten!
+            </p>
+            <p class="interest-text handwriting">
+                Ich freue mich, mit dir zu arbeiten!
+            </p>
+        </div>
+    </section>
+
     <!-- Upcoming Workshops -->
-    <section class="section py-16">
+    <section class="section py-16 bg-light">
         <div class="container">
             <h2 class="section-title">Kommende Workshops</h2>
 
@@ -77,48 +88,6 @@ const pastWorkshops = allWorkshops
                     </p>
                 )
             }
-        </div>
-    </section>
-
-    <!-- What You'll Learn -->
-    <section
-        class="section py-16"
-        style="background-color: var(--color-surface);"
-    >
-        <div class="container">
-            <div class="content-box">
-                <h2 class="section-title">Was Sie erwartet</h2>
-                <div class="learn-grid">
-                    <div class="learn-item">
-                        <h3>Intuitive Malweise</h3>
-                        <p>
-                            Lernen Sie, ohne Vorgaben zu malen und Ihrer
-                            Kreativität freien Lauf zu lassen
-                        </p>
-                    </div>
-                    <div class="learn-item">
-                        <h3>Techniken</h3>
-                        <p>
-                            Entdecken Sie verschiedene Techniken mit
-                            Acrylfarben, Spachteln und Pigmenten
-                        </p>
-                    </div>
-                    <div class="learn-item">
-                        <h3>Farbharmonien</h3>
-                        <p>
-                            Verstehen Sie, wie Farben zusammenwirken und
-                            Stimmungen erzeugen
-                        </p>
-                    </div>
-                    <div class="learn-item">
-                        <h3>Ihr Werk</h3>
-                        <p>
-                            Nehmen Sie Ihr eigenes, fertig gerahmtes Kunstwerk
-                            mit nach Hause
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -145,75 +114,122 @@ const pastWorkshops = allWorkshops
 </Layout>
 
 <style>
+    .dark-section {
+        background-color: var(--color-dark);
+        color: var(--color-text-light);
+    }
+
+    .bg-light {
+        background-color: var(--color-surface);
+    }
+
+    /* Hero Section */
     .page-hero {
         padding: var(--space-16) 0 var(--space-8);
-        background: linear-gradient(
-            135deg,
-            var(--color-brand-beige-light),
-            var(--color-surface)
-        );
         text-align: center;
     }
 
-    .page-hero h1 {
-        margin-bottom: var(--space-4);
+    .hero-title.handwriting {
+        font-family: 'Dancing Script', cursive;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 500;
+        line-height: 1.1;
+        margin-bottom: var(--space-6);
+        color: var(--color-light);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
     .hero-subtitle {
-        font-size: var(--font-size-xl);
-        color: var(--color-text-secondary);
-        max-width: 600px;
+        font-size: var(--font-size-base);
+        color: var(--color-light);
+        max-width: 800px;
         margin: 0 auto;
+        line-height: 1.7;
     }
 
-    .section-title {
-        text-align: center;
-        margin-bottom: var(--space-12);
+    /* Info Section */
+    .info-section {
+        padding: var(--space-8) 0;
     }
 
-    .benefits-grid {
+    .info-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: 1fr;
         gap: var(--space-6);
     }
 
-    .benefit {
-        text-align: center;
-        padding: var(--space-6);
+    @media (min-width: 768px) {
+        .info-grid {
+            grid-template-columns: 1.5fr 1fr;
+            gap: var(--space-8);
+        }
     }
 
-    .benefit-icon {
-        font-size: 3rem;
+    .info-box {
+        background-color: var(--color-surface);
+        padding: var(--space-6);
+        border-radius: var(--radius-base);
+    }
+
+    .info-title.handwriting {
+        font-family: 'Dancing Script', cursive;
+        font-size: clamp(1.5rem, 2.5vw, 2rem);
+        font-weight: 500;
+        color: var(--color-dark);
         margin-bottom: var(--space-4);
     }
 
-    .benefit h3 {
+    .info-list {
+        list-style: disc;
+        padding-left: var(--space-5);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-sm);
+        line-height: 1.8;
+    }
+
+    .info-list li {
         margin-bottom: var(--space-2);
     }
 
-    .benefit p {
-        color: var(--color-text-secondary);
+    .info-detail {
         font-size: var(--font-size-sm);
-    }
-
-    .content-box {
-        max-width: 900px;
-        margin: 0 auto;
-    }
-
-    .learn-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: var(--space-6);
-    }
-
-    .learn-item h3 {
+        color: var(--color-text-primary);
+        line-height: 1.7;
         margin-bottom: var(--space-2);
-        color: var(--color-accent);
     }
 
-    .learn-item p {
+    .info-detail strong {
+        color: var(--color-dark);
+    }
+
+    /* Interest Section */
+    .interest-section {
+        padding: var(--space-12) 0;
+    }
+
+    .interest-title {
+        font-family: var(--font-sans);
         font-size: var(--font-size-sm);
-        line-height: var(--line-height-relaxed);
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        color: var(--color-light);
+        margin-bottom: var(--space-2);
+        font-style: italic;
+    }
+
+    .interest-text.handwriting {
+        font-family: 'Dancing Script', cursive;
+        font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+        font-weight: 500;
+        color: var(--color-light);
+        line-height: 1.4;
+        margin-bottom: var(--space-1);
+    }
+
+    /* Section Title */
+    .section-title {
+        text-align: center;
+        margin-bottom: var(--space-12);
     }
 </style>

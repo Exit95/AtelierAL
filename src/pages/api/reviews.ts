@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getItems, saveItem, type Review } from '../../lib/storage';
+import { sanitizeInput, sanitizeHtml, isValidEmail, isValidName, isSafeInput } from '../../lib/security';
 
 // GET: Fetch all approved reviews
 export const GET: APIRoute = async () => {
@@ -35,6 +36,14 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
+        // Security validation - check for malicious patterns
+        if (!isSafeInput(data.name) || !isSafeInput(data.text)) {
+            return new Response(JSON.stringify({ error: 'Ungültige Eingabe erkannt.' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
         // Validate rating
         const rating = typeof data.rating === 'string' ? parseInt(data.rating) : data.rating;
         if (isNaN(rating) || rating < 1 || rating > 5) {
@@ -44,9 +53,9 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
-        // Validate name length
-        if (data.name.length < 2 || data.name.length > 100) {
-            return new Response(JSON.stringify({ error: 'Name muss zwischen 2 und 100 Zeichen lang sein.' }), {
+        // Validate name
+        if (!isValidName(data.name)) {
+            return new Response(JSON.stringify({ error: 'Bitte geben Sie einen gültigen Namen an (2-100 Zeichen).' }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -61,21 +70,26 @@ export const POST: APIRoute = async ({ request }) => {
         }
 
         // Validate email if provided
-        if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+        if (data.email && !isValidEmail(data.email)) {
             return new Response(JSON.stringify({ error: 'Bitte geben Sie eine gültige E-Mail-Adresse an.' }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
 
+        // Sanitize inputs
+        const sanitizedName = sanitizeHtml(sanitizeInput(data.name));
+        const sanitizedText = sanitizeHtml(sanitizeInput(data.text));
+        const sanitizedEmail = data.email ? sanitizeInput(data.email) : undefined;
+
         // Create review object
-        const reviewId = `review-${Date.now()}`;
+        const reviewId = `review-${Date.now()}-${Math.random().toString(36).substring(7)}`;
         const review: Review = {
             id: reviewId,
-            name: data.name.trim(),
-            email: data.email ? data.email.trim() : undefined,
+            name: sanitizedName,
+            email: sanitizedEmail,
             rating,
-            text: data.text.trim(),
+            text: sanitizedText,
             date: new Date().toISOString(),
             status: 'pending' // Requires admin approval
         };

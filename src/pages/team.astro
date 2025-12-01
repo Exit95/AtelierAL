@@ -1,5 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getItems, type Artwork } from "../lib/storage";
+
+// Lade die letzten 4 Werke für "Bisherige Arbeit"
+const allArtworks = await getItems<Artwork>("artworks");
+const recentArtworks = allArtworks.slice(0, 4);
 ---
 
 <Layout
@@ -11,9 +16,8 @@ import Layout from "../layouts/Layout.astro";
         <div class="container">
             <div class="content-grid">
                 <div class="text-content">
-                    <h1 class="section-title">
-                        ÜBER<br />
-                        <span class="script-highlight">MICH</span>
+                    <h1 class="section-title handwriting">
+                        Über mich
                     </h1>
                     <div class="text-body">
                         <p>
@@ -58,23 +62,17 @@ import Layout from "../layouts/Layout.astro";
     <!-- Bisherige Arbeit Section (Preview) -->
     <section class="section py-16 light-section">
         <div class="container">
-            <h2 class="section-title-center">BISHERIGE ARBEIT</h2>
+            <h2 class="section-title-center handwriting">Bisherige Arbeit</h2>
             <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img
-                        src="/werk_deepastheocean.jpg"
-                        alt="Deep As The Ocean - Abstraktes Kunstwerk"
-                    />
-                </div>
-                <div class="gallery-item">
-                    <img src="/werk_everythingwillbeokay.jpg" alt="Everything Will Be Okay - Abstraktes Kunstwerk" />
-                </div>
-                <div class="gallery-item">
-                    <img src="/werk_notafraidtotry.jpg" alt="Not Afraid To Try - Abstraktes Kunstwerk" />
-                </div>
-                <div class="gallery-item">
-                    <img src="/werk_silence.jpg" alt="Silence - Abstraktes Kunstwerk" />
-                </div>
+                {recentArtworks.map((artwork) => (
+                    <a href={`/werke/${artwork.id}`} class="gallery-item">
+                        <img
+                            src={artwork.images?.[0] || '/placeholder.jpg'}
+                            alt={artwork.title}
+                            loading="lazy"
+                        />
+                    </a>
+                ))}
             </div>
         </div>
     </section>
@@ -125,12 +123,18 @@ import Layout from "../layouts/Layout.astro";
         font-weight: 400;
     }
 
-    .script-highlight {
-        font-family: var(--font-script);
-        font-style: italic;
-        font-weight: 300;
-        display: block;
-        margin-top: -0.2em;
+    .section-title.handwriting {
+        font-family: 'Dancing Script', cursive;
+        font-weight: 500;
+        line-height: 1.1;
+        color: white;
+    }
+
+    .section-title-center.handwriting {
+        font-family: 'Dancing Script', cursive;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 500;
+        line-height: 1.1;
     }
 
     .text-body p {
@@ -186,9 +190,10 @@ import Layout from "../layouts/Layout.astro";
     }
 
     .quote-text {
-        font-family: var(--font-serif);
-        font-size: clamp(1.5rem, 3vw, 2.5rem);
-        line-height: 1.4;
+        font-family: 'Dancing Script', cursive;
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 500;
+        line-height: 1.5;
         color: var(--color-light);
     }
 </style>

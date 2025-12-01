@@ -1,7 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Badge from "../../components/Badge.astro";
-import CTAButton from "../../components/CTAButton.astro";
 import { getItem, type Artwork } from "../../lib/storage";
 
 const { id } = Astro.params;
@@ -22,6 +21,8 @@ const availabilityLabel =
         : artwork.availability === "reserved"
           ? "Reserviert"
           : "Verkauft";
+
+const artworkSize = `${artwork.size.width} × ${artwork.size.height} ${artwork.size.unit}`;
 ---
 
 <Layout title={`${artwork.title} - Werk`} description={artwork.description}>
@@ -31,7 +32,7 @@ const availabilityLabel =
 
             <div class="artwork-grid">
                 <div class="artwork-content">
-                    <div class="artwork-image-container">
+                    <div class="artwork-image-container" data-lightbox-trigger data-image-url={artwork.images[0]}>
                         <img
                             src={artwork.images[0]}
                             alt={artwork.title}
@@ -41,6 +42,9 @@ const availabilityLabel =
                             variant={artwork.availability}
                             label={availabilityLabel}
                         />
+                        <div class="image-zoom-hint">
+                            <span>🔍 Klicken zum Vergrößern</span>
+                        </div>
                     </div>
 
                     {
@@ -69,15 +73,15 @@ const availabilityLabel =
                         </div>
                         <div class="meta-item">
                             <span class="meta-label">Größe:</span>
-                            <span class="meta-value"
-                                >{artwork.size.width} × {artwork.size.height} {
-                                    artwork.size.unit
-                                }</span
-                            >
+                            <span class="meta-value">{artworkSize}</span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-label">Preis:</span>
                             <span class="meta-value">{artwork.price} €</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Status:</span>
+                            <span class={`meta-value status-${artwork.availability}`}>{availabilityLabel}</span>
                         </div>
                     </div>
 
@@ -95,23 +99,92 @@ const availabilityLabel =
                         )
                     }
 
-                    <div class="artwork-actions">
-                        {
-                            artwork.availability === "available" && (
-                                <CTAButton
-                                    label="Anfrage senden"
-                                    href={`/kontakt?werk=${artwork.id}`}
-                                    type="primary"
-                                />
-                            )
-                        }
-                        <CTAButton
-                            label="Alle Werke ansehen"
-                            href="/werke"
-                            type="secondary"
+                    {artwork.createdDate && (
+                        <p class="artwork-date">
+                            Erstellt: {new Date(artwork.createdDate).toLocaleDateString('de-DE', { year: 'numeric', month: 'long' })}
+                        </p>
+                    )}
+                </div>
+            </div>
+
+            <!-- Anfrage-Formular -->
+            <div class="inquiry-section" id="anfrage">
+                <h2>Anfrage zu diesem Werk</h2>
+                <p class="inquiry-subtitle">
+                    Interessieren Sie sich für <strong>"{artwork.title}"</strong>?
+                    Füllen Sie das Formular aus und ich melde mich bei Ihnen.
+                </p>
+
+                <form class="inquiry-form" data-artwork-form>
+                    <input type="hidden" name="artworkId" value={artwork.id} />
+                    <input type="hidden" name="artworkTitle" value={artwork.title} />
+                    <input type="hidden" name="artworkPrice" value={artwork.price} />
+                    <input type="hidden" name="artworkSize" value={artworkSize} />
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Name *</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                required
+                                placeholder="Ihr Name"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-Mail *</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                required
+                                placeholder="ihre.email@beispiel.de"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Telefon (optional)</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="+49 123 456789"
                         />
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        <label for="message">Ihre Nachricht *</label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            rows="4"
+                            required
+                            placeholder={`Ich interessiere mich für das Werk "${artwork.title}". ...`}
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="privacy" required />
+                            <span>
+                                Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und akzeptiere sie. *
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="form-alert" data-form-alert hidden></div>
+
+                    <button type="submit" class="submit-button" data-submit-button>
+                        <span class="button-text">Anfrage senden</span>
+                        <span class="button-loader" hidden>Wird gesendet...</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="back-to-gallery">
+                <a href="/werke" class="btn-secondary">← Alle Werke ansehen</a>
             </div>
         </div>
     </div>
@@ -123,16 +196,82 @@ const availabilityLabel =
     const mainImage = document.querySelector(
         ".artwork-image",
     ) as HTMLImageElement;
+    const mainImageContainer = document.querySelector(
+        ".artwork-image-container",
+    ) as HTMLElement;
 
     thumbnails.forEach((thumbnail) => {
         thumbnail.addEventListener("click", () => {
-            const index = thumbnail.getAttribute("data-thumbnail-index");
             const imageSrc = (thumbnail as HTMLImageElement).src;
             if (mainImage && imageSrc) {
                 mainImage.src = imageSrc;
+                // Update lightbox trigger URL
+                if (mainImageContainer) {
+                    mainImageContainer.setAttribute("data-image-url", imageSrc);
+                }
             }
         });
     });
+
+    // Handle artwork inquiry form
+    const form = document.querySelector("[data-artwork-form]") as HTMLFormElement;
+    const submitButton = document.querySelector("[data-submit-button]") as HTMLButtonElement;
+    const buttonText = submitButton?.querySelector(".button-text") as HTMLElement;
+    const buttonLoader = submitButton?.querySelector(".button-loader") as HTMLElement;
+    const formAlert = document.querySelector("[data-form-alert]") as HTMLElement;
+
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            // Show loading state
+            if (submitButton) submitButton.disabled = true;
+            if (buttonText) buttonText.hidden = true;
+            if (buttonLoader) buttonLoader.hidden = false;
+
+            try {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+                data.privacy = "true";
+
+                const response = await fetch("/api/artwork-inquiry", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || "Fehler beim Senden");
+                }
+
+                // Show success message
+                if (formAlert) {
+                    formAlert.className = "form-alert alert alert-success";
+                    formAlert.innerHTML = `
+                        <div class="alert-title">Vielen Dank!</div>
+                        <div class="alert-message">Ihre Anfrage wurde erfolgreich gesendet. Ich melde mich bald bei Ihnen.</div>
+                    `;
+                    formAlert.hidden = false;
+                }
+                form.reset();
+            } catch (error) {
+                if (formAlert) {
+                    formAlert.className = "form-alert alert alert-error";
+                    formAlert.innerHTML = `
+                        <div class="alert-title">Fehler</div>
+                        <div class="alert-message">Es gab ein Problem beim Senden. Bitte versuchen Sie es später erneut.</div>
+                    `;
+                    formAlert.hidden = false;
+                }
+            } finally {
+                if (submitButton) submitButton.disabled = false;
+                if (buttonText) buttonText.hidden = false;
+                if (buttonLoader) buttonLoader.hidden = true;
+            }
+        });
+    }
 </script>
 
 <style>
@@ -268,17 +407,193 @@ const availabilityLabel =
         font-weight: var(--font-weight-medium);
     }
 
-    .artwork-actions {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-3);
-        margin-top: var(--space-4);
+    .artwork-date {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        margin-top: var(--space-2);
     }
 
-    @media (min-width: 768px) {
-        .artwork-actions {
-            flex-direction: row;
+    .status-available { color: var(--color-success); }
+    .status-reserved { color: var(--color-warning); }
+    .status-sold { color: var(--color-error); }
+
+    .artwork-image-container {
+        cursor: pointer;
+    }
+
+    .image-zoom-hint {
+        position: absolute;
+        bottom: var(--space-3);
+        right: var(--space-3);
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-base);
+        font-size: var(--font-size-sm);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .artwork-image-container:hover .image-zoom-hint {
+        opacity: 1;
+    }
+
+    /* Inquiry Section */
+    .inquiry-section {
+        margin-top: var(--space-16);
+        padding: var(--space-8);
+        background: var(--color-surface);
+        border-radius: var(--radius-lg);
+        max-width: 700px;
+    }
+
+    .inquiry-section h2 {
+        margin-bottom: var(--space-3);
+        color: var(--color-text-primary);
+    }
+
+    .inquiry-subtitle {
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-6);
+    }
+
+    .inquiry-form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+
+    @media (min-width: 600px) {
+        .form-row {
+            grid-template-columns: 1fr 1fr;
         }
     }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .form-group label {
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-sm);
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: var(--space-3) var(--space-4);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-base);
+        font-size: var(--font-size-base);
+        transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--color-brand-beige);
+        box-shadow: 0 0 0 3px rgba(139, 139, 107, 0.1);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .checkbox-group {
+        margin-top: var(--space-2);
+    }
+
+    .checkbox-label {
+        display: flex;
+        gap: var(--space-3);
+        align-items: flex-start;
+        font-size: var(--font-size-sm);
+        cursor: pointer;
+    }
+
+    .checkbox-label input {
+        margin-top: 3px;
+        width: 18px;
+        height: 18px;
+    }
+
+    .checkbox-label a {
+        color: var(--color-brand-beige);
+        text-decoration: underline;
+    }
+
+    .form-alert {
+        padding: var(--space-4);
+        border-radius: var(--radius-base);
+    }
+
+    .alert-success {
+        background: var(--color-success-light, #e8f5e9);
+        border-left: 4px solid var(--color-success);
+    }
+
+    .alert-error {
+        background: var(--color-error-light, #ffebee);
+        border-left: 4px solid var(--color-error);
+    }
+
+    .alert-title {
+        font-weight: var(--font-weight-semibold);
+        margin-bottom: var(--space-1);
+    }
+
+    .submit-button {
+        padding: var(--space-4) var(--space-6);
+        background: var(--color-brand-beige);
+        color: white;
+        border: none;
+        border-radius: var(--radius-base);
+        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-base);
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: var(--space-2);
+    }
+
+    .submit-button:hover:not(:disabled) {
+        background: var(--color-brand-beige-dark);
+        transform: translateY(-2px);
+    }
+
+    .submit-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .back-to-gallery {
+        margin-top: var(--space-8);
+        text-align: center;
+    }
+
+    .btn-secondary {
+        display: inline-block;
+        padding: var(--space-3) var(--space-6);
+        background: transparent;
+        color: var(--color-brand-beige);
+        border: 2px solid var(--color-brand-beige);
+        border-radius: var(--radius-base);
+        text-decoration: none;
+        font-weight: var(--font-weight-medium);
+        transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+        background: var(--color-brand-beige);
+        color: white;
+    }
 </style>
+
 

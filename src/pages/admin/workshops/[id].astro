@@ -169,6 +169,10 @@ const materialsStr = Array.isArray(data.materials)
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
+        // Checkbox explizit setzen (unchecked = nicht in FormData)
+        const bookingCheckbox = document.getElementById("bookingEnabled");
+        data.bookingEnabled = bookingCheckbox?.checked ? "true" : "false";
+
         try {
             const res = await fetch(`/api/workshops/${workshopId}/update`, {
                 method: "PUT",
@@ -257,8 +261,13 @@ const materialsStr = Array.isArray(data.materials)
     }
 
     .btn-primary {
-        background: var(--color-brand-beige);
-        color: white;
+        background: #c9a882 !important;
+        color: white !important;
+    }
+
+    .btn-primary:hover {
+        background: #b8956f !important;
+        transform: translateY(-2px);
     }
 
     .btn-secondary {

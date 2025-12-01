@@ -50,7 +50,7 @@ const techniques = [...new Set(artworks.map((artwork) => artwork.technique))];
         >
     </div>
 
-    <div class="gallery-grid masonry" data-gallery-grid>
+    <div class="gallery-grid" data-gallery-grid>
         {
             artworks.length === 0 ? (
                 <div class="gallery-empty">
@@ -67,8 +67,6 @@ const techniques = [...new Set(artworks.map((artwork) => artwork.technique))];
                         <a
                             href={`/werke/${artwork.id}`}
                             class="artwork-link"
-                            data-lightbox-trigger
-                            data-image-url={artwork.images[0]}
                         >
                             <div class="artwork-image">
                                 <img
@@ -252,7 +250,22 @@ const techniques = [...new Set(artworks.map((artwork) => artwork.technique))];
     }
 
     .gallery-grid {
-        /* Masonry styles are defined in global.css */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+    }
+
+    @media (min-width: 640px) {
+        .gallery-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .gallery-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-5);
+        }
     }
 
     .gallery-item {

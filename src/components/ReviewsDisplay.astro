@@ -23,7 +23,7 @@ try {
 
 <div class="reviews-section">
     <div class="section-header text-center">
-        <h2>{ttitle}</h2>
+        <h2 class="handwriting">{ttitle}</h2>
         {
             reviews.length > 0 && (
                 <p class="text-secondary">Das sagen unsere Kunden über uns</p>
@@ -87,6 +87,12 @@ try {
 
     .section-header h2 {
         margin-bottom: var(--space-3);
+    }
+
+    .section-header h2.handwriting {
+        font-family: 'Dancing Script', cursive;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 500;
     }
 
     .reviews-grid {

@@ -1,0 +1,27 @@
+{
+  "name": "ATELIER KL - Abstrakte Kunst & Workshops",
+  "short_name": "ATELIER KL",
+  "description": "Abstraktes Kunst-Atelier für einzigartige Kunstwerke und kreative Workshops in Heek",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#1a1a1a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["art", "shopping", "education"],
+  "lang": "de-DE"
+}
+

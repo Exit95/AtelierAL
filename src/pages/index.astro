@@ -3,7 +3,6 @@ import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/HeroSection.astro";
 import WorkshopCard from "../components/WorkshopCard.astro";
 import CTAButton from "../components/CTAButton.astro";
-import Badge from "../components/Badge.astro";
 import ReviewsDisplay from "../components/ReviewsDisplay.astro";
 import ReviewForm from "../components/ReviewForm.astro";
 import { getItems, type Artwork, type Workshop } from "../lib/storage";
@@ -36,14 +35,11 @@ const upcomingWorkshops = allWorkshops
 	/>
 
 	<!-- Featured Artworks -->
-	<section
-		class="section py-16"
-		style="background-color: var(--color-surface);"
-	>
+	<section class="section py-16 dark-section">
 		<div class="container">
 			<div class="section-header">
-				<h2>Ausgewählte Werke</h2>
-				<p class="text-secondary">
+				<h2 class="handwriting">Ausgewählte Werke</h2>
+				<p class="subtitle-light">
 					Eine Auswahl meiner neuesten abstrakten Kunstwerke
 				</p>
 			</div>
@@ -51,42 +47,46 @@ const upcomingWorkshops = allWorkshops
 			{
 				featuredArtworks.length > 0 ? (
 					<>
-						<div class="grid grid-cols-1 grid-cols-md-2 grid-cols-lg-3">
-							{featuredArtworks.map((artwork) => (
-								<a
-									href={`/werke/${artwork.id}`}
-									class="artwork-preview"
-								>
-									<div class="artwork-preview-image">
-										<img
-											src={artwork.images[0]}
-											alt={artwork.title}
-											loading="lazy"
-										/>
-										<Badge
-											variant={artwork.availability}
-											label={
-												artwork.availability ===
-												"available"
-													? "Verfügbar"
-													: artwork.availability ===
-														  "reserved"
-														? "Reserviert"
-														: "Verkauft"
-											}
-										/>
-									</div>
-									<h3 class="artwork-preview-title">
-										{artwork.title}
-									</h3>
-									<p class="artwork-preview-meta">
-										{artwork.size.width} ×{" "}
-										{artwork.size.height}{" "}
-										{artwork.size.unit}
-									</p>
-								</a>
-							))}
+						<div class="carousel-container">
+							<button class="carousel-btn carousel-btn-prev" aria-label="Vorheriges Werk">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+							</button>
+							<div class="carousel-track-wrapper">
+								<div class="carousel-track">
+									{featuredArtworks.map((artwork, index) => (
+										<div
+											class="carousel-slide"
+											data-lightbox-trigger
+											data-image-url={artwork.images[0]}
+											data-artwork-index={index}
+										>
+											<div class="artwork-preview-image">
+												<img
+													src={artwork.images[0]}
+													alt={artwork.title}
+													loading="lazy"
+												/>
+												<div class="artwork-overlay">
+													<span class="zoom-icon">🔍</span>
+												</div>
+											</div>
+											<h3 class="artwork-preview-title">
+												{artwork.title}
+											</h3>
+											<p class="artwork-preview-meta">
+												{artwork.size.width} ×{" "}
+												{artwork.size.height}{" "}
+												{artwork.size.unit}
+											</p>
+										</div>
+									))}
+								</div>
+							</div>
+							<button class="carousel-btn carousel-btn-next" aria-label="Nächstes Werk">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+							</button>
 						</div>
+						<div class="carousel-dots"></div>
 						<div class="section-cta">
 							<CTAButton
 								label="Alle Werke ansehen"
@@ -105,11 +105,11 @@ const upcomingWorkshops = allWorkshops
 	</section>
 
 	<!-- Workshops -->
-	<section class="section py-16">
+	<section class="section py-16 dark-section">
 		<div class="container">
 			<div class="section-header">
-				<h2>Workshops, die Kreativität wecken</h2>
-				<p class="text-secondary">
+				<h2 class="handwriting">Workshops</h2>
+				<p class="subtitle-light">
 					Entdecken Sie Ihre künstlerische Seite in kleinen Gruppen
 				</p>
 			</div>
@@ -141,14 +141,11 @@ const upcomingWorkshops = allWorkshops
 	</section>
 
 	<!-- Commission Process -->
-	<section
-		class="section py-16"
-		style="background-color: var(--color-surface);"
-	>
+	<section class="section py-16 dark-section">
 		<div class="container">
 			<div class="section-header text-center">
-				<h2>Ihr persönliches Kunstwerk</h2>
-				<p class="text-secondary">
+				<h2 class="handwriting">Ihr persönliches Kunstwerk</h2>
+				<p class="subtitle-light">
 					Von der Idee bis zum fertigen Werk in drei Schritten
 				</p>
 			</div>
@@ -196,10 +193,7 @@ const upcomingWorkshops = allWorkshops
 	<!-- Testimonials -->
 
 	<!-- Customer Reviews -->
-	<section
-		class="section py-16"
-		style="background-color: var(--color-surface);"
-	>
+	<section class="section py-16" style="background-color: var(--color-surface);">
 		<div class="container">
 			<ReviewsDisplay />
 		</div>
@@ -213,17 +207,12 @@ const upcomingWorkshops = allWorkshops
 	</section>
 
 	<!-- Final CTA -->
-	<section
-		class="section py-16"
-		style="background: linear-gradient(135deg, var(--color-brand-beige), var(--color-brand-beige-dark));"
-	>
+	<section class="section py-16" style="background: linear-gradient(135deg, var(--color-brand-beige), var(--color-brand-beige-dark));">
 		<div class="container text-center">
-			<h2 style="color: var(--color-white);">
+			<h2 class="handwriting" style="color: white;">
 				Bereit für Ihr eigenes Kunstwerk?
 			</h2>
-			<p
-				style="color: var(--color-white); opacity: 0.9; max-width: 600px; margin: var(--space-4) auto var(--space-8);"
-			>
+			<p style="color: white; opacity: 0.9; max-width: 600px; margin: var(--space-4) auto var(--space-8);">
 				Kontaktieren Sie mich für eine unverbindliche Beratung oder
 				buchen Sie einen Workshop.
 			</p>
@@ -246,6 +235,22 @@ const upcomingWorkshops = allWorkshops
 <style>
 	.section {
 		width: 100%;
+	}
+
+	.dark-section {
+		background-color: var(--color-dark);
+		color: var(--color-text-light);
+	}
+
+	.handwriting {
+		font-family: 'Dancing Script', cursive;
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		font-weight: 500;
+		color: white;
+	}
+
+	.subtitle-light {
+		color: var(--color-light);
 	}
 
 	.section-header {
@@ -277,16 +282,53 @@ const upcomingWorkshops = allWorkshops
 	.artwork-preview-image {
 		position: relative;
 		margin-bottom: var(--space-4);
+		overflow: hidden;
+		border-radius: var(--radius-lg);
+	}
+
+	.artwork-preview-image img {
+		width: 100%;
+		height: auto;
+		display: block;
+		transition: transform 0.3s ease;
+	}
+
+	.artwork-preview:hover .artwork-preview-image img {
+		transform: scale(1.05);
+	}
+
+	.artwork-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.4);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.artwork-preview:hover .artwork-overlay {
+		opacity: 1;
+	}
+
+	.zoom-icon {
+		font-size: 2rem;
+		color: white;
 	}
 
 	.artwork-preview-title {
 		font-size: var(--font-size-lg);
 		margin-bottom: var(--space-2);
+		color: white;
 	}
 
 	.artwork-preview-meta {
 		font-size: var(--font-size-sm);
-		color: var(--color-text-secondary);
+		color: var(--color-light);
 	}
 
 	.process-steps {
@@ -306,6 +348,7 @@ const upcomingWorkshops = allWorkshops
 	.process-step {
 		text-align: center;
 		padding: var(--space-6);
+		color: white;
 	}
 
 	.step-number {
@@ -318,6 +361,11 @@ const upcomingWorkshops = allWorkshops
 
 	.process-step h3 {
 		margin-bottom: var(--space-3);
+		color: white;
+	}
+
+	.process-step p {
+		color: var(--color-light);
 	}
 
 	.testimonials-grid {
@@ -367,4 +415,220 @@ const upcomingWorkshops = allWorkshops
 		font-size: var(--font-size-sm);
 		color: var(--color-text-secondary);
 	}
+
+	/* Carousel Styles */
+	.carousel-container {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: var(--space-4);
+	}
+
+	.carousel-track-wrapper {
+		overflow: hidden;
+		flex: 1;
+	}
+
+	.carousel-track {
+		display: flex;
+		gap: var(--space-6);
+		transition: transform 0.5s ease-in-out;
+	}
+
+	.carousel-slide {
+		flex: 0 0 100%;
+		min-width: 0;
+		cursor: pointer;
+		transition: transform var(--transition-base);
+	}
+
+	.carousel-slide:hover {
+		transform: translateY(-4px);
+	}
+
+	@media (min-width: 640px) {
+		.carousel-slide {
+			flex: 0 0 calc(50% - var(--space-3));
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.carousel-slide {
+			flex: 0 0 calc(33.333% - var(--space-4));
+		}
+	}
+
+	.carousel-btn {
+		flex-shrink: 0;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: var(--color-brand-beige);
+		color: white;
+		border: none;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
+		box-shadow: var(--shadow-md);
+	}
+
+	.carousel-btn:hover {
+		background: var(--color-brand-beige-dark, #a08060);
+		transform: scale(1.1);
+	}
+
+	.carousel-btn:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
+		transform: none;
+	}
+
+	@media (max-width: 639px) {
+		.carousel-btn {
+			display: none;
+		}
+	}
+
+	.carousel-dots {
+		display: flex;
+		justify-content: center;
+		gap: var(--space-2);
+		margin-top: var(--space-6);
+	}
+
+	.carousel-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: var(--color-border);
+		border: none;
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.carousel-dot.active {
+		background: var(--color-brand-beige);
+		transform: scale(1.2);
+	}
+
+	.carousel-dot:hover {
+		background: var(--color-brand-beige);
+	}
 </style>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const track = document.querySelector('.carousel-track') as HTMLElement;
+		const slides = document.querySelectorAll('.carousel-slide');
+		const prevBtn = document.querySelector('.carousel-btn-prev') as HTMLButtonElement;
+		const nextBtn = document.querySelector('.carousel-btn-next') as HTMLButtonElement;
+		const dotsContainer = document.querySelector('.carousel-dots') as HTMLElement;
+
+		if (!track || slides.length === 0) return;
+
+		let currentIndex = 0;
+		let slidesPerView = 1;
+		let autoplayInterval: ReturnType<typeof setInterval>;
+
+		// Calculate slides per view based on screen width
+		function updateSlidesPerView() {
+			if (window.innerWidth >= 1024) {
+				slidesPerView = 3;
+			} else if (window.innerWidth >= 640) {
+				slidesPerView = 2;
+			} else {
+				slidesPerView = 1;
+			}
+		}
+
+		// Create dots
+		function createDots() {
+			dotsContainer.innerHTML = '';
+			const totalDots = Math.ceil(slides.length / slidesPerView);
+			for (let i = 0; i < totalDots; i++) {
+				const dot = document.createElement('button');
+				dot.classList.add('carousel-dot');
+				if (i === 0) dot.classList.add('active');
+				dot.addEventListener('click', () => goToSlide(i * slidesPerView));
+				dotsContainer.appendChild(dot);
+			}
+		}
+
+		// Update dots
+		function updateDots() {
+			const dots = document.querySelectorAll('.carousel-dot');
+			const activeDotIndex = Math.floor(currentIndex / slidesPerView);
+			dots.forEach((dot, i) => {
+				dot.classList.toggle('active', i === activeDotIndex);
+			});
+		}
+
+		// Go to specific slide
+		function goToSlide(index: number) {
+			const maxIndex = slides.length - slidesPerView;
+			currentIndex = Math.max(0, Math.min(index, maxIndex));
+
+			const slideWidth = (slides[0] as HTMLElement).offsetWidth;
+			const gap = 24; // var(--space-6)
+			track.style.transform = `translateX(-${currentIndex * (slideWidth + gap)}px)`;
+
+			updateDots();
+			updateButtons();
+		}
+
+		// Update button states
+		function updateButtons() {
+			if (prevBtn) prevBtn.disabled = currentIndex === 0;
+			if (nextBtn) nextBtn.disabled = currentIndex >= slides.length - slidesPerView;
+		}
+
+		// Next slide
+		function nextSlide() {
+			if (currentIndex < slides.length - slidesPerView) {
+				goToSlide(currentIndex + 1);
+			} else {
+				goToSlide(0); // Loop back to start
+			}
+		}
+
+		// Previous slide
+		function prevSlide() {
+			if (currentIndex > 0) {
+				goToSlide(currentIndex - 1);
+			}
+		}
+
+		// Start autoplay
+		function startAutoplay() {
+			autoplayInterval = setInterval(nextSlide, 4000);
+		}
+
+		// Stop autoplay
+		function stopAutoplay() {
+			clearInterval(autoplayInterval);
+		}
+
+		// Event listeners
+		if (prevBtn) prevBtn.addEventListener('click', () => { stopAutoplay(); prevSlide(); startAutoplay(); });
+		if (nextBtn) nextBtn.addEventListener('click', () => { stopAutoplay(); nextSlide(); startAutoplay(); });
+
+		// Pause on hover
+		track.addEventListener('mouseenter', stopAutoplay);
+		track.addEventListener('mouseleave', startAutoplay);
+
+		// Handle resize
+		window.addEventListener('resize', () => {
+			updateSlidesPerView();
+			createDots();
+			goToSlide(0);
+		});
+
+		// Initialize
+		updateSlidesPerView();
+		createDots();
+		updateButtons();
+		startAutoplay();
+	});
+</script>

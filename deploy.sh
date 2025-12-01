@@ -1,63 +1,83 @@
 #!/bin/bash
+# ============================================
+# ATELIER KL - Safe Deployment Script
+# ============================================
+# Dieses Script deployed NUR Code-Änderungen.
+# Uploads und Daten werden NIEMALS überschrieben!
+# ============================================
 
-# ATELIER KL Deployment Script for test-danapfel-digital.de
-# This script builds the site and prepares it for PM2 deployment
+set -e
 
-echo "🎨 ATELIER KL - Building for test-danapfel-digital.de..."
+SERVER_IP="2a01:4f8:202:1129:2447:2447:1:103"
+SERVER_USER="root"
+SERVER_PATH="/root/AtelierAL"
+SERVER_PASS="409737L2M%"
 
-# Set environment
-export NODE_ENV=production
-export ASTRO_TELEMETRY_DISABLED=1
+echo "============================================"
+echo "🎨 ATELIER KL - Safe Deployment"
+echo "============================================"
+echo ""
+echo "⚠️  GESCHÜTZTE ORDNER (werden NIE überschrieben):"
+echo "   • data/       - Datenbank (Werke, Workshops, Reviews)"
+echo "   • uploads/    - Hochgeladene Bilder"
+echo "============================================"
+echo ""
 
-# Install dependencies
-echo "📦 Installing dependencies..."
-npm install
+echo "🔨 Building project..."
+npm run build
 
-# Use the local config
-echo "🏗️ Building Astro site..."
-npm run build -- --config astro.config.local.mjs
+echo ""
+echo "📦 Deploying to server..."
 
-# Check if build was successful
-if [ $? -eq 0 ]; then
-    echo "✅ Build successful!"
-    
-    # Setup persistent uploads directory
-    echo "📂 Setting up uploads directory..."
-    mkdir -p uploads
-    
-    # Setup persistent data directory
-    echo "📂 Setting up data directory..."
-    mkdir -p data/workshops
-    mkdir -p data/artworks
-    
-    # Copy initial content if data directories are empty
-    if [ -z "$(ls -A data/workshops)" ]; then
-       echo "📥 Migrating initial workshops data..."
-       cp src/content/workshops/*.json data/workshops/ 2>/dev/null || true
-    fi
-    
-    if [ -z "$(ls -A data/artworks)" ]; then
-       echo "📥 Migrating initial artworks data..."
-       cp src/content/artworks/*.json data/artworks/ 2>/dev/null || true
-    fi
-    
-    # Create symlink in dist/client
-    # Remove existing uploads directory in dist if it exists (it shouldn't, but just in case)
-    rm -rf dist/client/uploads
-    # Create symlink
-    ln -s ../../uploads dist/client/uploads
-    
-    echo "🔗 Symlinked uploads directory"
+# Deploy mit rsync - WICHTIG: --exclude für geschützte Ordner
+sshpass -p "$SERVER_PASS" rsync -avz \
+    --delete \
+    --exclude 'node_modules' \
+    --exclude '.git' \
+    --exclude 'data' \
+    --exclude 'uploads' \
+    --exclude 'client/uploads' \
+    --exclude '.vercel' \
+    -e "ssh -o StrictHostKeyChecking=no -6" \
+    dist/ server.mjs package.json package-lock.json \
+    "${SERVER_USER}@[${SERVER_IP}]:${SERVER_PATH}/"
+
+# Fix folder structure (rsync copies content of dist/ not the folder itself)
+echo ""
+echo "🔧 Fixing folder structure..."
+sshpass -p "$SERVER_PASS" ssh -o StrictHostKeyChecking=no -6 \
+    "${SERVER_USER}@${SERVER_IP}" \
+    "cd ${SERVER_PATH} && \
+     rm -rf dist 2>/dev/null || true && \
+     mkdir -p dist && \
+     mv client server dist/ 2>/dev/null || true && \
+     mkdir -p dist/client/uploads && \
+     echo '✓ Folder structure fixed'"
+
+# Restart PM2
+echo ""
+echo "🔄 Restarting application..."
+sshpass -p "$SERVER_PASS" ssh -o StrictHostKeyChecking=no -6 \
+    "${SERVER_USER}@${SERVER_IP}" \
+    "cd ${SERVER_PATH} && pm2 restart atelierkl"
+
+# Health check
+echo ""
+echo "🏥 Health check..."
+sleep 2
+HTTP_STATUS=$(sshpass -p "$SERVER_PASS" ssh -o StrictHostKeyChecking=no -6 \
+    "${SERVER_USER}@${SERVER_IP}" \
+    "curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/")
+
+if [ "$HTTP_STATUS" = "200" ]; then
     echo ""
-    echo "📋 Next steps:"
-    echo "1. Start with PM2: pm2 start ecosystem.config.cjs"
-    echo "   Or manually: pm2 start dist/server/entry.mjs --name atelieral --interpreter node -- --port=3000 --host=0.0.0.0"
-    echo "2. Save PM2 config: pm2 save"
-    echo "3. Check status: pm2 status"
-    echo "4. View logs: pm2 logs atelieral"
+    echo "============================================"
+    echo "✅ Deployment successful! HTTP Status: $HTTP_STATUS"
+    echo "============================================"
     echo ""
-    echo "🌐 Site will be available at: https://test-danapfel-digital.de"
+    echo "🌐 Website: https://atelierkl.de"
 else
-    echo "❌ Build failed! Please check the errors above."
+    echo "❌ Deployment might have issues. HTTP Status: $HTTP_STATUS"
+    echo "   Check logs: pm2 logs atelierkl"
     exit 1
 fi

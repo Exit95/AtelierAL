@@ -7,213 +7,187 @@ import ContactForm from "../components/ContactForm.astro";
     title="Kontakt"
     description="Kontaktieren Sie ATELIER KL für Anfragen zu Kunstwerken, Auftragsarbeiten oder Workshop-Buchungen. Ich freue mich auf Ihre Nachricht!"
 >
-    <section class="page-hero">
-        <div class="container">
-            <h1>Kontakt</h1>
-            <p class="hero-subtitle">Ich freue mich auf Ihre Nachricht</p>
-        </div>
-    </section>
+    <!-- Contact Section - Split Layout -->
+    <section class="contact-section">
+        <div class="contact-grid">
+            <!-- Left: Contact Info -->
+            <div class="contact-info">
+                <div class="info-content">
+                    <h1 class="hero-title">
+                        <span class="title-line">TRETE IN</span>
+                        <span class="title-handwriting handwriting">Kontakt</span>
+                    </h1>
 
-    <section class="section py-16">
-        <div class="container">
-            <div class="contact-grid">
-                <!-- Contact Information -->
-                <div class="contact-info">
-                    <h2>ATELIER KL</h2>
-                    <p class="lead-text">Katharina Lanvermann</p>
-
-                    <div class="info-blocks">
-                        <div class="info-block">
-                            <h3>📍 Adresse</h3>
-                            <address>
-                                Hauptstraße 45<br />
-                                48619 Heek<br />
-                                Deutschland
-                            </address>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <span class="contact-label">E-Mail:</span>
+                            <a href="mailto:info.atelierkl@gmail.com" class="contact-value">info.atelierkl@gmail.com</a>
                         </div>
 
-                        <div class="info-block">
-                            <h3>📧 E-Mail</h3>
-                            <p>
-                                <a href="mailto:info@atelier-kl.de"
-                                    >info@atelier-kl.de</a
-                                >
-                            </p>
-                        </div>
-
-                        <div class="info-block">
-                            <h3>🕐 Besuchszeiten</h3>
-                            <p>
-                                Nach Vereinbarung<br />
-                                <em class="text-sm text-secondary">
-                                    Bitte vereinbaren Sie vorab einen Termin
-                                </em>
-                            </p>
-                        </div>
-
-                        <div class="info-block">
-                            <h3>💬 Anliegen</h3>
-                            <ul class="contact-list">
-                                <li>Kunstwerke & Auftragsarbeiten</li>
-                                <li>Workshop-Buchungen</li>
-                                <li>Atelierbesuche</li>
-                                <li>Allgemeine Anfragen</li>
-                            </ul>
+                        <div class="contact-item">
+                            <span class="contact-label">Instagram:</span>
+                            <a href="https://instagram.com/atelierkl_" target="_blank" rel="noopener noreferrer" class="contact-value">@atelierkl_</a>
                         </div>
                     </div>
 
-                    <div class="response-time">
-                        <p>
-                            <strong>Antwortzeit:</strong> Ich antworte in der Regel
-                            innerhalb von 24-48 Stunden auf Ihre Anfrage.
-                        </p>
+                    <div class="logo-area">
+                        <img src="/logo-kl.png" alt="ATELIER KL Logo" class="contact-logo" />
+                        <div class="logo-text">
+                            <span class="logo-name">ATELIER KL</span>
+                            <span class="logo-tagline">ABSTRAKTE KUNST & WORKSHOPS</span>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Contact Form -->
-                <div class="contact-form-wrapper">
-                    <ContactForm />
-                </div>
+            <!-- Right: Contact Form -->
+            <div class="contact-form-area">
+                <ContactForm />
             </div>
         </div>
     </section>
-
-    <!-- Optional: Map Section (commented out until actual coordinates are provided) -->
-    <!--
-  <section class="section py-16" style="background-color: var(--color-surface);">
-    <div class="container">
-      <h2 class="text-center mb-8">So finden Sie uns</h2>
-      <div class="map-container">
-        <iframe 
-          src="https://www.openstreetmap.org/export/embed.html?bbox=..." 
-          width="100%" 
-          height="400" 
-          frameborder="0" 
-          style="border: 0; border-radius: var(--radius-lg);"
-          allowfullscreen
-          aria-label="Karte mit Standort ATELIER KL"
-        ></iframe>
-      </div>
-    </div>
-  </section>
-  -->
 </Layout>
 
 <style>
-    .page-hero {
-        padding: var(--space-16) 0 var(--space-8);
-        background: linear-gradient(
-            135deg,
-            var(--color-brand-beige-light),
-            var(--color-surface)
-        );
-        text-align: center;
-    }
-
-    .page-hero h1 {
-        margin-bottom: var(--space-4);
-    }
-
-    .hero-subtitle {
-        font-size: var(--font-size-xl);
-        color: var(--color-text-secondary);
-        max-width: 600px;
-        margin: 0 auto;
+    /* Contact Section */
+    .contact-section {
+        min-height: 100vh;
     }
 
     .contact-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: var(--space-12);
+        min-height: 100vh;
     }
 
-    @media (min-width: 960px) {
+    @media (min-width: 768px) {
         .contact-grid {
-            grid-template-columns: 1fr 1.2fr;
+            grid-template-columns: 1fr 1fr;
         }
     }
 
-    .contact-info h2 {
-        margin-bottom: var(--space-2);
+    /* Left: Contact Info */
+    .contact-info {
+        background-color: var(--color-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-12);
+        min-height: 50vh;
     }
 
-    .lead-text {
-        font-size: var(--font-size-xl);
-        color: var(--color-accent);
-        margin-bottom: var(--space-8);
+    @media (min-width: 768px) {
+        .contact-info {
+            min-height: 100vh;
+        }
     }
 
-    .info-blocks {
+    .info-content {
+        max-width: 400px;
+    }
+
+    /* Title */
+    .hero-title {
+        margin-bottom: var(--space-12);
+    }
+
+    .title-line {
+        display: block;
+        font-family: var(--font-sans);
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        color: var(--color-light);
+        opacity: 0.8;
+    }
+
+    .title-handwriting.handwriting {
+        display: block;
+        font-family: 'Dancing Script', cursive;
+        font-size: clamp(3rem, 6vw, 4.5rem);
+        font-weight: 500;
+        color: var(--color-light);
+        line-height: 1.1;
+        font-style: italic;
+    }
+
+    /* Contact Details */
+    .contact-details {
+        margin-bottom: var(--space-12);
+    }
+
+    .contact-item {
+        margin-bottom: var(--space-6);
+    }
+
+    .contact-label {
+        display: block;
+        font-size: var(--font-size-sm);
+        color: var(--color-light);
+        opacity: 0.7;
+        margin-bottom: var(--space-1);
+    }
+
+    .contact-value {
+        font-size: var(--font-size-base);
+        color: var(--color-light);
+        text-decoration: none;
+        transition: opacity var(--transition-fast);
+    }
+
+    .contact-value:hover {
+        opacity: 0.7;
+    }
+
+    /* Logo Area */
+    .logo-area {
         display: flex;
         flex-direction: column;
-        gap: var(--space-6);
+        align-items: center;
+        text-align: center;
+        margin-top: var(--space-8);
     }
 
-    .info-block h3 {
-        font-size: var(--font-size-lg);
+    .contact-logo {
+        width: 80px;
+        height: auto;
         margin-bottom: var(--space-3);
     }
 
-    .info-block address {
-        font-style: normal;
-        line-height: var(--line-height-relaxed);
+    .logo-text {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
     }
 
-    .info-block p {
-        line-height: var(--line-height-relaxed);
+    .logo-name {
+        font-family: var(--font-sans);
+        font-size: var(--font-size-lg);
+        font-weight: 400;
+        letter-spacing: 0.15em;
+        color: var(--color-light);
     }
 
-    .info-block a {
-        color: var(--color-accent);
-        text-decoration: none;
-        transition: color var(--transition-fast);
+    .logo-tagline {
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        color: var(--color-light);
+        opacity: 0.6;
     }
 
-    .info-block a:hover {
-        color: var(--color-accent-dark);
-        text-decoration: underline;
+    /* Right: Contact Form */
+    .contact-form-area {
+        background-color: var(--color-surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-12);
+        min-height: 50vh;
     }
 
-    .contact-list {
-        list-style: none;
-        padding-left: 0;
-    }
-
-    .contact-list li {
-        padding-left: var(--space-6);
-        position: relative;
-        margin-bottom: var(--space-2);
-    }
-
-    .contact-list li::before {
-        content: "→";
-        position: absolute;
-        left: 0;
-        color: var(--color-accent);
-    }
-
-    .response-time {
-        margin-top: var(--space-8);
-        padding: var(--space-4);
-        background-color: var(--color-info-light);
-        border-left: 4px solid var(--color-info);
-        border-radius: var(--radius-base);
-    }
-
-    .response-time p {
-        margin: 0;
-        font-size: var(--font-size-sm);
-    }
-
-    .contact-form-wrapper {
-        background-color: var(--color-surface-elevated);
-        padding: var(--space-8);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-base);
-    }
-
-    .map-container {
-        max-width: 900px;
-        margin: 0 auto;
+    @media (min-width: 768px) {
+        .contact-form-area {
+            min-height: 100vh;
+        }
     }
 </style>

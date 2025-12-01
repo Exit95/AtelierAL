@@ -52,8 +52,8 @@ const formattedDate = new Date(workshop.date).toLocaleDateString("de-DE", {
         <div class="card-content">
             <h3>{workshop.title}</h3>
             <div class="card-meta">
-                <span>⏰ {workshop.time}</span>
-                <span>📍 {workshop.location}</span>
+                <span>{workshop.time}</span>
+                <span>{workshop.location}</span>
             </div>
             <p class="description">{workshop.description}</p>
             <div class="card-footer">
