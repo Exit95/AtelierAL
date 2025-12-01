@@ -67,20 +67,24 @@ try {
     </div>
 
     <div class="quick-actions">
-        <h3>Schnellzugriff</h3>
+        <h2>Schnellzugriff</h2>
         <div class="action-buttons">
-            <a href="/admin/workshops/create" class="action-btn primary"
-                >+ Neuer Workshop</a
-            >
-            <a href="/admin/artworks/create" class="action-btn primary"
-                >+ Neues Werk</a
-            >
-            <a href="/admin/images" class="action-btn secondary"
-                >📤 Bilder hochladen</a
-            >
-            <a href="/admin/reviews" class="action-btn secondary"
-                >⭐ Bewertungen</a
-            >
+            <a href="/admin/workshops/create" class="action-btn primary">
+                <span class="btn-icon">🎨</span>
+                <span>Neuer Workshop</span>
+            </a>
+            <a href="/admin/artworks/create" class="action-btn primary">
+                <span class="btn-icon">🖼️</span>
+                <span>Neues Werk</span>
+            </a>
+            <a href="/admin/images" class="action-btn secondary">
+                <span class="btn-icon">📤</span>
+                <span>Bilder hochladen</span>
+            </a>
+            <a href="/admin/reviews" class="action-btn secondary">
+                <span class="btn-icon">⭐</span>
+                <span>Bewertungen</span>
+            </a>
         </div>
     </div>
 </AdminLayout>
@@ -139,56 +143,63 @@ try {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
-    .quick-actions h3 {
+    .quick-actions h2 {
         margin-top: 0;
         margin-bottom: 1.5rem;
         color: #1a1a2e;
+        font-size: 1.5rem;
     }
 
     .action-buttons {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-    }
-
-
-    @media (max-width: 640px) {
-        .action-buttons {
-            flex-direction: column;
-        }
-
-        .action-btn {
-            width: 100%;
-            text-align: center;
-            box-sizing: border-box;
-        }
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
     }
 
     .action-btn {
-        padding: 0.875rem 1.5rem;
+        padding: 1.25rem 1.5rem;
         border-radius: 8px;
         text-decoration: none;
         font-weight: 600;
         transition: all 0.2s;
-        display: inline-block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+
+    .btn-icon {
+        font-size: 1.5rem;
     }
 
     .action-btn.primary {
         background: var(--color-brand-beige);
         color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
     .action-btn.primary:hover {
         background: var(--color-accent);
         transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .action-btn.secondary {
         background: #f5f5f5;
         color: #333;
+        border: 1px solid #e0e0e0;
     }
 
     .action-btn.secondary:hover {
         background: #e0e0e0;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 640px) {
+        .action-buttons {
+            grid-template-columns: 1fr;
+        }
     }
 </style>

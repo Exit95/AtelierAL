@@ -63,6 +63,7 @@
   /* Font Families */
   --font-serif: 'Playfair Display', serif;
   --font-script: 'Cormorant Garamond', serif;
+  --font-handwritten: 'Great Vibes', cursive;
   --font-sans: 'Lato', sans-serif;
   --font-headline: var(--font-serif);
   --font-body: var(--font-sans);

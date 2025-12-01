@@ -35,52 +35,6 @@ const upcomingWorkshops = allWorkshops
 		secondaryCTA={{ label: "Workshop buchen", href: "/workshops" }}
 	/>
 
-	<!-- Artist Introduction -->
-	<section class="section py-16">
-		<div class="container">
-			<div class="intro-grid">
-				<div class="intro-text">
-					<h2>Über das Atelier</h2>
-					<p class="lead-text">
-						Willkommen im ATELIER KL – einem Ort, an dem abstrakte
-						Kunst entsteht, die Räume mit Farbe, Struktur und
-						Emotion zum Leben erweckt.
-					</p>
-					<p>
-						Seit über 10 Jahren erschaffe ich im Herzen von Heek
-						einzigartige Kunstwerke, die von natürlichen Elementen,
-						mediterranen Landschaften und der Schönheit des
-						Einfachen inspiriert sind. Jedes Werk ist ein Unikat,
-						geschaffen mit Acrylfarben, Pigmenten und viel
-						Leidenschaft.
-					</p>
-					<p>
-						Neben meinen eigenen Werken biete ich auch
-						Auftragsarbeiten an, die individuell auf Ihre Räume und
-						Wünsche abgestimmt werden. In meinen Workshops können
-						Sie selbst zur Künstlerin oder zum Künstler werden und
-						Ihre kreative Seite entdecken.
-					</p>
-					<div class="intro-ctas">
-						<CTAButton
-							label="Mehr über mich"
-							href="/team"
-							type="secondary"
-						/>
-					</div>
-				</div>
-				<div class="intro-image">
-					<img
-						src="/katharina-profile.jpg"
-						alt="Katharina Lanvermann, Künstlerin von ATELIER KL"
-						class="profile-image"
-						loading="lazy"
-					/>
-				</div>
-			</div>
-		</div>
-	</section>
-
 	<!-- Featured Artworks -->
 	<section
 		class="section py-16"
@@ -307,46 +261,6 @@ const upcomingWorkshops = allWorkshops
 		display: flex;
 		justify-content: center;
 		margin-top: var(--space-12);
-	}
-
-	.intro-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-8);
-		align-items: center;
-	}
-
-	@media (min-width: 768px) {
-		.intro-grid {
-			gap: var(--space-10);
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.intro-grid {
-			grid-template-columns: 1.2fr 1fr;
-			gap: var(--space-12);
-		}
-	}
-
-	.intro-text {
-		max-width: 650px;
-	}
-
-	.lead-text {
-		font-size: var(--font-size-xl);
-		color: var(--color-text-secondary);
-		line-height: var(--line-height-relaxed);
-		margin-bottom: var(--space-6);
-	}
-
-	.intro-ctas {
-		margin-top: var(--space-8);
-	}
-
-	.placeholder-image {
-		width: 100%;
-		border-radius: var(--radius-lg);
 	}
 
 	.artwork-preview {

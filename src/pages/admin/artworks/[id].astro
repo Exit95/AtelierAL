@@ -168,6 +168,10 @@ const tagsStr = Array.isArray(data.tags) ? data.tags.join(", ") : "";
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
+        // Handle checkbox - it's only in formData if checked
+        const featuredCheckbox = document.getElementById("featured");
+        data.featured = featuredCheckbox?.checked || false;
+
         try {
             const res = await fetch(`/api/artworks/${artworkId}`, {
                 method: "PUT",

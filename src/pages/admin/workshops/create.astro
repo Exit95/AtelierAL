@@ -239,6 +239,8 @@ const defaultData = {
         display: flex;
         gap: 1rem;
         margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #f0f0f0;
     }
 
     .btn {
@@ -249,16 +251,30 @@ const defaultData = {
         border: none;
         cursor: pointer;
         transition: all 0.2s;
+        font-size: 1rem;
+        display: inline-block;
     }
 
     .btn-primary {
-        background: var(--color-brand-beige);
-        color: white;
+        background: #c9a882 !important;
+        color: white !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary:hover {
+        background: #b8956f !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .btn-secondary {
         background: #f5f5f5;
         color: #333;
+        border: 1px solid #e0e0e0;
+    }
+
+    .btn-secondary:hover {
+        background: #e0e0e0;
     }
 
     .message {

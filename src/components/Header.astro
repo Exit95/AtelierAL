@@ -14,7 +14,7 @@ const navItems = [
 <header class="site-header">
     <div class="container header-content">
         <a href="/" class="logo-link">
-            <img src="/logo-clean.png?v=5" alt="ATELIER KL" class="logo" />
+            <img src="/logo-kl.png" alt="ATELIER KL" class="logo" />
         </a>
 
         <button
@@ -58,55 +58,61 @@ const navItems = [
 
 <script>
     // Mobile menu toggle functionality
-    const menuToggle = document.querySelector('.mobile-menu-toggle') as HTMLButtonElement | null;
-    const mainNav = document.querySelector('.main-nav') as HTMLElement | null;
+    const menuToggle = document.querySelector(
+        ".mobile-menu-toggle",
+    ) as HTMLButtonElement | null;
+    const mainNav = document.querySelector(".main-nav") as HTMLElement | null;
     const body = document.body;
 
     if (menuToggle && mainNav) {
-        menuToggle.addEventListener('click', () => {
-            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.addEventListener("click", () => {
+            const isExpanded =
+                menuToggle.getAttribute("aria-expanded") === "true";
 
-            menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
-            menuToggle.setAttribute('aria-label', isExpanded ? 'Menü öffnen' : 'Menü schließen');
-            menuToggle.classList.toggle('active');
-            mainNav.classList.toggle('active');
-            body.classList.toggle('menu-open');
+            menuToggle.setAttribute("aria-expanded", (!isExpanded).toString());
+            menuToggle.setAttribute(
+                "aria-label",
+                isExpanded ? "Menü öffnen" : "Menü schließen",
+            );
+            menuToggle.classList.toggle("active");
+            mainNav.classList.toggle("active");
+            body.classList.toggle("menu-open");
         });
 
         // Close menu when clicking on a link
-        const navLinks = mainNav.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                menuToggle.setAttribute('aria-expanded', 'false');
-                menuToggle.setAttribute('aria-label', 'Menü öffnen');
-                menuToggle.classList.remove('active');
-                mainNav.classList.remove('active');
-                body.classList.remove('menu-open');
+        const navLinks = mainNav.querySelectorAll(".nav-link");
+        navLinks.forEach((link) => {
+            link.addEventListener("click", () => {
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute("aria-label", "Menü öffnen");
+                menuToggle.classList.remove("active");
+                mainNav.classList.remove("active");
+                body.classList.remove("menu-open");
             });
         });
 
         // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
+        document.addEventListener("click", (e) => {
             const target = e.target as Node;
             if (!mainNav.contains(target) && !menuToggle.contains(target)) {
-                if (mainNav.classList.contains('active')) {
-                    menuToggle.setAttribute('aria-expanded', 'false');
-                    menuToggle.setAttribute('aria-label', 'Menü öffnen');
-                    menuToggle.classList.remove('active');
-                    mainNav.classList.remove('active');
-                    body.classList.remove('menu-open');
+                if (mainNav.classList.contains("active")) {
+                    menuToggle.setAttribute("aria-expanded", "false");
+                    menuToggle.setAttribute("aria-label", "Menü öffnen");
+                    menuToggle.classList.remove("active");
+                    mainNav.classList.remove("active");
+                    body.classList.remove("menu-open");
                 }
             }
         });
 
         // Close menu on ESC key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && mainNav.classList.contains('active')) {
-                menuToggle.setAttribute('aria-expanded', 'false');
-                menuToggle.setAttribute('aria-label', 'Menü öffnen');
-                menuToggle.classList.remove('active');
-                mainNav.classList.remove('active');
-                body.classList.remove('menu-open');
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && mainNav.classList.contains("active")) {
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute("aria-label", "Menü öffnen");
+                menuToggle.classList.remove("active");
+                mainNav.classList.remove("active");
+                body.classList.remove("menu-open");
                 menuToggle.focus();
             }
         });

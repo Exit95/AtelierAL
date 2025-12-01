@@ -1,0 +1,284 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Badge from "../../components/Badge.astro";
+import CTAButton from "../../components/CTAButton.astro";
+import { getItem, type Artwork } from "../../lib/storage";
+
+const { id } = Astro.params;
+
+if (!id) {
+    return Astro.redirect("/404");
+}
+
+const artwork = await getItem<Artwork>("artworks", id);
+
+if (!artwork) {
+    return Astro.redirect("/404");
+}
+
+const availabilityLabel =
+    artwork.availability === "available"
+        ? "Verfügbar"
+        : artwork.availability === "reserved"
+          ? "Reserviert"
+          : "Verkauft";
+---
+
+<Layout title={`${artwork.title} - Werk`} description={artwork.description}>
+    <div class="artwork-detail-page">
+        <div class="container">
+            <a href="/werke" class="back-link">← Zurück zur Galerie</a>
+
+            <div class="artwork-grid">
+                <div class="artwork-content">
+                    <div class="artwork-image-container">
+                        <img
+                            src={artwork.images[0]}
+                            alt={artwork.title}
+                            class="artwork-image"
+                        />
+                        <Badge
+                            variant={artwork.availability}
+                            label={availabilityLabel}
+                        />
+                    </div>
+
+                    {
+                        artwork.images.length > 1 && (
+                            <div class="artwork-thumbnails">
+                                {artwork.images.map((image, index) => (
+                                    <img
+                                        src={image}
+                                        alt={`${artwork.title} - Ansicht ${index + 1}`}
+                                        class="thumbnail"
+                                        data-thumbnail-index={index}
+                                    />
+                                ))}
+                            </div>
+                        )
+                    }
+                </div>
+
+                <div class="artwork-info">
+                    <h1>{artwork.title}</h1>
+
+                    <div class="artwork-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Technik:</span>
+                            <span class="meta-value">{artwork.technique}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Größe:</span>
+                            <span class="meta-value"
+                                >{artwork.size.width} × {artwork.size.height} {
+                                    artwork.size.unit
+                                }</span
+                            >
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Preis:</span>
+                            <span class="meta-value">{artwork.price} €</span>
+                        </div>
+                    </div>
+
+                    <div class="artwork-description">
+                        <p>{artwork.description}</p>
+                    </div>
+
+                    {
+                        artwork.tags && artwork.tags.length > 0 && (
+                            <div class="artwork-tags">
+                                {artwork.tags.map((tag) => (
+                                    <span class="tag">{tag}</span>
+                                ))}
+                            </div>
+                        )
+                    }
+
+                    <div class="artwork-actions">
+                        {
+                            artwork.availability === "available" && (
+                                <CTAButton
+                                    label="Anfrage senden"
+                                    href={`/kontakt?werk=${artwork.id}`}
+                                    type="primary"
+                                />
+                            )
+                        }
+                        <CTAButton
+                            label="Alle Werke ansehen"
+                            href="/werke"
+                            type="secondary"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    // Handle thumbnail clicks
+    const thumbnails = document.querySelectorAll("[data-thumbnail-index]");
+    const mainImage = document.querySelector(
+        ".artwork-image",
+    ) as HTMLImageElement;
+
+    thumbnails.forEach((thumbnail) => {
+        thumbnail.addEventListener("click", () => {
+            const index = thumbnail.getAttribute("data-thumbnail-index");
+            const imageSrc = (thumbnail as HTMLImageElement).src;
+            if (mainImage && imageSrc) {
+                mainImage.src = imageSrc;
+            }
+        });
+    });
+</script>
+
+<style>
+    .artwork-detail-page {
+        padding: var(--space-8) 0;
+        min-height: 70vh;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        color: var(--color-brand-beige);
+        text-decoration: none;
+        font-weight: var(--font-weight-medium);
+        margin-bottom: var(--space-6);
+        transition: color var(--transition-base);
+    }
+
+    .back-link:hover {
+        color: var(--color-brand-beige-dark);
+    }
+
+    .artwork-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+        margin-top: var(--space-6);
+    }
+
+    @media (min-width: 768px) {
+        .artwork-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-12);
+        }
+    }
+
+    .artwork-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+
+    .artwork-image-container {
+        position: relative;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        background-color: var(--color-gray-100);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .artwork-image {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .artwork-thumbnails {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: var(--space-3);
+    }
+
+    .thumbnail {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: var(--radius-base);
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all var(--transition-base);
+    }
+
+    .thumbnail:hover {
+        border-color: var(--color-brand-beige);
+        transform: scale(1.05);
+    }
+
+    .artwork-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-6);
+    }
+
+    .artwork-info h1 {
+        font-size: var(--font-size-3xl);
+        color: var(--color-text-primary);
+        margin: 0;
+    }
+
+    .artwork-meta {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+        padding: var(--space-4);
+        background-color: var(--color-surface);
+        border-radius: var(--radius-base);
+    }
+
+    .meta-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .meta-label {
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-secondary);
+    }
+
+    .meta-value {
+        font-weight: var(--font-weight-medium);
+        color: var(--color-text-primary);
+    }
+
+    .artwork-description {
+        line-height: var(--line-height-relaxed);
+        color: var(--color-text-secondary);
+    }
+
+    .artwork-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+    }
+
+    .tag {
+        padding: var(--space-2) var(--space-3);
+        background-color: var(--color-brand-beige-light);
+        color: var(--color-brand-beige-dark);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+    }
+
+    .artwork-actions {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+        margin-top: var(--space-4);
+    }
+
+    @media (min-width: 768px) {
+        .artwork-actions {
+            flex-direction: row;
+        }
+    }
+</style>
+
