@@ -8,8 +8,13 @@ import { Readable } from 'stream';
 export const POST: APIRoute = async ({ request }) => {
     return new Promise(async (resolve, reject) => {
         try {
+            console.log('📥 Upload request received');
+
             const contentType = request.headers.get('content-type');
+            console.log('📋 Content-Type:', contentType);
+
             if (!contentType || !contentType.includes('multipart/form-data')) {
+                console.error('❌ Invalid content type:', contentType);
                 resolve(new Response(JSON.stringify({ error: 'Invalid content type' }), {
                     status: 400,
                     headers: { 'Content-Type': 'application/json' }
@@ -48,14 +53,18 @@ export const POST: APIRoute = async ({ request }) => {
             let totalChunks = 1;
             let filename = '';
             let fileWritten = false;
+            let resolved = false;
 
             busboy.on('field', (fieldname, val) => {
+                console.log(`📝 Field received: ${fieldname} = ${val}`);
                 if (fieldname === 'chunkIndex') chunkIndex = parseInt(val);
                 if (fieldname === 'totalChunks') totalChunks = parseInt(val);
                 if (fieldname === 'filename') filename = val;
             });
 
             busboy.on('file', (fieldname, file, info) => {
+                console.log(`📁 File received: ${fieldname}, filename: ${info.filename}`);
+
                 if (fieldname !== 'file') {
                     file.resume();
                     return;
@@ -63,20 +72,28 @@ export const POST: APIRoute = async ({ request }) => {
 
                 fileWritten = true;
                 const tempFilePath = join(tempDir, filename || `upload-${Date.now()}`);
+                console.log(`💾 Writing to: ${tempFilePath}, chunk ${chunkIndex}/${totalChunks - 1}`);
+
                 const writeStream = createWriteStream(tempFilePath, { flags: 'a' });
 
                 file.pipe(writeStream);
 
                 writeStream.on('finish', async () => {
+                    if (resolved) return; // Prevent multiple responses
+
                     try {
+                        console.log(`✅ Chunk ${chunkIndex} written successfully`);
+
                         // If this is the last chunk, finalize the file
                         if (chunkIndex === totalChunks - 1) {
+                            console.log('🎉 Last chunk received, finalizing file...');
                             const timestamp = Date.now();
                             const ext = filename.split('.').pop();
                             const finalFilename = `${timestamp}.${ext}`;
                             const finalPath = join(uploadsDir, finalFilename);
 
                             await rename(tempFilePath, finalPath);
+                            console.log(`✅ File finalized: ${finalPath}`);
 
                             // In production, serve via API route; in dev, serve from public
                             const isProd = import.meta.env.PROD;
@@ -84,6 +101,7 @@ export const POST: APIRoute = async ({ request }) => {
                                 ? `/api/images/${finalFilename}`
                                 : `/uploads/${finalFilename}`;
 
+                            resolved = true;
                             resolve(new Response(JSON.stringify({
                                 success: true,
                                 url: imageUrl,
@@ -94,6 +112,8 @@ export const POST: APIRoute = async ({ request }) => {
                                 headers: { 'Content-Type': 'application/json' }
                             }));
                         } else {
+                            console.log(`✅ Chunk ${chunkIndex} complete, waiting for more...`);
+                            resolved = true;
                             resolve(new Response(JSON.stringify({
                                 success: true,
                                 chunkIndex,
@@ -105,6 +125,7 @@ export const POST: APIRoute = async ({ request }) => {
                         }
                     } catch (error) {
                         console.error('❌ File finalization error:', error);
+                        resolved = true;
                         resolve(new Response(JSON.stringify({
                             error: 'File finalization failed',
                             details: error instanceof Error ? error.message : String(error)
@@ -116,7 +137,9 @@ export const POST: APIRoute = async ({ request }) => {
                 });
 
                 writeStream.on('error', (error) => {
+                    if (resolved) return;
                     console.error('❌ Write stream error:', error);
+                    resolved = true;
                     resolve(new Response(JSON.stringify({
                         error: 'Write failed',
                         details: error.message
@@ -128,7 +151,9 @@ export const POST: APIRoute = async ({ request }) => {
             });
 
             busboy.on('error', (error) => {
+                if (resolved) return;
                 console.error('❌ Busboy error:', error);
+                resolved = true;
                 resolve(new Response(JSON.stringify({
                     error: 'Upload parsing failed',
                     details: error instanceof Error ? error.message : String(error)
@@ -139,7 +164,9 @@ export const POST: APIRoute = async ({ request }) => {
             });
 
             busboy.on('finish', () => {
-                if (!fileWritten) {
+                console.log('🏁 Busboy finished parsing');
+                if (!fileWritten && !resolved) {
+                    resolved = true;
                     resolve(new Response(JSON.stringify({ error: 'No file uploaded' }), {
                         status: 400,
                         headers: { 'Content-Type': 'application/json' }
