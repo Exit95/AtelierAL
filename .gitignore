@@ -14,10 +14,21 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Data files (user-generated content)
-data/workshops/*.json
-data/artworks/*.json
-data/reviews/*.json
+# ========================================
+# USER-GENERATED CONTENT - NEVER COMMIT!
+# ========================================
+# Diese Dateien werden NUR auf dem Server gespeichert
+# und dürfen NIEMALS überschrieben werden!
+
+# Data files (workshops, artworks, reviews)
+data/
+data/**/*.json
+
+# Uploaded images
+uploads/
+public/uploads/
+
+# ========================================
 
 # environment variables
 .env
@@ -29,4 +40,9 @@ data/reviews/*.json
 # jetbrains setting folder
 .idea/
 
+# Backup files
+*.backup
+_*.backup
+
+# Config (wird lokal verwendet)
 astro.config.mjs
