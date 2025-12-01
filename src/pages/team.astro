@@ -6,330 +6,189 @@ import Layout from "../layouts/Layout.astro";
     title="Über mich"
     description="Katharina Lanvermann - Abstrakte Künstlerin aus Heek. Erfahren Sie mehr über mich und meine künstlerische Vision."
 >
-    <section class="page-hero">
+    <!-- Über Mich Section -->
+    <section class="section py-16 dark-section">
         <div class="container">
-            <h1>Über mich</h1>
-            <p class="hero-subtitle">Die Person hinter ATELIER KL</p>
-        </div>
-    </section>
-
-    <section class="section py-16">
-        <div class="container">
-            <div class="artist-profile">
-                <div class="profile-image">
+            <div class="content-grid">
+                <div class="text-content">
+                    <h1 class="section-title">
+                        ÜBER<br />
+                        <span class="script-highlight">MICH</span>
+                    </h1>
+                    <div class="text-body">
+                        <p>
+                            Seit ich denken kann, bin ich kreativ. Malen ist für
+                            mich mehr als nur Farbe auf Leinwand zu bringen. Es
+                            ist ein Ausdruck meiner Gefühle, eine Reise in mein
+                            Inneres und eine Möglichkeit, die Welt um mich herum
+                            zu verarbeiten.
+                        </p>
+                        <p>
+                            In meinem Atelier in Heek entstehen abstrakte
+                            Kunstwerke, die durch ihre Farben und Formen
+                            bestechen. Ich liebe es, mit verschiedenen
+                            Materialien zu experimentieren und neue Techniken
+                            auszuprobieren.
+                        </p>
+                        <p>
+                            Die Natur ist meine größte Inspirationsquelle. Die
+                            Farben der Jahreszeiten, das Licht und die Schatten,
+                            die Strukturen und Formen – all das fließt in meine
+                            Bilder ein.
+                        </p>
+                        <p>
+                            Ich lade dich ein, meine Galerie zu besuchen und
+                            dich von meinen Werken inspirieren zu lassen.
+                            Vielleicht findest du ja ein Bild, das dich berührt
+                            und das du gerne in deinem Zuhause haben möchtest.
+                        </p>
+                    </div>
+                </div>
+                <div class="image-content">
                     <img
                         src="/katharina-profile.jpg"
-                        alt="Katharina Lanvermann - Abstrakte Künstlerin"
-                        class="profile-photo"
+                        alt="Katharina Lanvermann"
+                        class="about-image"
                     />
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="profile-content">
-                    <h2>Katharina Lanvermann</h2>
-                    <p class="profile-subtitle">
-                        Abstrakte Künstlerin & Workshop-Leiterin
-                    </p>
-
-                    <div class="profile-text">
-                        <p>
-                            Willkommen! Ich bin Katharina Lanvermann, die
-                            Gründerin von ATELIER KL. Seit über 10 Jahren lebe
-                            ich meine Leidenschaft für abstrakte Kunst und
-                            erschaffe Werke, die Räume mit Farbe und Emotion zum
-                            Leben erwecken.
-                        </p>
-
-                        <p>
-                            Meine künstlerische Reise begann mit der Faszination
-                            für Farben und deren Wirkung auf den Raum und die
-                            Seele. Inspiriert von der Natur, mediterranen
-                            Landschaften und der Schönheit des Einfachen,
-                            entwickelte ich meinen eigenen Stil – eine Mischung
-                            aus organischen Formen, warmen Erdtönen und
-                            beruhigenden Kompositionen.
-                        </p>
-
-                        <p>
-                            In meinem Atelier in Heek entstehen nicht nur
-                            Kunstwerke, sondern auch Begegnungen. In meinen
-                            Workshops teile ich meine Techniken und ermutige
-                            Menschen, ihre eigene kreative Stimme zu entdecken.
-                            Es erfüllt mich mit Freude zu sehen, wie Teilnehmer
-                            über sich hinauswachsen und ihre eigenen Kunstwerke
-                            erschaffen.
-                        </p>
-
-                        <p>
-                            Jedes meiner Werke ist ein Unikat – geschaffen mit
-                            Acrylfarben, Pigmenten und vor allem mit
-                            Leidenschaft. Ob für private Wohnräume, Büros oder
-                            öffentliche Räume – ich erschaffe Kunst, die berührt
-                            und inspiriert.
-                        </p>
-                    </div>
+    <!-- Bisherige Arbeit Section (Preview) -->
+    <section class="section py-16 light-section">
+        <div class="container">
+            <h2 class="section-title-center">BISHERIGE ARBEIT</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img
+                        src="/placeholder.jpg"
+                        alt="Abstraktes Kunstwerk in Rot"
+                    />
+                </div>
+                <div class="gallery-item">
+                    <img src="/placeholder.jpg" alt="Abstraktes Kunstwerk" />
+                </div>
+                <div class="gallery-item">
+                    <img src="/placeholder.jpg" alt="Detailansicht Kunstwerk" />
+                </div>
+                <div class="gallery-item">
+                    <img src="/placeholder.jpg" alt="Kunstwerk Textur" />
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Philosophy Section -->
-    <section
-        class="section py-16"
-        style="background-color: var(--color-surface);"
-    >
+    <!-- Quote Section -->
+    <section class="section py-16 dark-section">
         <div class="container">
-            <div class="philosophy-section">
-                <h2 class="text-center">Meine künstlerische Vision</h2>
-
-                <div class="philosophy-grid">
-                    <div class="philosophy-item">
-                        <h3>Authentizität</h3>
-                        <p>
-                            Jedes Werk entsteht intuitiv und authentisch. Ich
-                            lasse mich von meinen Emotionen und der Energie des
-                            Moments leiten.
-                        </p>
-                    </div>
-
-                    <div class="philosophy-item">
-                        <h3>Natur als Inspiration</h3>
-                        <p>
-                            Die Farben und Formen der Natur sind meine größte
-                            Inspirationsquelle. Erdtöne, Olivgrün und sanfte
-                            Übergänge prägen meine Arbeiten.
-                        </p>
-                    </div>
-
-                    <div class="philosophy-item">
-                        <h3>Emotionale Tiefe</h3>
-                        <p>
-                            Kunst sollte berühren. Meine Werke laden zum
-                            Innehalten ein und schaffen Räume der Ruhe und
-                            Kontemplation.
-                        </p>
-                    </div>
-
-                    <div class="philosophy-item">
-                        <h3>Persönliche Verbindung</h3>
-                        <p>
-                            Ob Auftragsarbeit oder Workshop – mir ist der
-                            persönliche Austausch wichtig. Gemeinsam erschaffen
-                            wir etwas Besonderes.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section class="section py-16">
-        <div class="container">
-            <div class="experience-section">
-                <h2 class="text-center">Ausbildung & Erfahrung</h2>
-
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-year">2024</div>
-                        <div class="timeline-content">
-                            <h3>ATELIER KL heute</h3>
-                            <p>
-                                Regelmäßige Workshops und Auftragsarbeiten für
-                                private und gewerbliche Kunden
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-year">2018</div>
-                        <div class="timeline-content">
-                            <h3>Workshop-Programm</h3>
-                            <p>
-                                Start des erfolgreichen Workshop-Programms für
-                                kreative Malerei
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-year">2014</div>
-                        <div class="timeline-content">
-                            <h3>Gründung ATELIER KL</h3>
-                            <p>Eröffnung des eigenen Ateliers in Heek</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-year">2010</div>
-                        <div class="timeline-content">
-                            <h3>Künstlerische Ausbildung</h3>
-                            <p>
-                                Intensive Weiterbildung in abstrakter Malerei
-                                und Farbtheorie
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="quote-container">
+                <p class="quote-text">
+                    "Jedes Kunstwerk lässt mich wie einen visuellen
+                    Geschichtenerzähler fühlen – ich lasse Kunst, Stil und
+                    Gefühl miteinander verschmelzen."
+                </p>
             </div>
         </div>
     </section>
 </Layout>
 
 <style>
-    .page-hero {
-        padding: var(--space-16) 0 var(--space-8);
-        background: linear-gradient(
-            135deg,
-            var(--color-brand-beige-light),
-            var(--color-surface)
-        );
-        text-align: center;
+    .dark-section {
+        background-color: var(--color-dark);
+        color: var(--color-text-light);
     }
 
-    .page-hero h1 {
-        margin-bottom: var(--space-4);
+    .light-section {
+        background-color: var(--color-light);
+        color: var(--color-text-dark);
     }
 
-    .hero-subtitle {
-        font-size: var(--font-size-xl);
-        color: var(--color-text-secondary);
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    .artist-profile {
+    .content-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: var(--space-12);
+        gap: var(--spacing-lg);
         align-items: start;
     }
 
     @media (min-width: 960px) {
-        .artist-profile {
-            grid-template-columns: 1fr 1.5fr;
+        .content-grid {
+            grid-template-columns: 1fr 1fr;
         }
     }
 
-    .profile-image {
-        position: sticky;
-        top: calc(var(--space-20));
+    .section-title {
+        font-family: var(--font-serif);
+        font-size: clamp(3rem, 6vw, 5rem);
+        line-height: 0.9;
+        margin-bottom: var(--spacing-md);
+        font-weight: 400;
     }
 
-    .profile-photo {
+    .script-highlight {
+        font-family: var(--font-script);
+        font-style: italic;
+        font-weight: 300;
+        display: block;
+        margin-top: -0.2em;
+    }
+
+    .text-body p {
+        margin-bottom: var(--spacing-sm);
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--color-light);
+    }
+
+    .about-image {
         width: 100%;
-        height: auto;
         aspect-ratio: 3/4;
         object-fit: cover;
-        border-radius: var(--radius-lg);
+        border-radius: 2px;
         box-shadow: var(--shadow-lg);
-        filter: contrast(1.05) brightness(1.02) saturate(1.1);
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: crisp-edges;
     }
 
-    .profile-content h2 {
-        margin-bottom: var(--space-2);
+    .section-title-center {
+        font-family: var(--font-serif);
+        font-size: clamp(2rem, 4vw, 3rem);
+        text-align: center;
+        margin-bottom: var(--spacing-lg);
+        font-weight: 400;
+        letter-spacing: 0.05em;
     }
 
-    .profile-subtitle {
-        font-size: var(--font-size-lg);
-        color: var(--color-accent);
-        margin-bottom: var(--space-8);
-    }
-
-    .profile-text {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-4);
-    }
-
-    .profile-text p {
-        line-height: var(--line-height-relaxed);
-    }
-
-    .philosophy-section,
-    .experience-section {
-        max-width: 900px;
-        margin: 0 auto;
-    }
-
-    .philosophy-section h2,
-    .experience-section h2 {
-        margin-bottom: var(--space-12);
-    }
-
-    .philosophy-grid {
+    .gallery-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: var(--space-8);
+        gap: var(--spacing-md);
     }
 
-    .philosophy-item h3 {
-        margin-bottom: var(--space-3);
-        font-size: var(--font-size-lg);
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        aspect-ratio: 1;
+        transition: transform 0.5s ease;
     }
 
-    .philosophy-item p {
-        line-height: var(--line-height-relaxed);
-        color: var(--color-text-secondary);
+    .gallery-item {
+        overflow: hidden;
     }
 
-    .timeline {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-6);
-        padding-left: var(--space-8);
-        border-left: 2px solid var(--color-brand-beige);
+    .gallery-item:hover img {
+        transform: scale(1.05);
     }
 
-    .timeline-item {
-        display: flex;
-        gap: var(--space-6);
-        position: relative;
+    .quote-container {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
     }
 
-    .timeline-item::before {
-        content: "";
-        position: absolute;
-        left: calc(-1 * var(--space-8) - 7px);
-        top: 8px;
-        width: 16px;
-        height: 16px;
-        background-color: var(--color-accent);
-        border-radius: 50%;
-        border: 3px solid var(--color-white);
-    }
-
-    .timeline-year {
-        flex-shrink: 0;
-        font-family: var(--font-headline);
-        font-size: var(--font-size-xl);
-        font-weight: var(--font-weight-bold);
-        color: var(--color-accent);
-        min-width: 80px;
-    }
-
-    .timeline-content h3 {
-        margin-bottom: var(--space-2);
-    }
-
-    .timeline-content p {
-        color: var(--color-text-secondary);
-        line-height: var(--line-height-relaxed);
-    }
-
-    @media (max-width: 640px) {
-        .timeline {
-            padding-left: var(--space-4);
-        }
-
-        .timeline-item {
-            flex-direction: column;
-            gap: var(--space-2);
-        }
-
-        .timeline-item::before {
-            left: calc(-1 * var(--space-4) - 7px);
-        }
+    .quote-text {
+        font-family: var(--font-serif);
+        font-size: clamp(1.5rem, 3vw, 2.5rem);
+        line-height: 1.4;
+        color: var(--color-light);
     }
 </style>

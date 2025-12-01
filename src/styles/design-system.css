@@ -1,17 +1,23 @@
 :root {
   /* ================================
      COLOR SYSTEM
-     Brand colors extracted from ATELIER KL logo
+     Transferred from katharina-portfolio
      ================================ */
-  
-  /* Brand Colors - Beige from logo */
-  --color-brand-beige: #C9BCB3;
-  --color-brand-beige-light: #E5DDD6;
-  --color-brand-beige-dark: #A39A92;
-  
-  /* Neutrals */
-  --color-black: #0A0A0A;
-  --color-white: #FFFFFF;
+
+  /* Primary Colors - Earth Tones */
+  --color-dark: #3a3a3a;
+  --color-dark-alt: #2a2a2a;
+  --color-light: #e8ddd0;
+  --color-light-alt: #d4c4b0;
+  --color-white: #ffffff;
+  --color-black: #1a1a1a;
+  --color-accent: #1a1a1a;
+  --color-accent-light: #3a3a3a;
+  --color-accent-dark: #000000;
+  --color-text-dark: #1a1a1a;
+  --color-text-light: #ffffff;
+
+  /* Neutrals - Enhanced for flexibility */
   --color-gray-50: #F9F9F9;
   --color-gray-100: #EFEFEF;
   --color-gray-200: #DCDCDC;
@@ -22,12 +28,7 @@
   --color-gray-700: #525252;
   --color-gray-800: #3D3D3D;
   --color-gray-900: #292929;
-  
-  /* Accent Color - Soft Olive */
-  --color-accent: #8B8B6B;
-  --color-accent-light: #A5A589;
-  --color-accent-dark: #6D6D54;
-  
+
   /* Semantic Colors */
   --color-success: #4A7C59;
   --color-success-light: #E8F4EC;
@@ -37,31 +38,35 @@
   --color-warning-light: #FDF4E9;
   --color-info: #5B7C9E;
   --color-info-light: #E8EEF4;
-  
+
   /* Surface Colors */
   --color-background: var(--color-white);
-  --color-surface: var(--color-gray-50);
+  --color-surface: var(--color-light);
   --color-surface-elevated: var(--color-white);
-  
+
   /* Text Colors */
-  --color-text-primary: var(--color-black);
+  --color-text-primary: var(--color-text-dark);
   --color-text-secondary: var(--color-gray-600);
   --color-text-tertiary: var(--color-gray-400);
-  --color-text-on-brand: var(--color-white);
-  
+  --color-text-on-brand: var(--color-text-light);
+
   /* Border Colors */
   --color-border: var(--color-gray-200);
   --color-border-light: var(--color-gray-100);
   --color-border-focus: var(--color-accent);
-  
+
   /* ================================
      TYPOGRAPHY SYSTEM
+     Transferred from katharina-portfolio
      ================================ */
-  
+
   /* Font Families */
-  --font-headline: 'Manrope', 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  
+  --font-serif: 'Playfair Display', serif;
+  --font-script: 'Cormorant Garamond', serif;
+  --font-sans: 'Lato', sans-serif;
+  --font-headline: var(--font-serif);
+  --font-body: var(--font-sans);
+
   /* Font Sizes - Fluid Type Scale */
   --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
   --font-size-sm: clamp(0.875rem, 0.825rem + 0.25vw, 1rem);
@@ -72,95 +77,120 @@
   --font-size-3xl: clamp(1.875rem, 1.65rem + 1.125vw, 2.25rem);
   --font-size-4xl: clamp(2.25rem, 1.95rem + 1.5vw, 3rem);
   --font-size-5xl: clamp(3rem, 2.5rem + 2.5vw, 4rem);
-  
+
   /* Line Heights */
   --line-height-tight: 1.25;
   --line-height-snug: 1.375;
-  --line-height-normal: 1.5;
+  --line-height-normal: 1.6;
   --line-height-relaxed: 1.625;
-  --line-height-loose: 1.75;
-  
+  --line-height-loose: 1.8;
+
   /* Font Weights */
+  --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  
+
   /* Letter Spacing */
   --letter-spacing-tight: -0.025em;
   --letter-spacing-normal: 0;
   --letter-spacing-wide: 0.025em;
-  
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+
   /* Max Line Length for Readability */
   --max-line-length: 70ch;
-  
+
   /* ================================
      SPACING SYSTEM
-     8px base unit
+     Transferred from katharina-portfolio
      ================================ */
-  
+
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 4rem;
+  --spacing-xl: 6rem;
+
+  /* Extended spacing for compatibility */
   --space-0: 0;
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
-  --space-5: 1.25rem;   /* 20px */
-  --space-6: 1.5rem;    /* 24px */
-  --space-8: 2rem;      /* 32px */
-  --space-10: 2.5rem;   /* 40px */
-  --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
-  --space-20: 5rem;     /* 80px */
-  --space-24: 6rem;     /* 96px */
-  --space-32: 8rem;     /* 128px */
-  
+  --space-1: 0.25rem;
+  /* 4px */
+  --space-2: 0.5rem;
+  /* 8px */
+  --space-3: 0.75rem;
+  /* 12px */
+  --space-4: 1rem;
+  /* 16px */
+  --space-5: 1.25rem;
+  /* 20px */
+  --space-6: 1.5rem;
+  /* 24px */
+  --space-8: 2rem;
+  /* 32px */
+  --space-10: 2.5rem;
+  /* 40px */
+  --space-12: 3rem;
+  /* 48px */
+  --space-16: 4rem;
+  /* 64px */
+  --space-20: 5rem;
+  /* 80px */
+  --space-24: 6rem;
+  /* 96px */
+  --space-32: 8rem;
+  /* 128px */
+
   /* ================================
      LAYOUT SYSTEM
      ================================ */
-  
+
   /* Grid */
   --grid-columns: 12;
-  --grid-gap: var(--space-5);  /* 20px */
+  --grid-gap: var(--spacing-sm);
   --container-max-width: 1200px;
-  --container-padding: var(--space-4);
-  
+  --container-padding: var(--spacing-md);
+
   /* Breakpoints (for reference in media queries) */
-  --breakpoint-xs: 320px;   /* Small smartphones */
-  --breakpoint-sm: 375px;   /* iPhone SE, iPhone 12/13 mini */
-  --breakpoint-md: 768px;   /* iPad Portrait, Tablets */
-  --breakpoint-lg: 1024px;  /* iPad Landscape, Small laptops */
-  --breakpoint-xl: 1440px;  /* Desktop */
-  --breakpoint-2xl: 1920px; /* Large desktop */
+  --breakpoint-xs: 320px;
+  --breakpoint-sm: 375px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1440px;
+  --breakpoint-2xl: 1920px;
 
   /* Responsive container widths */
   --container-width-sm: 640px;
   --container-width-md: 768px;
   --container-width-lg: 1024px;
   --container-width-xl: 1280px;
-  
+
   /* ================================
      EFFECTS & INTERACTIONS
+     Transferred from katharina-portfolio
      ================================ */
-  
-  /* Border Radius */
-  --radius-sm: 0.375rem;   /* 6px */
-  --radius-base: 0.75rem;  /* 12px */
-  --radius-lg: 1rem;       /* 16px */
-  --radius-xl: 1.5rem;     /* 24px */
+
+  /* Border Radius - Minimal for clean look */
+  --radius-sm: 2px;
+  --radius-base: 2px;
+  --radius-lg: 4px;
+  --radius-xl: 8px;
   --radius-full: 9999px;
-  
-  /* Shadows - Subtle elevation */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  
-  /* Transitions */
+
+  /* Shadows - More prominent for artistic feel */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 5px 20px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.4);
+
+  /* Transitions - Smooth cubic-bezier */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: 160ms ease-out;
   --transition-base: 200ms ease-out;
   --transition-slow: 240ms ease-out;
-  
+
   /* Z-index Scale */
   --z-base: 0;
   --z-dropdown: 100;
@@ -174,39 +204,34 @@
 
 /* ================================
    RESPONSIVE DESIGN TOKENS
-   Adjust spacing and sizing for larger screens
    ================================ */
 
-/* Mobile First: 320px - 374px (Small smartphones) */
-/* Base styles above apply */
-
-/* Small devices: 375px+ (iPhone SE, iPhone 12/13 mini) */
+/* Small devices: 375px+ */
 @media (min-width: 375px) {
   :root {
-    --container-padding: var(--space-5);
+    --container-padding: var(--spacing-sm);
   }
 }
 
-/* Tablets: 768px+ (iPad Portrait) */
+/* Tablets: 768px+ */
 @media (min-width: 768px) {
   :root {
-    --container-padding: var(--space-6);
-    --grid-gap: var(--space-6);
+    --container-padding: var(--spacing-md);
+    --grid-gap: var(--spacing-md);
   }
 }
 
 /* Landscape tablets & small laptops: 1024px+ */
 @media (min-width: 1024px) {
   :root {
-    --container-padding: var(--space-8);
-    --grid-gap: var(--space-6);
+    --container-padding: var(--spacing-md);
   }
 }
 
 /* Desktop: 1440px+ */
 @media (min-width: 1440px) {
   :root {
-    --container-padding: var(--space-8);
-    --grid-gap: var(--space-8);
+    --container-padding: var(--spacing-md);
+    --grid-gap: var(--spacing-md);
   }
 }
