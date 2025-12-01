@@ -14,6 +14,9 @@ app.use((req, res, next) => {
     next();
 });
 
+// Serve uploaded files statically
+app.use('/uploads', express.static('uploads'));
+
 // Use Astro's SSR handler
 app.use(ssrHandler);
 
