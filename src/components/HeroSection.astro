@@ -55,6 +55,11 @@ import CTAButton from "./CTAButton.astro";
         background-repeat: no-repeat;
         overflow: hidden;
         padding: var(--space-16) 0 var(--space-8);
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        -webkit-backface-visibility: hidden;
+        -webkit-transform: translateZ(0) scale(1.0, 1.0);
+        transform: translateZ(0);
     }
 
     .hero-content {
