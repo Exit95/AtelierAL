@@ -46,3 +46,4 @@ _*.backup
 
 # Config (wird lokal verwendet)
 astro.config.mjs
+public/hintegrund2.png
