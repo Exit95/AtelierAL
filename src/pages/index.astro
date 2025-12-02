@@ -284,8 +284,9 @@ const upcomingWorkshops = allWorkshops
 		margin-bottom: var(--space-4);
 		overflow: hidden;
 		border-radius: var(--radius-lg);
-		aspect-ratio: 4 / 3;
+		aspect-ratio: 1 / 1;
 		background: var(--color-surface-dark, #1a1a1a);
+		min-height: 400px;
 	}
 
 	.artwork-preview-image img {
@@ -295,6 +296,18 @@ const upcomingWorkshops = allWorkshops
 		object-fit: cover;
 		object-position: center;
 		transition: transform 0.3s ease;
+	}
+
+	@media (min-width: 768px) {
+		.artwork-preview-image {
+			min-height: 500px;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.artwork-preview-image {
+			min-height: 600px;
+		}
 	}
 
 	.artwork-preview:hover .artwork-preview-image img {
