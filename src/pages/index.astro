@@ -284,12 +284,16 @@ const upcomingWorkshops = allWorkshops
 		margin-bottom: var(--space-4);
 		overflow: hidden;
 		border-radius: var(--radius-lg);
+		aspect-ratio: 4 / 3;
+		background: var(--color-surface-dark, #1a1a1a);
 	}
 
 	.artwork-preview-image img {
 		width: 100%;
-		height: auto;
+		height: 100%;
 		display: block;
+		object-fit: cover;
+		object-position: center;
 		transition: transform 0.3s ease;
 	}
 
