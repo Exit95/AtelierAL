@@ -8,8 +8,7 @@ interface Props {
 const { artworks } = Astro.props;
 import Badge from "./Badge.astro";
 
-// Extract unique tags for filtering
-const allTags = [...new Set(artworks.flatMap((artwork) => artwork.tags || []))];
+// Extract unique techniques for filtering
 const techniques = [...new Set(artworks.map((artwork) => artwork.technique))];
 ---
 
@@ -111,10 +110,10 @@ const techniques = [...new Set(artworks.map((artwork) => artwork.technique))];
 </div>
 
 <script>
-    const galleryContainer = document.querySelector("[data-gallery-grid]");
+    const galleryContainer = document.querySelector("[data-gallery-grid]") as HTMLElement | null;
     const filters = document.querySelectorAll("[data-filter-type]");
     const resetButton = document.querySelector("[data-filter-reset]");
-    const noResults = document.querySelector("[data-no-results]");
+    const noResults = document.querySelector("[data-no-results]") as HTMLElement | null;
 
     if (galleryContainer && filters.length > 0) {
         // Store active filters
@@ -125,7 +124,8 @@ const techniques = [...new Set(artworks.map((artwork) => artwork.technique))];
 
         // Filter function
         function filterGallery() {
-            const items = galleryContainer.querySelectorAll(".gallery-item");
+            if (!galleryContainer) return;
+            const items = galleryContainer.querySelectorAll(".gallery-item") as NodeListOf<HTMLElement>;
             let visibleCount = 0;
 
             items.forEach((item) => {
@@ -150,10 +150,12 @@ const techniques = [...new Set(artworks.map((artwork) => artwork.technique))];
             // Show/hide no results message
             if (noResults) {
                 if (visibleCount === 0) {
-                    noResults.hidden = false;
+                    noResults.hidden = true;
+                    noResults.style.display = "block";
                     galleryContainer.style.display = "none";
                 } else {
-                    noResults.hidden = true;
+                    noResults.hidden = false;
+                    noResults.style.display = "none";
                     galleryContainer.style.display = "";
                 }
             }
@@ -220,9 +222,15 @@ const techniques = [...new Set(artworks.map((artwork) => artwork.technique))];
         border: 1px solid var(--color-border);
         border-radius: var(--radius-base);
         background-color: var(--color-white);
+        color: #000000;
         font-size: var(--font-size-base);
         transition: border-color var(--transition-fast);
         min-height: 44px; /* Touch-friendly */
+    }
+
+    .filter-select option {
+        background-color: var(--color-white);
+        color: #000000;
     }
 
     .filter-select:focus {
