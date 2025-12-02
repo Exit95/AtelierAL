@@ -121,12 +121,14 @@ const navItems = [
 
 <style>
     .site-header {
-        position: sticky;
+        position: absolute;
         top: 0;
+        left: 0;
+        right: 0;
         z-index: var(--z-sticky);
-        background-color: var(--color-white);
-        border-bottom: 1px solid var(--color-border-light);
-        box-shadow: var(--shadow-sm);
+        background-color: transparent;
+        border-bottom: none;
+        box-shadow: none;
     }
 
     .header-content {
@@ -243,7 +245,7 @@ const navItems = [
         font-family: var(--font-headline);
         font-size: var(--font-size-base);
         font-weight: var(--font-weight-medium);
-        color: var(--color-text-secondary);
+        color: var(--color-dark);
         text-decoration: none;
         padding: var(--space-4);
         border-radius: var(--radius-base);
@@ -254,8 +256,8 @@ const navItems = [
 
     .nav-link:hover,
     .nav-link.active {
-        color: var(--color-accent);
-        background-color: var(--color-brand-beige-light);
+        color: var(--color-dark);
+        background-color: var(--color-light);
     }
 
     /* Prevent body scroll when menu is open */
