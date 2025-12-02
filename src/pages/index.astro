@@ -284,30 +284,13 @@ const upcomingWorkshops = allWorkshops
 		margin-bottom: var(--space-4);
 		overflow: hidden;
 		border-radius: var(--radius-lg);
-		aspect-ratio: 1 / 1;
-		background: var(--color-surface-dark, #1a1a1a);
-		min-height: 400px;
 	}
 
 	.artwork-preview-image img {
 		width: 100%;
-		height: 100%;
+		height: auto;
 		display: block;
-		object-fit: cover;
-		object-position: center;
 		transition: transform 0.3s ease;
-	}
-
-	@media (min-width: 768px) {
-		.artwork-preview-image {
-			min-height: 500px;
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.artwork-preview-image {
-			min-height: 600px;
-		}
 	}
 
 	.artwork-preview:hover .artwork-preview-image img {
@@ -448,9 +431,8 @@ const upcomingWorkshops = allWorkshops
 
 	.carousel-track {
 		display: flex;
-		gap: var(--space-8);
+		gap: var(--space-6);
 		transition: transform 0.5s ease-in-out;
-		padding: var(--space-4) 0;
 	}
 
 	.carousel-slide {
@@ -466,13 +448,13 @@ const upcomingWorkshops = allWorkshops
 
 	@media (min-width: 640px) {
 		.carousel-slide {
-			flex: 0 0 calc(50% - var(--space-4));
+			flex: 0 0 calc(50% - var(--space-3));
 		}
 	}
 
 	@media (min-width: 1024px) {
 		.carousel-slide {
-			flex: 0 0 calc(33.333% - var(--space-5));
+			flex: 0 0 calc(33.333% - var(--space-4));
 		}
 	}
 
