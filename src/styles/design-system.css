@@ -17,6 +17,10 @@
   --color-text-dark: #1a1a1a;
   --color-text-light: #ffffff;
 
+  /* Brand Colors - Beige tones */
+  --color-brand-beige: #d4c4b0;
+  --color-brand-beige-dark: #c7b49c;
+
   /* Neutrals - Enhanced for flexibility */
   --color-gray-50: #F9F9F9;
   --color-gray-100: #EFEFEF;
