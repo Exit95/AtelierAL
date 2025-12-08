@@ -69,8 +69,8 @@
   --font-script: 'Cormorant Garamond', serif;
   --font-handwritten: 'Great Vibes', cursive;
   --font-sans: 'Lato', sans-serif;
-  --font-outfit: 'Outfit', sans-serif;
-  --font-headline: var(--font-outfit);
+  --font-greycliff: 'greycliff-cf', sans-serif;
+  --font-headline: var(--font-greycliff);
   --font-body: var(--font-sans);
 
   /* Font Sizes - Fluid Type Scale */
