@@ -69,7 +69,8 @@
   --font-script: 'Cormorant Garamond', serif;
   --font-handwritten: 'Great Vibes', cursive;
   --font-sans: 'Lato', sans-serif;
-  --font-headline: var(--font-serif);
+  --font-manrope: 'Manrope', sans-serif;
+  --font-headline: var(--font-manrope);
   --font-body: var(--font-sans);
 
   /* Font Sizes - Fluid Type Scale */
