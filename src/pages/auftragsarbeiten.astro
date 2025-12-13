@@ -7,7 +7,7 @@ import ContactForm from "../components/ContactForm.astro";
     title="Auftragsarbeiten"
     description="Individuelle Kunstwerke nach Ihren Wünschen. Katharina Lanvermann erschafft abstrakte Kunst, die perfekt zu Ihren Räumen passt."
 >
-    <section class="page-hero bg-surface">
+    <section class="page-hero dark-section">
         <div class="container">
             <h1 class="hero-title handwriting">Auftragsarbeit</h1>
             <p class="hero-subtitle">
@@ -17,7 +17,7 @@ import ContactForm from "../components/ContactForm.astro";
     </section>
 
     <!-- FAQ Grid Section -->
-    <section class="section faq-section bg-surface">
+    <section class="section faq-section dark-section">
         <div class="container">
             <div class="faq-grid">
                 <!-- Was ist eine Auftragsarbeit? -->
@@ -100,9 +100,9 @@ import ContactForm from "../components/ContactForm.astro";
 </Layout>
 
 <style>
-    /* Hero Section */
-    .bg-surface {
-        background-color: var(--color-surface);
+    /* Dark Section */
+    .dark-section {
+        background-color: var(--color-dark);
     }
 
     .bg-white {
@@ -120,7 +120,7 @@ import ContactForm from "../components/ContactForm.astro";
         font-weight: 700;
         line-height: 1.1;
         margin-bottom: var(--space-4);
-        color: var(--color-dark);
+        color: var(--color-light);
         text-transform: none;
         letter-spacing: 0.05em;
     }
@@ -129,7 +129,7 @@ import ContactForm from "../components/ContactForm.astro";
         font-family: var(--font-sans);
         font-size: var(--font-size-base);
         letter-spacing: 0.05em;
-        color: var(--color-text-secondary);
+        color: var(--color-light);
         margin-top: var(--space-2);
     }
 
@@ -171,7 +171,7 @@ import ContactForm from "../components/ContactForm.astro";
         font-size: var(--font-size-xs);
         font-weight: 600;
         letter-spacing: 0.1em;
-        color: var(--color-dark);
+        color: var(--color-light);
         text-transform: uppercase;
         line-height: 1.4;
         flex-shrink: 0;
@@ -193,7 +193,7 @@ import ContactForm from "../components/ContactForm.astro";
         font-family: 'Dancing Script', cursive;
         font-size: clamp(1.5rem, 3vw, 2rem);
         font-weight: 500;
-        color: var(--color-dark);
+        color: var(--color-light);
         line-height: 1.2;
         margin-bottom: var(--space-1);
     }
@@ -206,11 +206,11 @@ import ContactForm from "../components/ContactForm.astro";
         font-family: var(--font-sans);
         font-size: var(--font-size-sm);
         line-height: 1.7;
-        color: var(--color-text-secondary);
+        color: var(--color-light);
     }
 
     .answer-text a {
-        color: var(--color-dark);
+        color: var(--color-light);
         text-decoration: none;
         font-weight: 500;
     }
