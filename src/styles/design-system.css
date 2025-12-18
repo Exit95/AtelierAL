@@ -70,7 +70,9 @@
   --font-handwritten: 'Great Vibes', cursive;
   --font-sans: 'Lato', sans-serif;
   --font-greycliff: 'greycliff-cf', sans-serif;
-  --font-headline: var(--font-greycliff);
+  --font-mastro: 'Mastro Display', serif;
+  --font-fugu: 'Fugu', cursive;
+  --font-headline: var(--font-mastro);
   --font-body: var(--font-sans);
 
   /* Font Sizes - Fluid Type Scale */
