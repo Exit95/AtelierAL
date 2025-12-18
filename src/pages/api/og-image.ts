@@ -17,7 +17,7 @@ export const GET: APIRoute = async ({ url }) => {
         <defs>
             <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#3a3a3a;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#3a3230;stop-opacity:1" />
             </linearGradient>
         </defs>
         <rect width="1200" height="630" fill="url(#grad)"/>
