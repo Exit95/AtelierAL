@@ -17,7 +17,7 @@ import CTAButton from "./CTAButton.astro";
     style={backgroundImage ? `background-image: url(${backgroundImage})` : ""}
 >
     <div class="hero-content container">
-        <img src="/atelier5.png" alt="ATELIER KL" class="hero-logo" />
+        <img src="/atelier5.png" alt="ATELIER KL" class="hero-logo" width="450" height="auto" loading="eager" fetchpriority="high" />
         {subtitle && <p class="hero-subtitle">{subtitle}</p>}
         {
             (primaryCTA || secondaryCTA) && (

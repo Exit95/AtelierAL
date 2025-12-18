@@ -24,17 +24,33 @@ export default defineConfig({
         })
     ],
     image: {
+        service: {
+            entrypoint: 'astro/assets/services/sharp'
+        },
         domains: [],
         remotePatterns: []
     },
     vite: {
         build: {
             cssCodeSplit: true,
+            minify: 'esbuild',
             rollupOptions: {
                 output: {
-                    manualChunks: undefined
+                    manualChunks: (id) => {
+                        // Vendor chunk for node_modules
+                        if (id.includes('node_modules')) {
+                            return 'vendor';
+                        }
+                    }
                 }
             }
+        },
+        ssr: {
+            noExternal: ['@astrojs/node']
         }
+    },
+    compressHTML: true,
+    build: {
+        inlineStylesheets: 'auto'
     }
 });

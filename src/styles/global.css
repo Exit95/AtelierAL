@@ -18,6 +18,8 @@ html {
   text-rendering: optimizeLegibility;
   font-size: 16px;
   scroll-behavior: smooth;
+  /* Performance optimization */
+  -webkit-tap-highlight-color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -106,6 +108,8 @@ a {
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
   transition: color var(--transition-fast);
+  /* Performance optimization */
+  will-change: color;
 }
 
 a:hover {

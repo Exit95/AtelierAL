@@ -72,6 +72,9 @@ const techniques = [...new Set(artworks.map((artwork) => artwork.technique))];
                                     src={artwork.images[0]}
                                     alt={artwork.title}
                                     loading="lazy"
+                                    decoding="async"
+                                    width="400"
+                                    height="400"
                                 />
                                 <div class="artwork-overlay">
                                     <span class="view-icon">👁️</span>
