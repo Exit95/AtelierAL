@@ -1,6 +1,25 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ContactForm from "../components/ContactForm.astro";
+import { generateFAQSchema } from "../utils/seo";
+
+// FAQ Data for Schema
+const faqs = [
+    {
+        question: "Was ist eine Auftragsarbeit?",
+        answer: "Ein individuell gefertigtes Kunstwerk für Sie. Gemeinsam besprechen wir den gewünschten Stoff, die Farbwelt, die Bildgröße und eine mögliche Rahmung. Zum Prozess gehört auch die Anfertigung von Komposition- und Farbskizzen."
+    },
+    {
+        question: "Wie lange dauert die Fertigstellung und was kostet es?",
+        answer: "Die Fertigstellung dauert in der Regel 4-6 Wochen. Der Preis richtet sich nach Größe, Material und Aufwand. Ich erstelle Ihnen ein individuelles Angebot basierend auf Ihren Wünschen."
+    },
+    {
+        question: "Wie läuft der Prozess ab?",
+        answer: "1. Erstgespräch über Ihre Vorstellungen 2. Erstellung von Farbskizzen 3. Freigabe durch Sie 4. Anfertigung des Kunstwerks 5. Lieferung oder Abholung"
+    }
+];
+
+const faqSchema = generateFAQSchema(faqs);
 ---
 
 <Layout
@@ -232,3 +251,6 @@ import ContactForm from "../components/ContactForm.astro";
         }
     }
 </style>
+
+<!-- FAQ Schema for SEO -->
+<script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

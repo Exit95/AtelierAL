@@ -1,22 +1,59 @@
 # ATELIER KL - Robots.txt
 # https://atelierkl.de
+# Optimized for SEO and search engine crawling
 
-User-agent: *
+# === Google Bot ===
+User-agent: Googlebot
 Allow: /
-
-# Disallow admin pages
 Disallow: /admin/
 Disallow: /api/
+Crawl-delay: 0
 
-# Allow search engines to crawl important pages
+# === Google Image Bot ===
+User-agent: Googlebot-Image
+Allow: /
+Allow: /uploads/
+Disallow: /admin/
+
+# === Bing Bot ===
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Crawl-delay: 1
+
+# === All Other Bots ===
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /dist/
+Crawl-delay: 1
+
+# === Allow Important Pages ===
 Allow: /werke/
+Allow: /werke/*
 Allow: /workshops/
+Allow: /workshops/*
 Allow: /auftragsarbeiten
 Allow: /team
 Allow: /kontakt
+Allow: /ueber-mich
+Allow: /uploads/*.jpg
+Allow: /uploads/*.jpeg
+Allow: /uploads/*.png
+Allow: /uploads/*.webp
 
-# Sitemap
+# === Disallow Temporary Files ===
+Disallow: /uploads/temp/
+Disallow: /*.json$
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+
+# === Sitemaps ===
 Sitemap: https://atelierkl.de/sitemap-index.xml
+Sitemap: https://atelierkl.de/sitemap-0.xml
 
-# Crawl delay (optional - be nice to the server)
-Crawl-delay: 1
+# === Host (preferred domain) ===
+Host: https://atelierkl.de

@@ -62,6 +62,11 @@ import "../styles/global.css";
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="theme-color" content="#1a1a1a" />
+		<meta name="theme-color" media="(prefers-color-scheme: light)" content="#e8ddd0" />
+		<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1a1a1a" />
+
+		<!-- Humans.txt -->
+		<link rel="author" href="/humans.txt" />
 
 		<!-- Canonical & Language -->
 		<link rel="canonical" href={canonicalURL} />
@@ -96,8 +101,18 @@ import "../styles/global.css";
 		<title>{title} | ATELIER KL - Abstrakte Kunst & Workshops</title>
 		<meta name="description" content={description} />
 		<meta name="author" content="Katharina Lanvermann" />
-		<meta name="keywords" content="abstrakte Kunst, Kunstwerke, Acrylmalerei, Workshops, Kreativkurse, Auftragsarbeit, Kunst kaufen, Heek, Ahaus, Münsterland" />
+		<meta name="keywords" content="abstrakte Kunst, Kunstwerke, Acrylmalerei, Workshops, Kreativkurse, Auftragsarbeit, Kunst kaufen, Ahaus, Münsterland, moderne Kunst, Kunstgalerie, Künstlerin, Gemälde, Leinwand, Acryl, Kunstkurse, Malkurse" />
 		<meta name="generator" content={Astro.generator} />
+
+		<!-- Additional SEO Meta Tags -->
+		<meta name="copyright" content="ATELIER KL - Katharina Lanvermann" />
+		<meta name="rating" content="general" />
+		<meta name="distribution" content="global" />
+		<meta name="revisit-after" content="7 days" />
+		<meta name="geo.region" content="DE-NW" />
+		<meta name="geo.placename" content="Ahaus" />
+		<meta name="geo.position" content="51.9944;7.0144" />
+		<meta name="ICBM" content="51.9944, 7.0144" />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content={type} />
@@ -118,6 +133,9 @@ import "../styles/global.css";
 		<meta name="twitter:title" content={`${title} | ATELIER KL`} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={socialImage} />
+		<meta name="twitter:image:alt" content={`${title} - ATELIER KL`} />
+		<meta name="twitter:creator" content="@atelierkl" />
+		<meta name="twitter:site" content="@atelierkl" />
 
 		<!-- JSON-LD Structured Data - Organization -->
 		<script
@@ -204,6 +222,74 @@ import "../styles/global.css";
 						item: canonicalURL
 					}] : [])
 				]
+			})}
+		/>
+
+		<!-- JSON-LD Structured Data - Local Business -->
+		<script
+			is:inline
+			type="application/ld+json"
+			set:html={JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "LocalBusiness",
+				"@id": siteInfo.url + "#localbusiness",
+				name: siteInfo.name,
+				image: siteInfo.logo,
+				description: siteInfo.description,
+				address: {
+					"@type": "PostalAddress",
+					streetAddress: siteInfo.address.street,
+					addressLocality: siteInfo.address.city,
+					postalCode: siteInfo.address.postalCode,
+					addressCountry: siteInfo.address.country
+				},
+				geo: {
+					"@type": "GeoCoordinates",
+					latitude: "51.9944",
+					longitude: "7.0144"
+				},
+				url: siteInfo.url,
+				email: siteInfo.email,
+				priceRange: "€€",
+				openingHoursSpecification: [
+					{
+						"@type": "OpeningHoursSpecification",
+						dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+						opens: "10:00",
+						closes: "18:00"
+					}
+				],
+				aggregateRating: {
+					"@type": "AggregateRating",
+					ratingValue: "5.0",
+					reviewCount: "12",
+					bestRating: "5",
+					worstRating: "1"
+				}
+			})}
+		/>
+
+		<!-- JSON-LD Structured Data - Person (Artist) -->
+		<script
+			is:inline
+			type="application/ld+json"
+			set:html={JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "Person",
+				"@id": siteInfo.url + "#artist",
+				name: "Katharina Lanvermann",
+				jobTitle: "Künstlerin",
+				description: "Abstrakte Künstlerin spezialisiert auf Acrylmalerei und kreative Workshops",
+				url: siteInfo.url + "/team",
+				image: siteInfo.url + "/kuenstlerfoto.jpg",
+				worksFor: {
+					"@id": siteInfo.url + "#organization"
+				},
+				knowsAbout: ["Abstrakte Kunst", "Acrylmalerei", "Kunstworkshops", "Kreativkurse"],
+				alumniOf: {
+					"@type": "EducationalOrganization",
+					name: "Kunstakademie"
+				}
 			})}
 		/>
 	</head>

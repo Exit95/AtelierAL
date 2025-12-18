@@ -1,0 +1,30 @@
+# ATELIER KL - Humans.txt
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Artist & Owner: Katharina Lanvermann
+    Contact: studio@atelierkl.de
+    Location: Ahaus, Germany
+
+# THANKS
+
+    All art lovers and workshop participants
+    Supporting community in Münsterland
+
+# TECHNOLOGY COLOPHON
+
+    Standards: HTML5, CSS3, JavaScript ES6+
+    Framework: Astro 5.x
+    Fonts: Greycliff CF (Adobe Fonts), Playfair Display, Lato
+    Tools: Node.js, PM2, Apache
+    Hosting: Hetzner Cloud
+    Analytics: Privacy-friendly analytics
+    
+# SITE
+
+    Last update: 2025-01-18
+    Language: German / Deutsch
+    Doctype: HTML5
+    IDE: Visual Studio Code
+

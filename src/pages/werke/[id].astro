@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import Badge from "../../components/Badge.astro";
 import { getItem, type Artwork } from "../../lib/storage";
+import { generateProductSchema } from "../../utils/seo";
 
 const { id } = Astro.params;
 
@@ -23,9 +24,24 @@ const availabilityLabel =
           : "Verkauft";
 
 const artworkSize = `${artwork.size.width} × ${artwork.size.height} ${artwork.size.unit}`;
+
+// Generate Product Schema for SEO
+const productSchema = generateProductSchema({
+    title: artwork.title,
+    description: artwork.description,
+    image: new URL(artwork.images[0], Astro.site || 'https://atelierkl.de').toString(),
+    price: artwork.price,
+    availability: artwork.availability,
+    url: new URL(`/werke/${id}`, Astro.site || 'https://atelierkl.de').toString()
+});
 ---
 
-<Layout title={`${artwork.title} - Werk`} description={artwork.description}>
+<Layout
+    title={`${artwork.title} - Werk`}
+    description={artwork.description}
+    image={artwork.images[0]}
+    type="product"
+>
     <div class="artwork-detail-page">
         <div class="container">
             <a href="/werke" class="back-link">← Zurück zur Galerie</a>
@@ -115,6 +131,9 @@ const artworkSize = `${artwork.size.width} × ${artwork.size.height} ${artwork.s
                     )}
                 </div>
             </div>
+
+            <!-- Product Schema for SEO -->
+            <script is:inline type="application/ld+json" set:html={JSON.stringify(productSchema)} />
 
             <!-- Anfrage-Formular -->
             <div class="inquiry-section" id="anfrage">
