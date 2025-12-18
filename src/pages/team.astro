@@ -16,8 +16,9 @@ const recentArtworks = allArtworks.slice(0, 4);
         <div class="container">
             <div class="content-grid">
                 <div class="text-content">
-                    <h1 class="section-title handwriting">
-                        Über mich
+                    <h1 class="section-title-mixed">
+                        <span class="title-serif">ÜBER</span><span class="title-script">mich</span>
+                        <span class="title-underline"></span>
                     </h1>
                     <div class="text-body">
                         <p>
@@ -128,6 +129,63 @@ const recentArtworks = allArtworks.slice(0, 4);
         font-weight: 500;
         line-height: 1.1;
         color: white;
+    }
+
+    /* Mixed Title Style - "ÜBER mich" */
+    .section-title-mixed {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: var(--spacing-lg);
+        position: relative;
+    }
+
+    .title-serif {
+        font-family: var(--font-serif);
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 400;
+        letter-spacing: 0.15em;
+        color: white;
+        line-height: 1;
+        margin-right: 0.2em;
+    }
+
+    .title-script {
+        font-family: 'Dancing Script', cursive;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 500;
+        color: white;
+        line-height: 1;
+        font-style: italic;
+        margin-left: -0.1em;
+    }
+
+    .title-underline {
+        width: 100%;
+        max-width: 400px;
+        height: 3px;
+        background-image: repeating-linear-gradient(
+            to right,
+            #d4574b 0px,
+            #d4574b 8px,
+            transparent 8px,
+            transparent 16px
+        );
+        margin-top: var(--spacing-xs);
+        display: block;
+    }
+
+    @media (min-width: 640px) {
+        .section-title-mixed {
+            flex-direction: row;
+            align-items: baseline;
+        }
+
+        .title-underline {
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+        }
     }
 
     .section-title-center.handwriting {
