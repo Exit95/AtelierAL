@@ -1,7 +1,5 @@
 import type { APIRoute } from 'astro';
-import { unlink, readFile } from 'fs/promises';
-import { join } from 'path';
-import { lookup } from 'mime-types';
+import { getFromS3, deleteFromS3 } from '../../../lib/s3';
 
 export const GET: APIRoute = async ({ params }) => {
     try {
@@ -11,27 +9,21 @@ export const GET: APIRoute = async ({ params }) => {
             return new Response('File not found', { status: 404 });
         }
 
-        // Determine upload directory based on environment
-        const isProd = import.meta.env.PROD;
-        const uploadsDir = isProd
-            ? join(process.cwd(), 'uploads')
-            : join(process.cwd(), 'public', 'uploads');
+        const file = await getFromS3(filename);
 
-        const filepath = join(uploadsDir, filename);
+        if (!file) {
+            return new Response('File not found', { status: 404 });
+        }
 
-        // Read and serve the file
-        const fileBuffer = await readFile(filepath);
-        const mimeType = lookup(filename) || 'application/octet-stream';
-
-        return new Response(fileBuffer, {
+        return new Response(file.buffer, {
             status: 200,
             headers: {
-                'Content-Type': mimeType,
+                'Content-Type': file.contentType,
                 'Cache-Control': 'public, max-age=31536000',
             }
         });
     } catch (error) {
-        console.error('❌ File read error:', error);
+        console.error('❌ S3 read error:', error);
         return new Response('File not found', { status: 404 });
     }
 };
@@ -47,16 +39,7 @@ export const DELETE: APIRoute = async ({ params }) => {
             });
         }
 
-        // Determine upload directory based on environment
-        const isProd = import.meta.env.PROD;
-        const uploadsDir = isProd
-            ? join(process.cwd(), 'uploads')
-            : join(process.cwd(), 'public', 'uploads');
-
-        const filepath = join(uploadsDir, filename);
-
-        // Delete the file
-        await unlink(filepath);
+        await deleteFromS3(filename);
 
         return new Response(JSON.stringify({
             success: true,
@@ -66,7 +49,7 @@ export const DELETE: APIRoute = async ({ params }) => {
             headers: { 'Content-Type': 'application/json' }
         });
     } catch (error) {
-        console.error('❌ Delete error:', error);
+        console.error('❌ S3 delete error:', error);
 
         return new Response(JSON.stringify({
             error: 'Löschen fehlgeschlagen',
