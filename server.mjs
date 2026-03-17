@@ -37,14 +37,22 @@ server.timeout = 120000;
 server.headersTimeout = 125000;
 server.requestTimeout = 120000;
 
-// Error handling
+// Error handling with retry for port conflicts during deployment
+let retryCount = 0;
+const maxRetries = 5;
+
 server.on('error', (error) => {
-    if (error.code === 'EADDRINUSE') {
-        console.error(`Port ${port} is already in use`);
+    if (error.code === 'EADDRINUSE' && retryCount < maxRetries) {
+        retryCount++;
+        console.log(`Port ${port} in use, retrying in 3s... (${retryCount}/${maxRetries})`);
+        setTimeout(() => {
+            server.close();
+            server.listen(port, host);
+        }, 3000);
     } else {
         console.error('Server error:', error);
+        process.exit(1);
     }
-    process.exit(1);
 });
 
 // Graceful shutdown
