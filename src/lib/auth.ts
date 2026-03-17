@@ -1,18 +1,9 @@
-// import bcrypt from 'bcrypt';
 import { serialize, parse } from 'cookie';
+import crypto from 'node:crypto';
 
-const ADMIN_USERNAME = 'admin';
-// TODO: Change this password to a secure one!
-// let ADMIN_PASSWORD_HASH = '';
-
-// async function getAdminHash() {
-//     if (!ADMIN_PASSWORD_HASH) {
-//         ADMIN_PASSWORD_HASH = await bcrypt.hash('admin123', 10);
-//     }
-//     return ADMIN_PASSWORD_HASH;
-// }
-
-const SESSION_SECRET = 'atelier-kl-secret-key-change-me-in-production';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
+const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
 
 export interface Session {
     username: string;
@@ -21,15 +12,42 @@ export interface Session {
 
 const sessions = new Map<string, Session>();
 
+// Clean expired sessions periodically (every 30 minutes)
+setInterval(() => {
+    const now = Date.now();
+    const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days
+    for (const [id, session] of sessions) {
+        if (now - session.createdAt > maxAge) {
+            sessions.delete(id);
+        }
+    }
+}, 30 * 60 * 1000);
+
 /**
- * Verify login credentials
+ * Verify login credentials using constant-time comparison
  */
 export async function verifyCredentials(username: string, password: string): Promise<boolean> {
-    if (username !== ADMIN_USERNAME) {
+    if (!ADMIN_PASSWORD) {
+        console.error('ADMIN_PASSWORD not set in environment variables');
         return false;
     }
-    // Temporary bypass bcrypt for debugging
-    return password === 'asdmin123';
+
+    const usernameMatch = username === ADMIN_USERNAME;
+
+    // Constant-time comparison to prevent timing attacks
+    const passwordBuffer = Buffer.from(password);
+    const storedBuffer = Buffer.from(ADMIN_PASSWORD);
+
+    let passwordMatch: boolean;
+    if (passwordBuffer.length !== storedBuffer.length) {
+        // Compare against itself to maintain constant time, but result is false
+        crypto.timingSafeEqual(passwordBuffer, passwordBuffer);
+        passwordMatch = false;
+    } else {
+        passwordMatch = crypto.timingSafeEqual(passwordBuffer, storedBuffer);
+    }
+
+    return usernameMatch && passwordMatch;
 }
 
 /**
@@ -48,7 +66,17 @@ export function createSession(username: string): string {
  * Get session by ID
  */
 export function getSession(sessionId: string): Session | undefined {
-    return sessions.get(sessionId);
+    const session = sessions.get(sessionId);
+    if (!session) return undefined;
+
+    // Check session expiry (7 days)
+    const maxAge = 7 * 24 * 60 * 60 * 1000;
+    if (Date.now() - session.createdAt > maxAge) {
+        sessions.delete(sessionId);
+        return undefined;
+    }
+
+    return session;
 }
 
 /**
@@ -59,12 +87,10 @@ export function deleteSession(sessionId: string): void {
 }
 
 /**
- * Generate a random session ID
+ * Generate a cryptographically secure session ID
  */
 function generateSessionId(): string {
-    return Array.from({ length: 32 }, () =>
-        Math.floor(Math.random() * 16).toString(16)
-    ).join('');
+    return crypto.randomBytes(32).toString('hex');
 }
 
 /**

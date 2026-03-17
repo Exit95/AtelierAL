@@ -4,12 +4,17 @@ const currentYear = new Date().getFullYear();
 
 <footer class="site-footer">
     <div class="container footer-content">
-        <div class="footer-section">
+        <div class="footer-section footer-brand-section">
             <div class="footer-brand">
                 <img src="/logo-kl.png" alt="ATELIER KL" class="footer-logo" />
-                <h3>ATELIER KL</h3>
-                <p>Kunst, die Räume verwandelt</p>
+                <div>
+                    <h3>ATELIER KL</h3>
+                    <p class="footer-tagline">Kunst, die Räume verwandelt</p>
+                </div>
             </div>
+            <p class="footer-description">
+                Abstrakte Kunstwerke und inspirierende Workshops von Katharina Lanvermann in Ahaus.
+            </p>
         </div>
 
         <div class="footer-section">
@@ -27,11 +32,10 @@ const currentYear = new Date().getFullYear();
         <div class="footer-section">
             <h4>Kontakt</h4>
             <address class="footer-contact">
-                <p>ATELIER KL</p>
                 <p>Katharina Lanvermann</p>
                 <p>Bockhorn 68</p>
                 <p>48683 Ahaus</p>
-                <p>
+                <p class="footer-email">
                     <a href="mailto:studio@atelierkl.de">studio@atelierkl.de</a>
                 </p>
             </address>
@@ -50,8 +54,7 @@ const currentYear = new Date().getFullYear();
     <div class="footer-bottom">
         <div class="container">
             <p>
-                &copy; {currentYear} ATELIER KL - Katharina Lanvermann. Alle Rechte
-                vorbehalten.
+                &copy; {currentYear} ATELIER KL &mdash; Katharina Lanvermann
             </p>
         </div>
     </div>
@@ -60,23 +63,24 @@ const currentYear = new Date().getFullYear();
 <style>
     .site-footer {
         background-color: var(--color-dark);
-        color: var(--color-gray-100);
+        color: var(--color-gray-200);
         padding-top: var(--space-12);
         padding-bottom: var(--space-6);
-        margin-top: var(--space-16);
+        margin-top: 0;
     }
 
     .footer-content {
         display: grid;
         grid-template-columns: 1fr;
-        gap: var(--space-6);
-        margin-bottom: var(--space-8);
+        gap: var(--space-8);
+        margin-bottom: var(--space-10);
     }
 
     .footer-brand {
         display: flex;
-        flex-direction: column;
-        gap: var(--space-2);
+        align-items: center;
+        gap: var(--space-3);
+        margin-bottom: var(--space-4);
     }
 
     .footer-logo {
@@ -84,25 +88,37 @@ const currentYear = new Date().getFullYear();
         height: 48px;
         border-radius: 50%;
         object-fit: cover;
+        flex-shrink: 0;
     }
 
     .footer-brand h3 {
         font-size: var(--font-size-lg);
         color: var(--color-white);
         margin: 0;
+        letter-spacing: var(--letter-spacing-wider);
     }
 
-    .footer-brand p {
-        color: var(--color-gray-300);
+    .footer-tagline {
+        color: var(--color-gray-400);
         margin: 0;
         font-size: var(--font-size-sm);
     }
 
+    .footer-description {
+        color: var(--color-gray-400);
+        font-size: var(--font-size-sm);
+        line-height: var(--line-height-relaxed);
+        max-width: 280px;
+    }
+
     .footer-section h4 {
-        font-size: var(--font-size-base);
-        color: var(--color-white);
-        margin-bottom: var(--space-3);
-        font-weight: var(--font-weight-semibold);
+        font-family: var(--font-body);
+        font-size: var(--font-size-xs);
+        color: var(--color-brand-beige);
+        margin-bottom: var(--space-4);
+        font-weight: var(--font-weight-medium);
+        letter-spacing: var(--letter-spacing-widest);
+        text-transform: uppercase;
     }
 
     .footer-links {
@@ -138,102 +154,43 @@ const currentYear = new Date().getFullYear();
         margin-bottom: var(--space-1);
     }
 
+    .footer-email {
+        margin-top: var(--space-3) !important;
+    }
+
     .footer-contact a {
-        color: var(--color-gray-300);
-        text-decoration: underline;
+        color: var(--color-brand-beige);
+        text-decoration: none;
         transition: color var(--transition-fast);
     }
 
     .footer-contact a:hover {
-        color: var(--color-brand-beige);
+        color: var(--color-brand-beige-light);
     }
 
     .footer-bottom {
-        border-top: 1px solid var(--color-gray-700);
-        padding-top: var(--space-4);
+        border-top: 1px solid var(--color-gray-800);
+        padding-top: var(--space-6);
         text-align: center;
     }
 
     .footer-bottom p {
-        color: var(--color-gray-400);
+        color: var(--color-gray-500);
         font-size: var(--font-size-xs);
         margin: 0;
-        line-height: var(--line-height-relaxed);
+        letter-spacing: var(--letter-spacing-wide);
     }
 
-    /* Small smartphones: 375px+ */
-    @media (min-width: 375px) {
-        .footer-logo {
-            width: 56px;
-            height: 56px;
-        }
-
-        .footer-brand h3 {
-            font-size: var(--font-size-xl);
-        }
-
-        .footer-brand p {
-            font-size: var(--font-size-base);
-        }
-
-        .footer-section h4 {
-            font-size: var(--font-size-lg);
-        }
-
-        .footer-links a,
-        .footer-contact {
-            font-size: var(--font-size-base);
-        }
-
-        .footer-bottom p {
-            font-size: var(--font-size-sm);
-        }
-    }
-
-    /* Tablets: 768px+ */
     @media (min-width: 768px) {
         .site-footer {
             padding-top: var(--space-16);
             padding-bottom: var(--space-8);
-            margin-top: var(--space-20);
         }
 
         .footer-content {
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--space-8);
-            margin-bottom: var(--space-10);
-        }
-
-        .footer-brand {
-            gap: var(--space-3);
-        }
-
-        .footer-logo {
-            width: 64px;
-            height: 64px;
-        }
-
-        .footer-section h4 {
-            margin-bottom: var(--space-4);
-        }
-
-        .footer-bottom {
-            padding-top: var(--space-6);
-        }
-    }
-
-    /* Desktop: 1024px+ */
-    @media (min-width: 1024px) {
-        .footer-content {
-            grid-template-columns: repeat(4, 1fr);
-            margin-bottom: var(--space-12);
-        }
-    }
-
-    /* Large desktop: 1440px+ */
-    @media (min-width: 1440px) {
-        .footer-content {
+            grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: var(--space-10);
+            margin-bottom: var(--space-12);
         }
     }
 </style>

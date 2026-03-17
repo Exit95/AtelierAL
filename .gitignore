@@ -44,6 +44,11 @@ public/uploads/
 *.backup
 _*.backup
 
+# Platform-specific
+.bolt/
+.codesandbox/
+.vercel/
+
 # Config (wird lokal verwendet)
 astro.config.mjs
 public/hintergrund.webp

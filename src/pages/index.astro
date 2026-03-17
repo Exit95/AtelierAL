@@ -6,9 +6,7 @@ import CTAButton from "../components/CTAButton.astro";
 import ReviewsDisplay from "../components/ReviewsDisplay.astro";
 import ReviewForm from "../components/ReviewForm.astro";
 import { getItems, type Artwork, type Workshop } from "../lib/storage";
-// import { getCollection } from "astro:content"; // Keep for testimonials if they are still static
 
-// Get featured artworks and upcoming workshops
 const allArtworks = await getItems<Artwork>("artworks");
 const featuredArtworks = allArtworks
 	.filter((artwork) => artwork.featured)
@@ -19,8 +17,6 @@ const upcomingWorkshops = allWorkshops
 	.filter((workshop) => new Date(workshop.date) > new Date())
 	.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 	.slice(0, 3);
-
-// const allTestimonials = await getCollection("testimonials");
 ---
 
 <Layout
@@ -35,13 +31,13 @@ const upcomingWorkshops = allWorkshops
 	/>
 
 	<!-- Featured Artworks -->
-	<section class="section py-16 dark-section">
+	<section class="section py-20 section-dark">
 		<div class="container">
 			<div class="section-header">
+				<p class="section-label">Galerie</p>
 				<h2 class="handwriting">Ausgewählte Werke</h2>
-				<p class="subtitle-light">
-					Eine Auswahl meiner neuesten abstrakten Kunstwerke
-				</p>
+				<div class="divider"></div>
+				<p class="subtitle">Eine Auswahl meiner neuesten abstrakten Kunstwerke</p>
 			</div>
 
 			{
@@ -49,7 +45,7 @@ const upcomingWorkshops = allWorkshops
 					<>
 						<div class="carousel-container">
 							<button class="carousel-btn carousel-btn-prev" aria-label="Vorheriges Werk">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
 							</button>
 							<div class="carousel-track-wrapper">
 								<div class="carousel-track">
@@ -60,42 +56,38 @@ const upcomingWorkshops = allWorkshops
 											data-image-url={artwork.images[0]}
 											data-artwork-index={index}
 										>
-											<div class="artwork-preview-image">
-												<img
-													src={artwork.images[0]}
-													alt={artwork.title}
-													loading="lazy"
-													decoding="async"
-													width="600"
-													height="600"
-												/>
-												<div class="artwork-overlay">
-													<span class="zoom-icon">🔍</span>
+											<div class="artwork-card">
+												<div class="artwork-image-wrapper">
+													<img
+														src={artwork.images[0]}
+														alt={artwork.title}
+														loading="lazy"
+														decoding="async"
+														width="600"
+														height="600"
+													/>
+													<div class="artwork-overlay">
+														<span class="view-text">Ansehen</span>
+													</div>
+												</div>
+												<div class="artwork-info">
+													<h3>{artwork.title}</h3>
+													<p class="artwork-meta">
+														{artwork.technique} &middot; {artwork.size.width} &times; {artwork.size.height} {artwork.size.unit}
+													</p>
 												</div>
 											</div>
-											<h3 class="artwork-preview-title">
-												{artwork.title}
-											</h3>
-											<p class="artwork-preview-meta">
-												{artwork.size.width} ×{" "}
-												{artwork.size.height}{" "}
-												{artwork.size.unit}
-											</p>
 										</div>
 									))}
 								</div>
 							</div>
 							<button class="carousel-btn carousel-btn-next" aria-label="Nächstes Werk">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
 							</button>
 						</div>
 						<div class="carousel-dots"></div>
 						<div class="section-cta">
-							<CTAButton
-								label="Alle Werke ansehen"
-								href="/werke"
-								type="primary"
-							/>
+							<CTAButton label="Alle Werke ansehen" href="/werke" type="secondary" />
 						</div>
 					</>
 				) : (
@@ -108,11 +100,13 @@ const upcomingWorkshops = allWorkshops
 	</section>
 
 	<!-- Workshops -->
-	<section class="section py-16 dark-section">
+	<section class="section py-20 section-warm">
 		<div class="container">
 			<div class="section-header">
-				<h2 class="handwriting">Workshops</h2>
-				<p class="subtitle-light">
+				<p class="section-label dark">Workshops</p>
+				<h2 class="handwriting dark">Kreative Kurse</h2>
+				<div class="divider dark"></div>
+				<p class="subtitle dark">
 					Entdecken Sie Ihre künstlerische Seite in kleinen Gruppen
 				</p>
 			</div>
@@ -126,17 +120,12 @@ const upcomingWorkshops = allWorkshops
 							))}
 						</div>
 						<div class="section-cta">
-							<CTAButton
-								label="Alle Workshops"
-								href="/workshops"
-								type="primary"
-							/>
+							<CTAButton label="Alle Workshops" href="/workshops" type="primary" />
 						</div>
 					</>
 				) : (
 					<p class="text-center text-secondary">
-						Neue Workshops werden in Kürze angekündigt. Schauen Sie
-						bald wieder vorbei!
+						Neue Workshops werden in Kürze angekündigt. Schauen Sie bald wieder vorbei!
 					</p>
 				)
 			}
@@ -144,59 +133,53 @@ const upcomingWorkshops = allWorkshops
 	</section>
 
 	<!-- Commission Process -->
-	<section class="section py-16 dark-section">
+	<section class="section py-20 section-dark">
 		<div class="container">
-			<div class="section-header text-center">
+			<div class="section-header">
+				<p class="section-label">Auftragsarbeiten</p>
 				<h2 class="handwriting">Ihr persönliches Kunstwerk</h2>
-				<p class="subtitle-light">
-					Von der Idee bis zum fertigen Werk in drei Schritten
-				</p>
+				<div class="divider"></div>
+				<p class="subtitle">Von der Idee bis zum fertigen Werk in drei Schritten</p>
 			</div>
 
 			<div class="process-steps">
 				<div class="process-step">
 					<div class="step-number">01</div>
+					<div class="step-line"></div>
 					<h3>Anfrage & Beratung</h3>
 					<p>
 						Teilen Sie mir Ihre Vorstellungen, Farbwünsche und
-						Raummaße mit. Gemeinsam entwickeln wir ein Konzept für
-						Ihr individuelles Kunstwerk.
+						Raummaße mit. Gemeinsam entwickeln wir ein Konzept.
 					</p>
 				</div>
 				<div class="process-step">
 					<div class="step-number">02</div>
+					<div class="step-line"></div>
 					<h3>Konzept & Entwurf</h3>
 					<p>
 						Ich erstelle einen ersten Entwurf und stimme ihn mit
-						Ihnen ab. So stellen wir sicher, dass das Werk perfekt
-						zu Ihren Wünschen passt.
+						Ihnen ab, damit das Werk perfekt zu Ihren Wünschen passt.
 					</p>
 				</div>
 				<div class="process-step">
 					<div class="step-number">03</div>
+					<div class="step-line"></div>
 					<h3>Umsetzung & Übergabe</h3>
 					<p>
-						Ich erschaffe Ihr Kunstwerk mit großer Sorgfalt. Nach
-						Fertigstellung können Sie es abholen oder es wird zu
-						Ihnen geliefert.
+						Ihr Kunstwerk wird mit großer Sorgfalt erschaffen und
+						kann abgeholt oder geliefert werden.
 					</p>
 				</div>
 			</div>
 
 			<div class="section-cta">
-				<CTAButton
-					label="Jetzt Werk anfragen"
-					href="/auftragsarbeiten"
-					type="primary"
-				/>
+				<CTAButton label="Werk anfragen" href="/auftragsarbeiten" type="secondary" />
 			</div>
 		</div>
 	</section>
 
-	<!-- Testimonials -->
-
 	<!-- Customer Reviews -->
-	<section class="section py-16" style="background-color: var(--color-surface);">
+	<section class="section py-20 section-alt">
 		<div class="container">
 			<ReviewsDisplay />
 		</div>
@@ -210,104 +193,124 @@ const upcomingWorkshops = allWorkshops
 	</section>
 
 	<!-- Final CTA -->
-	<section class="section py-16" style="background: linear-gradient(135deg, var(--color-brand-beige), var(--color-brand-beige-dark));">
+	<section class="section py-20 cta-section">
 		<div class="container text-center">
-			<h2 class="handwriting" style="color: white;">
-				Bereit für Ihr eigenes Kunstwerk?
+			<p class="section-label">Bereit?</p>
+			<h2 class="handwriting" style="color: var(--color-white);">
+				Lassen Sie uns zusammenarbeiten
 			</h2>
-			<p style="color: white; opacity: 0.9; max-width: 600px; margin: var(--space-4) auto var(--space-8);">
+			<div class="divider" style="background-color: rgba(255,255,255,0.4);"></div>
+			<p style="color: rgba(255,255,255,0.85); max-width: 550px; margin: var(--space-4) auto var(--space-8); font-size: var(--font-size-lg);">
 				Kontaktieren Sie mich für eine unverbindliche Beratung oder
 				buchen Sie einen Workshop.
 			</p>
 			<div class="flex gap-4 justify-center" style="flex-wrap: wrap;">
-				<CTAButton
-					label="Kontakt aufnehmen"
-					href="/kontakt"
-					type="primary"
-				/>
-				<CTAButton
-					label="Workshops ansehen"
-					href="/workshops"
-					type="secondary"
-				/>
+				<CTAButton label="Kontakt aufnehmen" href="/kontakt" type="primary" />
+				<CTAButton label="Workshops ansehen" href="/workshops" type="secondary" />
 			</div>
 		</div>
 	</section>
 </Layout>
 
 <style>
-	.section {
-		width: 100%;
-	}
-
-	.dark-section {
-		background-color: var(--color-dark);
-		color: var(--color-text-light);
-	}
-
-	.handwriting {
-		font-family: 'Mastro Display', serif;
-		font-size: clamp(2.5rem, 5vw, 4rem);
-		font-weight: 800;
-		color: white;
-		letter-spacing: 0.05em;
-	}
-
-	.subtitle-light {
-		color: var(--color-light);
-	}
-
-	.section-header {
-		text-align: center;
-		margin-bottom: var(--space-12);
-	}
-
-	.section-header h2 {
+	/* Section Label */
+	.section-label {
+		font-family: var(--font-body);
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: var(--letter-spacing-widest);
+		text-transform: uppercase;
+		color: var(--color-brand-beige);
 		margin-bottom: var(--space-3);
 	}
 
-	.section-cta {
-		display: flex;
-		justify-content: center;
-		margin-top: var(--space-12);
+	.section-label.dark {
+		color: var(--color-accent);
 	}
 
-	.artwork-preview {
-		display: block;
-		text-decoration: none;
-		color: inherit;
-		transition: transform var(--transition-base);
+	.section-dark .subtitle {
+		color: var(--color-gray-300);
 	}
 
-	.artwork-preview:hover {
-		transform: translateY(-4px);
+	.subtitle.dark {
+		color: var(--color-text-secondary);
 	}
 
-	.artwork-preview-image {
+	.handwriting.dark {
+		color: var(--color-text-dark);
+	}
+
+	.divider.dark {
+		background-color: var(--color-accent);
+	}
+
+	/* CTA Section */
+	.cta-section {
+		background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-alt) 100%);
 		position: relative;
-		margin-bottom: var(--space-4);
 		overflow: hidden;
-		border-radius: var(--radius-lg);
 	}
 
-	.artwork-preview-image img {
-		width: 100%;
-		height: auto;
-		display: block;
-		transition: transform 0.3s ease;
-	}
-
-	.artwork-preview:hover .artwork-preview-image img {
-		transform: scale(1.05);
-	}
-
-	.artwork-overlay {
+	.cta-section::before {
+		content: '';
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: rgba(0, 0, 0, 0.4);
+		background: radial-gradient(circle at 30% 50%, rgba(196, 168, 130, 0.08) 0%, transparent 50%);
+	}
+
+	.cta-section .container {
+		position: relative;
+		z-index: 1;
+	}
+
+	.cta-section .cta-button-secondary {
+		color: var(--color-brand-beige);
+		border-color: var(--color-brand-beige);
+	}
+
+	.cta-section .cta-button-secondary:hover {
+		background-color: var(--color-brand-beige);
+		color: var(--color-dark);
+	}
+
+	/* Artwork Cards */
+	.artwork-card {
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		background: var(--color-gray-800);
+		transition: transform var(--transition-base), box-shadow var(--transition-base);
+	}
+
+	.artwork-card:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.artwork-image-wrapper {
+		position: relative;
+		overflow: hidden;
+		aspect-ratio: 1;
+	}
+
+	.artwork-image-wrapper img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.5s ease;
+		border-radius: 0;
+	}
+
+	.artwork-card:hover .artwork-image-wrapper img {
+		transform: scale(1.05);
+	}
+
+	.artwork-overlay {
+		position: absolute;
+		inset: 0;
+		background: rgba(20, 18, 17, 0.5);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -315,112 +318,90 @@ const upcomingWorkshops = allWorkshops
 		transition: opacity 0.3s ease;
 	}
 
-	.artwork-preview:hover .artwork-overlay {
+	.artwork-card:hover .artwork-overlay {
 		opacity: 1;
 	}
 
-	.zoom-icon {
-		font-size: 2rem;
-		color: white;
-	}
-
-	.artwork-preview-title {
-		font-size: var(--font-size-lg);
-		margin-bottom: var(--space-2);
-		color: white;
-	}
-
-	.artwork-preview-meta {
+	.view-text {
+		font-family: var(--font-body);
 		font-size: var(--font-size-sm);
-		color: var(--color-light);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: var(--letter-spacing-wider);
+		text-transform: uppercase;
+		color: var(--color-white);
+		padding: var(--space-2) var(--space-4);
+		border: 1px solid rgba(255, 255, 255, 0.6);
+		border-radius: var(--radius-base);
 	}
 
+	.artwork-info {
+		padding: var(--space-4) var(--space-5);
+	}
+
+	.artwork-info h3 {
+		font-size: var(--font-size-base);
+		font-weight: var(--font-weight-medium);
+		color: var(--color-white);
+		margin-bottom: var(--space-1);
+	}
+
+	.artwork-meta {
+		font-size: var(--font-size-xs);
+		color: var(--color-gray-400);
+		margin: 0;
+	}
+
+	/* Process Steps */
 	.process-steps {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--space-6);
-		margin-bottom: var(--space-8);
+		gap: var(--space-8);
 	}
 
 	@media (min-width: 768px) {
 		.process-steps {
 			grid-template-columns: repeat(3, 1fr);
-			gap: var(--space-8);
+			gap: var(--space-10);
 		}
 	}
 
 	.process-step {
 		text-align: center;
-		padding: var(--space-6);
-		color: white;
+		position: relative;
 	}
 
 	.step-number {
 		font-family: var(--font-headline);
-		font-size: var(--font-size-4xl);
+		font-size: var(--font-size-5xl);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-brand-beige);
-		margin-bottom: var(--space-4);
+		opacity: 0.3;
+		line-height: 1;
+		margin-bottom: var(--space-2);
+	}
+
+	.step-line {
+		width: 40px;
+		height: 2px;
+		background-color: var(--color-brand-beige);
+		margin: 0 auto var(--space-4);
 	}
 
 	.process-step h3 {
+		color: var(--color-white);
+		font-size: var(--font-size-lg);
 		margin-bottom: var(--space-3);
-		color: white;
 	}
 
 	.process-step p {
-		color: var(--color-light);
-	}
-
-	.testimonials-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-4);
-	}
-
-	@media (min-width: 768px) {
-		.testimonials-grid {
-			grid-template-columns: repeat(2, 1fr);
-			gap: var(--space-6);
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.testimonials-grid {
-			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
-	.testimonial-card {
-		padding: var(--space-6);
-		background-color: var(--color-surface-elevated);
-		border-radius: var(--radius-lg);
-		box-shadow: var(--shadow-base);
-	}
-
-	.testimonial-stars {
-		font-size: var(--font-size-lg);
-		margin-bottom: var(--space-4);
-	}
-
-	.testimonial-text {
-		font-style: italic;
-		line-height: var(--line-height-relaxed);
-		margin-bottom: var(--space-4);
-	}
-
-	.testimonial-author {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-1);
-	}
-
-	.testimonial-author span {
+		color: var(--color-gray-300);
 		font-size: var(--font-size-sm);
-		color: var(--color-text-secondary);
+		line-height: var(--line-height-relaxed);
+		max-width: 280px;
+		margin: 0 auto;
 	}
 
-	/* Carousel Styles */
+	/* Carousel */
 	.carousel-container {
 		position: relative;
 		display: flex;
@@ -436,18 +417,13 @@ const upcomingWorkshops = allWorkshops
 	.carousel-track {
 		display: flex;
 		gap: var(--space-6);
-		transition: transform 0.5s ease-in-out;
+		transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.carousel-slide {
 		flex: 0 0 100%;
 		min-width: 0;
 		cursor: pointer;
-		transition: transform var(--transition-base);
-	}
-
-	.carousel-slide:hover {
-		transform: translateY(-4px);
 	}
 
 	@media (min-width: 640px) {
@@ -464,29 +440,28 @@ const upcomingWorkshops = allWorkshops
 
 	.carousel-btn {
 		flex-shrink: 0;
-		width: 48px;
-		height: 48px;
+		width: 44px;
+		height: 44px;
 		border-radius: 50%;
-		background: var(--color-brand-beige);
-		color: white;
-		border: none;
+		background: rgba(196, 168, 130, 0.15);
+		color: var(--color-brand-beige);
+		border: 1px solid rgba(196, 168, 130, 0.3);
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		transition: all 0.3s ease;
-		box-shadow: var(--shadow-md);
 	}
 
 	.carousel-btn:hover {
-		background: var(--color-brand-beige-dark, #a08060);
-		transform: scale(1.1);
+		background: var(--color-brand-beige);
+		color: var(--color-dark);
+		border-color: var(--color-brand-beige);
 	}
 
 	.carousel-btn:disabled {
-		opacity: 0.3;
+		opacity: 0.2;
 		cursor: not-allowed;
-		transform: none;
 	}
 
 	@media (max-width: 639px) {
@@ -499,14 +474,14 @@ const upcomingWorkshops = allWorkshops
 		display: flex;
 		justify-content: center;
 		gap: var(--space-2);
-		margin-top: var(--space-6);
+		margin-top: var(--space-8);
 	}
 
 	.carousel-dot {
-		width: 10px;
-		height: 10px;
+		width: 8px;
+		height: 8px;
 		border-radius: 50%;
-		background: var(--color-border);
+		background: var(--color-gray-600);
 		border: none;
 		cursor: pointer;
 		transition: all 0.3s ease;
@@ -514,11 +489,12 @@ const upcomingWorkshops = allWorkshops
 
 	.carousel-dot.active {
 		background: var(--color-brand-beige);
-		transform: scale(1.2);
+		width: 24px;
+		border-radius: 4px;
 	}
 
 	.carousel-dot:hover {
-		background: var(--color-brand-beige);
+		background: var(--color-brand-beige-light);
 	}
 </style>
 
@@ -536,7 +512,6 @@ const upcomingWorkshops = allWorkshops
 		let slidesPerView = 1;
 		let autoplayInterval: ReturnType<typeof setInterval>;
 
-		// Calculate slides per view based on screen width
 		function updateSlidesPerView() {
 			if (window.innerWidth >= 1024) {
 				slidesPerView = 3;
@@ -547,7 +522,6 @@ const upcomingWorkshops = allWorkshops
 			}
 		}
 
-		// Create dots
 		function createDots() {
 			dotsContainer.innerHTML = '';
 			const totalDots = Math.ceil(slides.length / slidesPerView);
@@ -560,7 +534,6 @@ const upcomingWorkshops = allWorkshops
 			}
 		}
 
-		// Update dots
 		function updateDots() {
 			const dots = document.querySelectorAll('.carousel-dot');
 			const activeDotIndex = Math.floor(currentIndex / slidesPerView);
@@ -569,67 +542,57 @@ const upcomingWorkshops = allWorkshops
 			});
 		}
 
-		// Go to specific slide
 		function goToSlide(index: number) {
 			const maxIndex = slides.length - slidesPerView;
 			currentIndex = Math.max(0, Math.min(index, maxIndex));
 
 			const slideWidth = (slides[0] as HTMLElement).offsetWidth;
-			const gap = 24; // var(--space-6)
+			const gap = 24;
 			track.style.transform = `translateX(-${currentIndex * (slideWidth + gap)}px)`;
 
 			updateDots();
 			updateButtons();
 		}
 
-		// Update button states
 		function updateButtons() {
 			if (prevBtn) prevBtn.disabled = currentIndex === 0;
 			if (nextBtn) nextBtn.disabled = currentIndex >= slides.length - slidesPerView;
 		}
 
-		// Next slide
 		function nextSlide() {
 			if (currentIndex < slides.length - slidesPerView) {
 				goToSlide(currentIndex + 1);
 			} else {
-				goToSlide(0); // Loop back to start
+				goToSlide(0);
 			}
 		}
 
-		// Previous slide
 		function prevSlide() {
 			if (currentIndex > 0) {
 				goToSlide(currentIndex - 1);
 			}
 		}
 
-		// Start autoplay
 		function startAutoplay() {
-			autoplayInterval = setInterval(nextSlide, 4000);
+			autoplayInterval = setInterval(nextSlide, 5000);
 		}
 
-		// Stop autoplay
 		function stopAutoplay() {
 			clearInterval(autoplayInterval);
 		}
 
-		// Event listeners
 		if (prevBtn) prevBtn.addEventListener('click', () => { stopAutoplay(); prevSlide(); startAutoplay(); });
 		if (nextBtn) nextBtn.addEventListener('click', () => { stopAutoplay(); nextSlide(); startAutoplay(); });
 
-		// Pause on hover
 		track.addEventListener('mouseenter', stopAutoplay);
 		track.addEventListener('mouseleave', startAutoplay);
 
-		// Handle resize
 		window.addEventListener('resize', () => {
 			updateSlidesPerView();
 			createDots();
 			goToSlide(0);
 		});
 
-		// Initialize
 		updateSlidesPerView();
 		createDots();
 		updateButtons();

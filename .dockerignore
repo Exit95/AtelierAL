@@ -1,0 +1,15 @@
+node_modules
+dist
+.git
+.gitignore
+*.md
+.env
+.env.*
+.vscode
+.bolt
+.codesandbox
+.vercel
+data
+uploads
+public/uploads
+*.backup

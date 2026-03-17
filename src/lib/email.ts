@@ -1,17 +1,20 @@
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || '2a01:4f8:202:1129:2447:2447:1:80',
+  host: process.env.SMTP_HOST || '',
   port: parseInt(process.env.SMTP_PORT || '587'),
   secure: process.env.SMTP_SECURE === 'true',
   auth: {
-    user: process.env.SMTP_USER || 'office@danapfel-digital.de',
-    pass: process.env.SMTP_PASS || ':,30,seNDSK',
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || '',
   },
   tls: {
-    rejectUnauthorized: false
+    rejectUnauthorized: process.env.NODE_ENV === 'production'
   }
 });
+
+const FROM_EMAIL = process.env.FROM_EMAIL || 'office@danapfel-digital.de';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'studio@atelierkl.de';
 
 export async function sendBookingConfirmation(
   to: string,
@@ -21,7 +24,7 @@ export async function sendBookingConfirmation(
   date: string
 ) {
   const mailOptions = {
-    from: '"ATELIER KL" <office@danapfel-digital.de>',
+    from: `"ATELIER KL" <${FROM_EMAIL}>`,
     to,
     subject: `Buchungsbestätigung: ${workshopTitle}`,
     html: `
@@ -40,7 +43,6 @@ export async function sendBookingConfirmation(
           .label { font-weight: bold; color: #666; }
           .value { color: #333; }
           .footer { text-align: center; padding-top: 30px; border-top: 1px solid #eee; font-size: 12px; color: #999; }
-          .btn { display: inline-block; background: #8B7355; color: white; padding: 12px 25px; text-decoration: none; border-radius: 4px; margin-top: 20px; }
         </style>
       </head>
       <body>
@@ -52,7 +54,7 @@ export async function sendBookingConfirmation(
             <h2 style="color: #333; margin-top: 0;">Vielen Dank für Ihre Buchung!</h2>
             <p>Hallo ${name},</p>
             <p>wir freuen uns sehr, dass Sie sich für den Workshop <strong>${workshopTitle}</strong> angemeldet haben. Ihre Buchung ist hiermit bestätigt.</p>
-            
+
             <div class="card">
               <div class="detail-row">
                 <span class="label">Workshop</span>
@@ -70,7 +72,7 @@ export async function sendBookingConfirmation(
 
             <p>Bitte bringen Sie gute Laune und Kleidung mit, die auch mal einen Farbklecks abbekommen darf.</p>
             <p>Bei Fragen stehen wir Ihnen gerne zur Verfügung.</p>
-            
+
             <p>Mit kreativen Grüßen,<br>Katharina Lanvermann</p>
           </div>
           <div class="footer">
@@ -95,8 +97,8 @@ export async function sendAdminNotification(
   message: string
 ) {
   const mailOptions = {
-    from: '"ATELIER KL System" <office@danapfel-digital.de>',
-    to: 'studio@atelierkl.de',
+    from: `"ATELIER KL System" <${FROM_EMAIL}>`,
+    to: ADMIN_EMAIL,
     subject: `Neue Buchung: ${workshopTitle}`,
     html: `
       <!DOCTYPE html>
@@ -124,7 +126,7 @@ export async function sendAdminNotification(
               <span class="label">Workshop</span>
               <div class="value">${workshopTitle}</div>
             </div>
-            
+
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
               <div class="field">
                 <span class="label">Name</span>
@@ -170,8 +172,8 @@ export async function sendContactNotification(
   message: string
 ) {
   const mailOptions = {
-    from: '"ATELIER KL Kontakt" <office@danapfel-digital.de>',
-    to: 'studio@atelierkl.de',
+    from: `"ATELIER KL Kontakt" <${FROM_EMAIL}>`,
+    to: ADMIN_EMAIL,
     replyTo: email,
     subject: `Neue Kontaktanfrage von ${name}`,
     html: `
@@ -242,8 +244,8 @@ export async function sendArtworkInquiry(
   artworkSize: string
 ) {
   const mailOptions = {
-    from: '"ATELIER KL Werk-Anfrage" <office@danapfel-digital.de>',
-    to: 'studio@atelierkl.de',
+    from: `"ATELIER KL Werk-Anfrage" <${FROM_EMAIL}>`,
+    to: ADMIN_EMAIL,
     replyTo: email,
     subject: `Anfrage zum Werk: ${artworkTitle}`,
     html: `
@@ -267,7 +269,7 @@ export async function sendArtworkInquiry(
       <body>
         <div class="container">
           <div class="header">
-            <h2>🎨 Neue Anfrage zu einem Kunstwerk</h2>
+            <h2>Neue Anfrage zu einem Kunstwerk</h2>
           </div>
           <div class="content">
             <div class="artwork-box">
@@ -278,14 +280,14 @@ export async function sendArtworkInquiry(
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
                 <div class="field" style="margin-bottom: 0;">
                   <span class="label">Preis</span>
-                  <div class="value">${artworkPrice} €</div>
+                  <div class="value">${artworkPrice} &euro;</div>
                 </div>
                 <div class="field" style="margin-bottom: 0;">
-                  <span class="label">Größe</span>
+                  <span class="label">Gr&ouml;&szlig;e</span>
                   <div class="value">${artworkSize}</div>
                 </div>
               </div>
-              <a href="https://atelierkl.de/werke/${artworkId}" class="btn">Werk ansehen →</a>
+              <a href="https://atelierkl.de/werke/${artworkId}" class="btn">Werk ansehen</a>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">

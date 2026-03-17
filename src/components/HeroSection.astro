@@ -16,6 +16,7 @@ import CTAButton from "./CTAButton.astro";
     class="hero"
     style={backgroundImage ? `background-image: url(${backgroundImage})` : ""}
 >
+    <div class="hero-overlay"></div>
     <div class="hero-content container">
         <img src="/atelier5.png" alt="ATELIER KL" class="hero-logo" width="450" height="auto" loading="eager" fetchpriority="high" />
         {subtitle && <p class="hero-subtitle">{subtitle}</p>}
@@ -39,6 +40,11 @@ import CTAButton from "./CTAButton.astro";
                 </div>
             )
         }
+        <div class="hero-scroll-hint">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </div>
     </div>
 </section>
 
@@ -46,6 +52,7 @@ import CTAButton from "./CTAButton.astro";
     .hero {
         position: relative;
         min-height: 100vh;
+        min-height: 100dvh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -55,43 +62,43 @@ import CTAButton from "./CTAButton.astro";
         background-repeat: no-repeat;
         overflow: hidden;
         padding: var(--space-16) 0 var(--space-8);
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: -moz-crisp-edges;
-        image-rendering: crisp-edges;
-        image-rendering: pixelated;
-        -webkit-backface-visibility: hidden;
-        -moz-backface-visibility: hidden;
-        backface-visibility: hidden;
-        -webkit-transform: translateZ(0) scale(1.0, 1.0);
-        -moz-transform: translateZ(0) scale(1.0, 1.0);
-        transform: translateZ(0) scale(1.0, 1.0);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        filter: contrast(1.05) brightness(1.02);
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(253, 252, 250, 0.1) 0%,
+            rgba(253, 252, 250, 0.05) 40%,
+            rgba(253, 252, 250, 0.15) 100%
+        );
     }
 
     .hero-content {
         position: relative;
         z-index: 2;
         text-align: center;
-        color: var(--color-dark);
-        animation: fadeIn var(--transition-slow);
+        animation: fadeIn 0.8s ease-out;
         padding: var(--space-4);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .hero-logo {
         width: 200px;
         height: auto;
-        margin: 0 auto var(--space-6);
+        margin-bottom: var(--space-6);
         object-fit: contain;
-        opacity: 0.85;
     }
 
     .hero-subtitle {
-        font-size: var(--font-size-base);
+        font-family: var(--font-script);
+        font-size: var(--font-size-lg);
         font-weight: var(--font-weight-normal);
         max-width: 90%;
-        margin: 0 auto var(--space-6);
+        margin: 0 auto var(--space-8);
         color: var(--color-text-secondary);
         line-height: var(--line-height-relaxed);
     }
@@ -103,37 +110,48 @@ import CTAButton from "./CTAButton.astro";
         flex-wrap: wrap;
     }
 
+    .hero-scroll-hint {
+        position: absolute;
+        bottom: var(--space-8);
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--color-gray-400);
+        animation: bounceDown 2s infinite;
+        opacity: 0.6;
+    }
+
+    @keyframes bounceDown {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50% { transform: translateX(-50%) translateY(8px); }
+    }
+
     /* Small smartphones: 375px+ */
     @media (min-width: 375px) {
         .hero-logo {
-            width: 250px;
+            width: 260px;
         }
 
         .hero-subtitle {
-            font-size: var(--font-size-lg);
+            font-size: var(--font-size-xl);
         }
     }
 
     /* Tablets: 768px+ */
     @media (min-width: 768px) {
         .hero {
-            min-height: 70vh;
-            padding: var(--space-12) 0;
-        }
-
-        .hero-content {
-            padding: var(--space-6);
+            min-height: 75vh;
+            padding: var(--space-16) 0;
         }
 
         .hero-logo {
-            width: 350px;
+            width: 360px;
             margin-bottom: var(--space-8);
         }
 
         .hero-subtitle {
             font-size: var(--font-size-xl);
             max-width: 600px;
-            margin-bottom: var(--space-8);
+            margin-bottom: var(--space-10);
         }
 
         .hero-ctas {
@@ -144,31 +162,26 @@ import CTAButton from "./CTAButton.astro";
     /* Desktop: 1024px+ */
     @media (min-width: 1024px) {
         .hero {
-            min-height: 80vh;
+            min-height: 85vh;
         }
 
         .hero-logo {
-            width: 450px;
-            margin-bottom: var(--space-10);
+            width: 420px;
         }
 
         .hero-subtitle {
-            max-width: 700px;
+            max-width: 650px;
         }
     }
 
     /* Large desktop: 1440px+ */
     @media (min-width: 1440px) {
-        .hero {
-            min-height: 85vh;
-        }
-
         .hero-logo {
-            width: 550px;
+            width: 500px;
         }
 
         .hero-subtitle {
-            max-width: 800px;
+            max-width: 700px;
         }
     }
 </style>

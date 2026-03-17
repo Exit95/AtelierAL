@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  web:
+    image: "[2a01:4f8:202:1129:2447:2447:1:900]:5000/atelierkl-de:latest"
+    environment:
+      # All secrets must be set on the server via environment
+      # NEVER commit actual values here
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      - S3_BUCKET=${S3_BUCKET}
+      - S3_ACCESS_KEY=${S3_ACCESS_KEY}
+      - S3_SECRET_KEY=${S3_SECRET_KEY}
+      - S3_REGION=${S3_REGION}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - FROM_EMAIL=${FROM_EMAIL}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+    networks:
+      - public-ingress
+    volumes:
+      - atelierkl-data:/app/data
+      - atelierkl-uploads:/app/uploads
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.atelierkl-de.rule=Host(`atelierkl.de`) || Host(`www.atelierkl.de`)"
+        - "traefik.http.routers.atelierkl-de.entrypoints=websecure"
+        - "traefik.http.routers.atelierkl-de.tls.certresolver=myresolver"
+        - "traefik.http.services.atelierkl-de.loadbalancer.server.port=3000"
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+networks:
+  public-ingress:
+    external: true
+
+volumes:
+  atelierkl-data:
+    driver: local
+  atelierkl-uploads:
+    driver: local
