@@ -1,9 +1,9 @@
 ---
 import AdminLayout from "../../../layouts/AdminLayout.astro";
-import { getItem, type Workshop } from "../../../lib/storage";
+import { getWorkshop, type Workshop } from "../../../lib/database";
 
 const { id } = Astro.params;
-const workshop = id ? await getItem<Workshop>("workshops", id) : null;
+const workshop = id ? (getWorkshop(id) as Workshop | null) : null;
 
 if (!workshop) {
     return Astro.redirect("/admin/workshops");

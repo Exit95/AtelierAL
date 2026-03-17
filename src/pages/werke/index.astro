@@ -1,9 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import GalleryGrid from "../../components/GalleryGrid.astro";
-import { getItems, type Artwork } from "../../lib/storage";
+import { getAllArtworks, type Artwork } from "../../lib/database";
 
-const allArtworks = await getItems<Artwork>("artworks");
+const allArtworks = getAllArtworks() as Artwork[];
 ---
 
 <Layout

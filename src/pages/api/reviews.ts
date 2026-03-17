@@ -1,13 +1,11 @@
 import type { APIRoute } from 'astro';
-import { getItems, saveItem, type Review } from '../../lib/storage';
+import { getApprovedReviews, saveReview, type Review } from '../../lib/database';
 import { sanitizeInput, sanitizeHtml, isValidEmail, isValidName, isSafeInput } from '../../lib/security';
 
 // GET: Fetch all approved reviews
 export const GET: APIRoute = async () => {
     try {
-        const allReviews = await getItems<Review>('reviews');
-        const approvedReviews = allReviews
-            .filter(review => review.status === 'approved')
+        const approvedReviews = (getApprovedReviews() as Review[])
             .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
         return new Response(JSON.stringify(approvedReviews), {
@@ -95,7 +93,7 @@ export const POST: APIRoute = async ({ request }) => {
         };
 
         // Save review
-        await saveItem('reviews', reviewId, review);
+        saveReview(review);
 
         return new Response(JSON.stringify({
             success: true,

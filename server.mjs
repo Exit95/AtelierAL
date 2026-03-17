@@ -3,14 +3,23 @@ import express from 'express';
 
 const app = express();
 
-// Increase body size limit to 100MB
-app.use(express.json({ limit: '100mb' }));
-app.use(express.urlencoded({ limit: '100mb', extended: true }));
-
-// Increase timeout to 10 minutes
+// Security headers
 app.use((req, res, next) => {
-    req.setTimeout(600000); // 10 minutes
-    res.setTimeout(600000); // 10 minutes
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    next();
+});
+
+// Body size limits (10MB for images, reasonable for a gallery site)
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// Request timeout: 2 minutes (sufficient for uploads)
+app.use((req, res, next) => {
+    req.setTimeout(120000);
+    res.setTimeout(120000);
     next();
 });
 
@@ -21,11 +30,37 @@ const port = process.env.PORT || 3000;
 const host = process.env.HOST || '0.0.0.0';
 
 const server = app.listen(port, host, () => {
-    console.log(`🚀 Server running at http://${host}:${port}`);
+    console.log(`Server running at http://${host}:${port}`);
 });
 
-// Set server timeout to 10 minutes
-server.timeout = 600000;
-server.headersTimeout = 610000;
-server.requestTimeout = 600000;
+server.timeout = 120000;
+server.headersTimeout = 125000;
+server.requestTimeout = 120000;
 
+// Error handling
+server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+        console.error(`Port ${port} is already in use`);
+    } else {
+        console.error('Server error:', error);
+    }
+    process.exit(1);
+});
+
+// Graceful shutdown
+function gracefulShutdown(signal) {
+    console.log(`${signal} received, shutting down gracefully...`);
+    server.close(() => {
+        console.log('Server closed');
+        process.exit(0);
+    });
+
+    // Force close after 10s
+    setTimeout(() => {
+        console.error('Forced shutdown after timeout');
+        process.exit(1);
+    }, 10000);
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));

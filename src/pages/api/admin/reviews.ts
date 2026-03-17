@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getItems, approveReview, rejectReview, type Review } from '../../../lib/storage';
+import { getAllReviews, approveReview, rejectReview, type Review } from '../../../lib/database';
 import { getSessionFromCookies } from '../../../lib/auth';
 
 // Check if user is authenticated
@@ -18,7 +18,7 @@ export const GET: APIRoute = async ({ request }) => {
     }
 
     try {
-        const allReviews = await getItems<Review>('reviews');
+        const allReviews = getAllReviews() as Review[];
         const sortedReviews = allReviews.sort((a, b) =>
             new Date(b.date).getTime() - new Date(a.date).getTime()
         );
@@ -57,9 +57,9 @@ export const POST: APIRoute = async ({ request }) => {
         }
 
         if (action === 'approve') {
-            await approveReview(reviewId);
+            approveReview(reviewId);
         } else if (action === 'reject') {
-            await rejectReview(reviewId);
+            rejectReview(reviewId);
         } else {
             return new Response(JSON.stringify({ error: 'Ungültige Aktion' }), {
                 status: 400,

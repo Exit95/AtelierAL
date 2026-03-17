@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { verifyCredentials, createSession, createSessionCookie } from '../../../lib/auth';
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
     try {
         const data = await request.formData();
         const username = data.get('username')?.toString();
@@ -16,7 +16,8 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
-        const isValid = await verifyCredentials(username, password);
+        const ip = clientAddress || request.headers.get('x-forwarded-for') || 'unknown';
+        const isValid = await verifyCredentials(username, password, ip);
 
         if (!isValid) {
             return new Response(JSON.stringify({
@@ -42,7 +43,6 @@ export const POST: APIRoute = async ({ request }) => {
             }
         });
     } catch (error) {
-        console.error('Login error:', error);
         console.error('Login error:', error);
         return new Response(JSON.stringify({
             error: `Fehler: ${error instanceof Error ? error.message : String(error)}`

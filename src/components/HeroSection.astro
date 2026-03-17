@@ -40,8 +40,8 @@ import CTAButton from "./CTAButton.astro";
                 </div>
             )
         }
-        <div class="hero-scroll-hint">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <div class="hero-scroll-hint" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
         </div>
@@ -123,6 +123,16 @@ import CTAButton from "./CTAButton.astro";
     @keyframes bounceDown {
         0%, 100% { transform: translateX(-50%) translateY(0); }
         50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hero-scroll-hint {
+            animation: none;
+        }
+
+        .hero-content {
+            animation: none;
+        }
     }
 
     /* Small smartphones: 375px+ */

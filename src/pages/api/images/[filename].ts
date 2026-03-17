@@ -1,5 +1,11 @@
 import type { APIRoute } from 'astro';
 import { getFromS3, deleteFromS3 } from '../../../lib/s3';
+import { getSessionFromCookies } from '../../../lib/auth';
+
+function isAuthenticated(request: Request): boolean {
+    const cookieHeader = request.headers.get('cookie');
+    return !!getSessionFromCookies(cookieHeader);
+}
 
 export const GET: APIRoute = async ({ params }) => {
     try {
@@ -23,12 +29,19 @@ export const GET: APIRoute = async ({ params }) => {
             }
         });
     } catch (error) {
-        console.error('❌ S3 read error:', error);
+        console.error('S3 read error:', error);
         return new Response('File not found', { status: 404 });
     }
 };
 
-export const DELETE: APIRoute = async ({ params }) => {
+export const DELETE: APIRoute = async ({ params, request }) => {
+    if (!isAuthenticated(request)) {
+        return new Response(JSON.stringify({ error: 'Nicht autorisiert' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     try {
         const filename = params.filename;
 
@@ -49,7 +62,7 @@ export const DELETE: APIRoute = async ({ params }) => {
             headers: { 'Content-Type': 'application/json' }
         });
     } catch (error) {
-        console.error('❌ S3 delete error:', error);
+        console.error('S3 delete error:', error);
 
         return new Response(JSON.stringify({
             error: 'Löschen fehlgeschlagen',

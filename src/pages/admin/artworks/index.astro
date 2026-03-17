@@ -1,8 +1,8 @@
 ---
 import AdminLayout from "../../../layouts/AdminLayout.astro";
-import { getItems, type Artwork } from "../../../lib/storage";
+import { getAllArtworks, type Artwork } from "../../../lib/database";
 
-const artworks = await getItems<Artwork>("artworks");
+const artworks = getAllArtworks() as Artwork[];
 ---
 
 <AdminLayout title="Werke">

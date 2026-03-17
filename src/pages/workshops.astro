@@ -1,9 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import WorkshopCard from "../components/WorkshopCard.astro";
-import { getItems, type Workshop } from "../lib/storage";
+import CTAButton from "../components/CTAButton.astro";
+import { getAllWorkshops, type Workshop } from "../lib/database";
 
-const allWorkshops = await getItems<Workshop>("workshops");
+const allWorkshops = getAllWorkshops() as Workshop[];
 
 // Separate upcoming and past workshops
 const now = new Date();
@@ -64,6 +65,9 @@ const pastWorkshops = allWorkshops
             <p class="interest-text handwriting">
                 Ich freue mich, mit dir zu arbeiten!
             </p>
+            <div class="interest-cta">
+                <CTAButton label="Nachricht schreiben" href="/kontakt" type="secondary" />
+            </div>
         </div>
     </section>
 
@@ -123,31 +127,6 @@ const pastWorkshops = allWorkshops
         background-color: var(--color-surface);
     }
 
-    /* Hero Section */
-    .page-hero {
-        padding: var(--space-16) 0 var(--space-8);
-        text-align: center;
-    }
-
-    .hero-title.handwriting {
-        font-family: 'Mastro Display', serif;
-        font-size: clamp(2.5rem, 5vw, 4rem);
-        font-weight: 800;
-        line-height: 1.1;
-        margin-bottom: var(--space-6);
-        color: white;
-        text-transform: none;
-        letter-spacing: 0.05em;
-    }
-
-    .hero-subtitle {
-        font-size: var(--font-size-base);
-        color: var(--color-light);
-        max-width: 800px;
-        margin: 0 auto;
-        line-height: 1.7;
-    }
-
     /* Info Section */
     .info-section {
         padding: var(--space-8) 0;
@@ -173,8 +152,8 @@ const pastWorkshops = allWorkshops
     }
 
     .info-title.handwriting {
-        font-family: 'Dancing Script', cursive;
-        font-size: clamp(1.5rem, 2.5vw, 2rem);
+        font-family: var(--font-fugu);
+        font-size: var(--font-size-2xl);
         font-weight: 500;
         color: var(--color-dark);
         margin-bottom: var(--space-4);
@@ -219,12 +198,16 @@ const pastWorkshops = allWorkshops
     }
 
     .interest-text.handwriting {
-        font-family: 'Dancing Script', cursive;
-        font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+        font-family: var(--font-fugu);
+        font-size: var(--font-size-xl);
         font-weight: 500;
         color: var(--color-light);
         line-height: 1.4;
         margin-bottom: var(--space-1);
+    }
+
+    .interest-cta {
+        margin-top: var(--space-6);
     }
 
     /* Section Title */

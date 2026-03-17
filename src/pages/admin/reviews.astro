@@ -1,8 +1,8 @@
 ---
 import AdminLayout from "../../layouts/AdminLayout.astro";
-import { getItems, type Review } from "../../lib/storage";
+import { getAllReviews, type Review } from "../../lib/database";
 
-const reviews = await getItems<Review>("reviews");
+const reviews = getAllReviews() as Review[];
 
 // Count by status
 const pendingCount = reviews.filter((r) => r.status === "pending").length;

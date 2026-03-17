@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getItems, type Artwork } from "../lib/storage";
+import { getAllArtworks, type Artwork } from "../lib/database";
 
 // Lade die letzten 4 Werke für "Bisherige Arbeit"
-const allArtworks = await getItems<Artwork>("artworks");
+const allArtworks = getAllArtworks() as Artwork[];
 const recentArtworks = allArtworks.slice(0, 4);
 ---
 
@@ -55,6 +55,30 @@ const recentArtworks = allArtworks.slice(0, 4);
                         alt="Katharina Lanvermann"
                         class="about-image"
                     />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust / Stats Section -->
+    <section class="section stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">Ahaus</span>
+                    <span class="stat-label">Atelier-Standort</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">Acryl & Mixed Media</span>
+                    <span class="stat-label">Technik-Schwerpunkt</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">Workshops & Kurse</span>
+                    <span class="stat-label">Für Anfänger & Fortgeschrittene</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">Auftragsarbeiten</span>
+                    <span class="stat-label">Individuelle Kunstwerke</span>
                 </div>
             </div>
         </div>
@@ -132,47 +156,25 @@ const recentArtworks = allArtworks.slice(0, 4);
         letter-spacing: 0.05em;
     }
 
-    /* Mixed Title Style - "ÜBER mich" */
+    /* Mixed title styles inherited from global .section-title-mixed */
     .section-title-mixed {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        margin-bottom: var(--spacing-lg);
-        gap: var(--spacing-2);
+        color: var(--color-light);
     }
 
     .title-mastro {
-        font-family: 'Mastro Display', serif;
-        font-size: clamp(2rem, 4vw, 3rem);
-        font-weight: 800;
-        letter-spacing: 0.05em;
         color: var(--color-light);
-        line-height: 1.1;
     }
 
     .title-fugu {
-        font-family: 'Fugu', cursive;
-        font-size: clamp(3rem, 6vw, 5rem);
-        font-weight: 400;
-        color: white;
-        line-height: 1;
-        letter-spacing: 0.02em;
-    }
-
-    @media (min-width: 640px) {
-        .section-title-mixed {
-            flex-direction: row;
-            align-items: baseline;
-            gap: var(--spacing-3);
-        }
+        color: var(--color-white);
     }
 
     .section-title-center.handwriting {
-        font-family: 'Mastro Display', serif;
-        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-family: var(--font-headline);
+        font-size: var(--font-size-4xl);
         font-weight: 800;
-        line-height: 1.1;
-        letter-spacing: 0.05em;
+        line-height: var(--line-height-tight);
+        letter-spacing: var(--letter-spacing-wide);
     }
 
     .text-body p {
@@ -228,6 +230,46 @@ const recentArtworks = allArtworks.slice(0, 4);
         transform: scale(1.05);
     }
 
+    /* Stats Section */
+    .stats-section {
+        background-color: var(--color-surface-warm);
+        padding: var(--space-12) 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-8);
+        text-align: center;
+    }
+
+    @media (min-width: 768px) {
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .stat-number {
+        font-family: var(--font-headline);
+        font-size: var(--font-size-lg);
+        font-weight: 700;
+        color: var(--color-accent);
+        letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .stat-label {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: var(--letter-spacing-wider);
+    }
+
     .quote-container {
         max-width: 800px;
         margin: 0 auto;
@@ -235,8 +277,8 @@ const recentArtworks = allArtworks.slice(0, 4);
     }
 
     .quote-text {
-        font-family: 'Dancing Script', cursive;
-        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-family: var(--font-fugu);
+        font-size: var(--font-size-3xl);
         font-weight: 500;
         line-height: 1.5;
         color: var(--color-light);

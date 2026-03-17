@@ -1,7 +1,20 @@
 import type { APIRoute } from 'astro';
-import { saveItem, deleteItem, type Artwork } from '../../../lib/storage';
+import { saveArtwork, deleteArtwork, type Artwork } from '../../../lib/database';
+import { getSessionFromCookies } from '../../../lib/auth';
+
+function isAuthenticated(request: Request): boolean {
+    const cookieHeader = request.headers.get('cookie');
+    return !!getSessionFromCookies(cookieHeader);
+}
 
 export const PUT: APIRoute = async ({ params, request }) => {
+    if (!isAuthenticated(request)) {
+        return new Response(JSON.stringify({ error: 'Nicht autorisiert' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     try {
         const { id } = params;
         if (!id) throw new Error('No ID provided');
@@ -14,8 +27,8 @@ export const PUT: APIRoute = async ({ params, request }) => {
             description: data.description,
             technique: data.technique,
             size: {
-                width: parseInt(data.width),
-                height: parseInt(data.height),
+                width: parseInt(data.width) || 0,
+                height: parseInt(data.height) || 0,
                 unit: data.unit || 'cm'
             },
             availability: data.availability,
@@ -25,12 +38,12 @@ export const PUT: APIRoute = async ({ params, request }) => {
                 : (typeof data.images === 'string'
                     ? data.images.split(',').map((s: string) => s.trim()).filter(Boolean)
                     : [data.images].filter(Boolean)),
-            tags: typeof data.tags === 'string' ? data.tags.split(',').map((t: string) => t.trim()) : data.tags,
+            tags: typeof data.tags === 'string' ? data.tags.split(',').map((t: string) => t.trim()) : (data.tags || []),
             featured: data.featured === 'true' || data.featured === true,
             createdDate: data.createdDate || new Date().toISOString()
         };
 
-        await saveItem('artworks', id, artwork);
+        saveArtwork(artwork);
 
         return new Response(JSON.stringify({ success: true }), {
             status: 200,
@@ -44,12 +57,19 @@ export const PUT: APIRoute = async ({ params, request }) => {
     }
 };
 
-export const DELETE: APIRoute = async ({ params }) => {
+export const DELETE: APIRoute = async ({ params, request }) => {
+    if (!isAuthenticated(request)) {
+        return new Response(JSON.stringify({ error: 'Nicht autorisiert' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     try {
         const { id } = params;
         if (!id) throw new Error('No ID provided');
 
-        await deleteItem('artworks', id);
+        deleteArtwork(id);
 
         return new Response(JSON.stringify({ success: true }), {
             status: 200,

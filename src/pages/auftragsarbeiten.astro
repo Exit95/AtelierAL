@@ -128,29 +128,7 @@ const faqSchema = generateFAQSchema(faqs);
         background-color: var(--color-white);
     }
 
-    .page-hero {
-        padding: var(--space-16) 0 var(--space-8);
-        text-align: center;
-    }
-
-    .hero-title.handwriting {
-        font-family: 'Mastro Display', serif;
-        font-size: clamp(2.5rem, 5vw, 4rem);
-        font-weight: 800;
-        line-height: 1.1;
-        margin-bottom: var(--space-4);
-        color: white;
-        text-transform: none;
-        letter-spacing: 0.05em;
-    }
-
-    .hero-subtitle {
-        font-family: var(--font-sans);
-        font-size: var(--font-size-base);
-        letter-spacing: 0.05em;
-        color: var(--color-light);
-        margin-top: var(--space-2);
-    }
+    /* hero styles inherited from global .page-hero */
 
     /* FAQ Section */
     .faq-section {
@@ -209,8 +187,8 @@ const faqSchema = generateFAQSchema(faqs);
     }
 
     .answer-title.handwriting {
-        font-family: 'Dancing Script', cursive;
-        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-family: var(--font-fugu);
+        font-size: var(--font-size-2xl);
         font-weight: 500;
         color: var(--color-light);
         line-height: 1.2;

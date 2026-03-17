@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Layout from "../../layouts/Layout.astro";
-import { getItem, type Workshop } from "../../lib/storage";
+import { getWorkshop, type Workshop } from "../../lib/database";
 
 const { slug } = Astro.params;
 
@@ -9,7 +9,7 @@ if (!slug) {
     return Astro.redirect("/404");
 }
 
-const workshop = await getItem<Workshop>("workshops", slug);
+const workshop = getWorkshop(slug) as Workshop | null;
 
 if (!workshop) {
     return Astro.redirect("/404");

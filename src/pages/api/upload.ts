@@ -3,8 +3,21 @@ import Busboy from 'busboy';
 import { Readable } from 'stream';
 import { lookup } from 'mime-types';
 import { uploadToS3 } from '../../lib/s3';
+import { getSessionFromCookies } from '../../lib/auth';
+
+function isAuthenticated(request: Request): boolean {
+    const cookieHeader = request.headers.get('cookie');
+    return !!getSessionFromCookies(cookieHeader);
+}
 
 export const POST: APIRoute = async ({ request }) => {
+    if (!isAuthenticated(request)) {
+        return new Response(JSON.stringify({ error: 'Nicht autorisiert' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     return new Promise(async (resolve) => {
         try {
             const contentType = request.headers.get('content-type');
@@ -73,7 +86,7 @@ export const POST: APIRoute = async ({ request }) => {
                         headers: { 'Content-Type': 'application/json' }
                     }));
                 } catch (error) {
-                    console.error('❌ S3 Upload error:', error);
+                    console.error('S3 Upload error:', error);
                     resolve(new Response(JSON.stringify({
                         error: 'S3 Upload failed',
                         details: error instanceof Error ? error.message : String(error)
@@ -87,7 +100,7 @@ export const POST: APIRoute = async ({ request }) => {
             busboy.on('error', (error) => {
                 if (resolved) return;
                 resolved = true;
-                console.error('❌ Busboy error:', error);
+                console.error('Busboy error:', error);
                 resolve(new Response(JSON.stringify({
                     error: 'Upload parsing failed',
                     details: error instanceof Error ? error.message : String(error)
@@ -101,7 +114,7 @@ export const POST: APIRoute = async ({ request }) => {
             nodeStream.pipe(busboy);
 
         } catch (error) {
-            console.error('❌ Upload error:', error);
+            console.error('Upload error:', error);
             resolve(new Response(JSON.stringify({
                 error: 'Upload fehlgeschlagen',
                 details: error instanceof Error ? error.message : String(error)

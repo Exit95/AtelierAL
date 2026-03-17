@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getItem, saveItem, type Workshop } from '../../../lib/storage';
+import { getWorkshop, saveWorkshop, type Workshop } from '../../../lib/database';
 
 export const POST: APIRoute = async ({ request }) => {
     try {
@@ -18,7 +18,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         // 1. Update workshop participant count
         try {
-            workshop = await getItem<Workshop>('workshops', workshopId);
+            workshop = getWorkshop(workshopId) as Workshop | null;
 
             if (!workshop) {
                 return new Response(JSON.stringify({ error: 'Workshop nicht gefunden.' }), {
@@ -37,7 +37,7 @@ export const POST: APIRoute = async ({ request }) => {
 
             // Update count
             workshop.currentParticipants += participantCount;
-            await saveItem('workshops', workshopId, workshop);
+            saveWorkshop(workshop);
 
         } catch (error) {
             console.error('Error updating workshop:', error);

@@ -321,7 +321,7 @@ ul {
 
 /* Handwriting-style heading */
 .handwriting {
-  font-family: var(--font-mastro);
+  font-family: var(--font-headline);
   font-size: var(--font-size-4xl);
   font-weight: 700;
   letter-spacing: var(--letter-spacing-wide);
@@ -329,6 +329,55 @@ ul {
 
 .section-dark .handwriting {
   color: var(--color-white);
+}
+
+/* Mixed-font title (brand element: Mastro + Fugu) */
+.section-title-mixed {
+  font-size: var(--font-size-5xl);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-8);
+}
+
+.title-mastro {
+  font-family: var(--font-mastro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+  display: block;
+}
+
+.title-fugu {
+  font-family: var(--font-fugu);
+  font-weight: var(--font-weight-normal);
+  font-style: italic;
+  display: block;
+}
+
+/* ================================
+   PAGE HERO (shared across subpages)
+   ================================ */
+
+.page-hero {
+  padding: var(--space-16) 0 var(--space-8);
+  text-align: center;
+}
+
+.page-hero .hero-title {
+  font-family: var(--font-headline);
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-6);
+  color: var(--color-white);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.page-hero .hero-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-light);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: var(--line-height-relaxed);
 }
 
 /* ================================
@@ -490,6 +539,58 @@ ul {
 .text-sm { font-size: var(--font-size-sm); }
 .text-lg { font-size: var(--font-size-lg); }
 .text-uppercase { text-transform: uppercase; letter-spacing: var(--letter-spacing-wider); }
+
+/* ================================
+   LEGAL PAGES (shared)
+   ================================ */
+
+.legal-page {
+  padding: var(--space-16) 0;
+  min-height: 60vh;
+}
+
+.legal-page h1 {
+  margin-bottom: var(--space-12);
+  padding-bottom: var(--space-6);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.legal-content {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+.legal-content section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.legal-content h2 {
+  color: var(--color-accent);
+  font-size: var(--font-size-xl);
+}
+
+.legal-content h3 {
+  font-size: var(--font-size-lg);
+  margin-top: var(--space-4);
+}
+
+.legal-content p,
+.legal-content li {
+  line-height: var(--line-height-relaxed);
+}
+
+.legal-content ul {
+  padding-left: var(--space-6);
+}
+
+.legal-content a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
 
 /* ================================
    ANIMATIONS

@@ -2,6 +2,52 @@ import Database from 'better-sqlite3';
 import path from 'node:path';
 import fs from 'node:fs';
 
+// ── Type Definitions ──────────────────────────────────────────────
+
+export interface Workshop {
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    duration: string;
+    location: string;
+    maxParticipants: number;
+    currentParticipants: number;
+    materials: string[];
+    price: number;
+    image: string;
+    bookingEnabled: boolean;
+}
+
+export interface Artwork {
+    id: string;
+    title: string;
+    description: string;
+    technique: string;
+    size: {
+        width: number;
+        height: number;
+        unit: string;
+    };
+    availability: 'available' | 'reserved' | 'sold';
+    price: string;
+    images: string[];
+    tags: string[];
+    featured: boolean;
+    createdDate: string;
+}
+
+export interface Review {
+    id: string;
+    name: string;
+    email?: string;
+    rating: number;
+    text: string;
+    date: string;
+    status: 'pending' | 'approved' | 'rejected';
+}
+
 const DB_PATH = process.env.DB_PATH || path.join(process.cwd(), 'data', 'atelierkl.db');
 
 // Ensure data directory exists
@@ -17,7 +63,9 @@ function getDb(): Database.Database {
         db = new Database(DB_PATH);
         db.pragma('journal_mode = WAL');
         db.pragma('foreign_keys = ON');
-        db.pragma('busy_timeout = 5000');
+        db.pragma('busy_timeout = 15000');
+        db.pragma('synchronous = normal');
+        db.pragma('temp_store = memory');
         initSchema();
     }
     return db;
@@ -106,10 +154,23 @@ function initSchema(): void {
             s3_url TEXT,
             created_at TEXT DEFAULT (datetime('now'))
         );
+
+        -- Indexes for common queries
+        CREATE INDEX IF NOT EXISTS idx_artworks_featured ON artworks(featured);
+        CREATE INDEX IF NOT EXISTS idx_artworks_created_date ON artworks(created_date DESC);
+        CREATE INDEX IF NOT EXISTS idx_workshops_date ON workshops(date ASC);
+        CREATE INDEX IF NOT EXISTS idx_workshop_bookings_workshop_id ON workshop_bookings(workshop_id);
+        CREATE INDEX IF NOT EXISTS idx_workshop_bookings_status ON workshop_bookings(status);
+        CREATE INDEX IF NOT EXISTS idx_reviews_status ON reviews(status);
+        CREATE INDEX IF NOT EXISTS idx_reviews_date ON reviews(date DESC);
+        CREATE INDEX IF NOT EXISTS idx_contact_inquiries_created_at ON contact_inquiries(created_at DESC);
+        CREATE INDEX IF NOT EXISTS idx_contact_inquiries_type ON contact_inquiries(type);
+        CREATE INDEX IF NOT EXISTS idx_images_filename ON images(filename);
     `);
 }
 
-// Artwork operations
+// ── Artwork operations ────────────────────────────────────────────
+
 export function getAllArtworks(): any[] {
     const rows = getDb().prepare('SELECT * FROM artworks ORDER BY created_date DESC').all();
     return rows.map(parseArtworkRow);
@@ -151,7 +212,8 @@ export function deleteArtwork(id: string): void {
     getDb().prepare('DELETE FROM artworks WHERE id = ?').run(id);
 }
 
-// Workshop operations
+// ── Workshop operations ───────────────────────────────────────────
+
 export function getAllWorkshops(): any[] {
     const rows = getDb().prepare('SELECT * FROM workshops ORDER BY date ASC').all();
     return rows.map(parseWorkshopRow);
@@ -188,35 +250,44 @@ export function deleteWorkshop(id: string): void {
     getDb().prepare('DELETE FROM workshops WHERE id = ?').run(id);
 }
 
-// Workshop Booking operations
+// ── Workshop Booking operations (with transaction) ────────────────
+
 export function createWorkshopBooking(booking: any): number {
-    const stmt = getDb().prepare(`
+    const database = getDb();
+
+    const insertBooking = database.prepare(`
         INSERT INTO workshop_bookings (workshop_id, customer_name, customer_email, customer_phone, participants, message)
         VALUES (?, ?, ?, ?, ?, ?)
     `);
-    const result = stmt.run(
-        booking.workshopId,
-        booking.name,
-        booking.email,
-        booking.phone,
-        booking.participants || 1,
-        booking.message
-    );
 
-    // Update current_participants
-    getDb().prepare(`
+    const updateParticipants = database.prepare(`
         UPDATE workshops SET current_participants = current_participants + ?
         WHERE id = ?
-    `).run(booking.participants || 1, booking.workshopId);
+    `);
 
-    return Number(result.lastInsertRowid);
+    // Atomic transaction: both insert and update succeed or both fail
+    const bookTransaction = database.transaction((b: any) => {
+        const result = insertBooking.run(
+            b.workshopId,
+            b.name,
+            b.email,
+            b.phone,
+            b.participants || 1,
+            b.message
+        );
+        updateParticipants.run(b.participants || 1, b.workshopId);
+        return Number(result.lastInsertRowid);
+    });
+
+    return bookTransaction(booking);
 }
 
 export function getWorkshopBookings(workshopId: string): any[] {
     return getDb().prepare('SELECT * FROM workshop_bookings WHERE workshop_id = ? ORDER BY created_at DESC').all(workshopId) as any[];
 }
 
-// Review operations
+// ── Review operations ─────────────────────────────────────────────
+
 export function getAllReviews(): any[] {
     return getDb().prepare('SELECT * FROM reviews ORDER BY date DESC').all() as any[];
 }
@@ -253,7 +324,8 @@ export function deleteReview(id: string): void {
     getDb().prepare('DELETE FROM reviews WHERE id = ?').run(id);
 }
 
-// Contact Inquiry operations
+// ── Contact Inquiry operations ────────────────────────────────────
+
 export function saveContactInquiry(inquiry: any): number {
     const stmt = getDb().prepare(`
         INSERT INTO contact_inquiries (name, email, phone, preferred_date, message, type, artwork_id)
@@ -271,7 +343,8 @@ export function saveContactInquiry(inquiry: any): number {
     return Number(result.lastInsertRowid);
 }
 
-// Image operations
+// ── Image operations ──────────────────────────────────────────────
+
 export function saveImage(image: any): number {
     const stmt = getDb().prepare(`
         INSERT INTO images (filename, original_name, mime_type, size, s3_url)
@@ -291,7 +364,8 @@ export function getAllImages(): any[] {
     return getDb().prepare('SELECT * FROM images ORDER BY created_at DESC').all() as any[];
 }
 
-// Helper functions
+// ── Helper functions ──────────────────────────────────────────────
+
 function parseArtworkRow(row: any): any {
     return {
         id: row.id,
@@ -330,7 +404,23 @@ function parseWorkshopRow(row: any): any {
     };
 }
 
-// Cleanup on process exit
+// ── Cleanup on process exit ───────────────────────────────────────
+
 process.on('exit', () => {
-    if (db) db.close();
+    if (db) {
+        try {
+            db.pragma('wal_checkpoint(RESTART)');
+        } catch {
+            // Ignore checkpoint errors during shutdown
+        }
+        db.close();
+    }
+});
+
+process.on('SIGTERM', () => {
+    process.exit(0);
+});
+
+process.on('SIGINT', () => {
+    process.exit(0);
 });

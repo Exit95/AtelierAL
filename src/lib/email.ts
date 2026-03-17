@@ -13,8 +13,43 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const FROM_EMAIL = process.env.FROM_EMAIL || 'office@danapfel-digital.de';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@atelierkl.de';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'studio@atelierkl.de';
+
+// ── HTML Escaping (XSS Prevention) ────────────────────────────────
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  };
+  return text.replace(/[&<>"']/g, (m) => map[m]);
+}
+
+// ── Email Validation ──────────────────────────────────────────────
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// ── Send Result Type ──────────────────────────────────────────────
+interface SendResult {
+  success: boolean;
+  messageId?: string;
+  error?: string;
+}
+
+async function safeSendMail(mailOptions: nodemailer.SendMailOptions): Promise<SendResult> {
+  try {
+    const result = await transporter.sendMail(mailOptions);
+    return { success: true, messageId: result.messageId };
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error('Email send failed:', msg);
+    return { success: false, error: msg };
+  }
+}
 
 export async function sendBookingConfirmation(
   to: string,
@@ -22,7 +57,15 @@ export async function sendBookingConfirmation(
   name: string,
   participants: number,
   date: string
-) {
+): Promise<SendResult> {
+  if (!isValidEmail(to)) {
+    return { success: false, error: 'Invalid email address' };
+  }
+
+  const safeName = escapeHtml(name);
+  const safeTitle = escapeHtml(workshopTitle);
+  const safeDate = escapeHtml(date);
+
   const mailOptions = {
     from: `"ATELIER KL" <${FROM_EMAIL}>`,
     to,
@@ -52,17 +95,17 @@ export async function sendBookingConfirmation(
           </div>
           <div class="content">
             <h2 style="color: #333; margin-top: 0;">Vielen Dank für Ihre Buchung!</h2>
-            <p>Hallo ${name},</p>
-            <p>wir freuen uns sehr, dass Sie sich für den Workshop <strong>${workshopTitle}</strong> angemeldet haben. Ihre Buchung ist hiermit bestätigt.</p>
+            <p>Hallo ${safeName},</p>
+            <p>wir freuen uns sehr, dass Sie sich für den Workshop <strong>${safeTitle}</strong> angemeldet haben. Ihre Buchung ist hiermit bestätigt.</p>
 
             <div class="card">
               <div class="detail-row">
                 <span class="label">Workshop</span>
-                <span class="value">${workshopTitle}</span>
+                <span class="value">${safeTitle}</span>
               </div>
               <div class="detail-row">
                 <span class="label">Datum & Zeit</span>
-                <span class="value">${date}</span>
+                <span class="value">${safeDate}</span>
               </div>
               <div class="detail-row">
                 <span class="label">Teilnehmer</span>
@@ -85,7 +128,7 @@ export async function sendBookingConfirmation(
     `,
   };
 
-  await transporter.sendMail(mailOptions);
+  return safeSendMail(mailOptions);
 }
 
 export async function sendAdminNotification(
@@ -95,7 +138,13 @@ export async function sendAdminNotification(
   phone: string,
   participants: number,
   message: string
-) {
+): Promise<SendResult> {
+  const safeName = escapeHtml(name);
+  const safeTitle = escapeHtml(workshopTitle);
+  const safeEmail = escapeHtml(email);
+  const safePhone = escapeHtml(phone);
+  const safeMessage = escapeHtml(message);
+
   const mailOptions = {
     from: `"ATELIER KL System" <${FROM_EMAIL}>`,
     to: ADMIN_EMAIL,
@@ -124,13 +173,13 @@ export async function sendAdminNotification(
           <div class="content">
             <div class="field">
               <span class="label">Workshop</span>
-              <div class="value">${workshopTitle}</div>
+              <div class="value">${safeTitle}</div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
               <div class="field">
                 <span class="label">Name</span>
-                <div class="value">${name}</div>
+                <div class="value">${safeName}</div>
               </div>
               <div class="field">
                 <span class="label">Personen</span>
@@ -140,18 +189,18 @@ export async function sendAdminNotification(
 
             <div class="field">
               <span class="label">E-Mail</span>
-              <div class="value"><a href="mailto:${email}" style="color: #8B7355; text-decoration: none;">${email}</a></div>
+              <div class="value"><a href="mailto:${safeEmail}" style="color: #8B7355; text-decoration: none;">${safeEmail}</a></div>
             </div>
 
             <div class="field">
               <span class="label">Telefon</span>
-              <div class="value"><a href="tel:${phone}" style="color: #8B7355; text-decoration: none;">${phone}</a></div>
+              <div class="value"><a href="tel:${safePhone}" style="color: #8B7355; text-decoration: none;">${safePhone}</a></div>
             </div>
 
-            ${message ? `
+            ${safeMessage ? `
               <div class="message-box">
                 <span class="label">Nachricht des Kunden</span>
-                <div style="margin-top: 5px;">${message.replace(/\n/g, '<br>')}</div>
+                <div style="margin-top: 5px;">${safeMessage.replace(/\n/g, '<br>')}</div>
               </div>
             ` : ''}
           </div>
@@ -161,7 +210,7 @@ export async function sendAdminNotification(
     `,
   };
 
-  await transporter.sendMail(mailOptions);
+  return safeSendMail(mailOptions);
 }
 
 export async function sendContactNotification(
@@ -170,12 +219,18 @@ export async function sendContactNotification(
   phone: string,
   preferredDate: string,
   message: string
-) {
+): Promise<SendResult> {
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safePhone = escapeHtml(phone);
+  const safeDate = escapeHtml(preferredDate);
+  const safeMessage = escapeHtml(message);
+
   const mailOptions = {
     from: `"ATELIER KL Kontakt" <${FROM_EMAIL}>`,
     to: ADMIN_EMAIL,
     replyTo: email,
-    subject: `Neue Kontaktanfrage von ${name}`,
+    subject: `Neue Kontaktanfrage von ${escapeHtml(name)}`,
     html: `
       <!DOCTYPE html>
       <html>
@@ -201,27 +256,27 @@ export async function sendContactNotification(
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
               <div class="field">
                 <span class="label">Name</span>
-                <div class="value">${name}</div>
+                <div class="value">${safeName}</div>
               </div>
               <div class="field">
                 <span class="label">Wunschtermin</span>
-                <div class="value">${preferredDate || '-'}</div>
+                <div class="value">${safeDate || '-'}</div>
               </div>
             </div>
 
             <div class="field">
               <span class="label">E-Mail</span>
-              <div class="value"><a href="mailto:${email}" style="color: #8B7355; text-decoration: none;">${email}</a></div>
+              <div class="value"><a href="mailto:${safeEmail}" style="color: #8B7355; text-decoration: none;">${safeEmail}</a></div>
             </div>
 
             <div class="field">
               <span class="label">Telefon</span>
-              <div class="value"><a href="tel:${phone}" style="color: #8B7355; text-decoration: none;">${phone || '-'}</a></div>
+              <div class="value"><a href="tel:${safePhone}" style="color: #8B7355; text-decoration: none;">${safePhone || '-'}</a></div>
             </div>
 
             <div class="message-box">
               <span class="label">Nachricht</span>
-              <div style="margin-top: 5px;">${message.replace(/\n/g, '<br>')}</div>
+              <div style="margin-top: 5px;">${safeMessage.replace(/\n/g, '<br>')}</div>
             </div>
           </div>
         </div>
@@ -230,7 +285,7 @@ export async function sendContactNotification(
     `,
   };
 
-  await transporter.sendMail(mailOptions);
+  return safeSendMail(mailOptions);
 }
 
 export async function sendArtworkInquiry(
@@ -242,7 +297,16 @@ export async function sendArtworkInquiry(
   artworkId: string,
   artworkPrice: string,
   artworkSize: string
-) {
+): Promise<SendResult> {
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safePhone = escapeHtml(phone);
+  const safeMessage = escapeHtml(message);
+  const safeTitle = escapeHtml(artworkTitle);
+  const safeId = escapeHtml(artworkId);
+  const safePrice = escapeHtml(artworkPrice);
+  const safeSize = escapeHtml(artworkSize);
+
   const mailOptions = {
     from: `"ATELIER KL Werk-Anfrage" <${FROM_EMAIL}>`,
     to: ADMIN_EMAIL,
@@ -275,40 +339,40 @@ export async function sendArtworkInquiry(
             <div class="artwork-box">
               <div class="field">
                 <span class="label">Angefragtes Werk</span>
-                <div class="value" style="font-size: 20px; color: #8B7355;">${artworkTitle}</div>
+                <div class="value" style="font-size: 20px; color: #8B7355;">${safeTitle}</div>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
                 <div class="field" style="margin-bottom: 0;">
                   <span class="label">Preis</span>
-                  <div class="value">${artworkPrice} &euro;</div>
+                  <div class="value">${safePrice} &euro;</div>
                 </div>
                 <div class="field" style="margin-bottom: 0;">
                   <span class="label">Gr&ouml;&szlig;e</span>
-                  <div class="value">${artworkSize}</div>
+                  <div class="value">${safeSize}</div>
                 </div>
               </div>
-              <a href="https://atelierkl.de/werke/${artworkId}" class="btn">Werk ansehen</a>
+              <a href="https://atelierkl.de/werke/${safeId}" class="btn">Werk ansehen</a>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
               <div class="field">
                 <span class="label">Interessent</span>
-                <div class="value">${name}</div>
+                <div class="value">${safeName}</div>
               </div>
               <div class="field">
                 <span class="label">Telefon</span>
-                <div class="value"><a href="tel:${phone}" style="color: #8B7355; text-decoration: none;">${phone || '-'}</a></div>
+                <div class="value"><a href="tel:${safePhone}" style="color: #8B7355; text-decoration: none;">${safePhone || '-'}</a></div>
               </div>
             </div>
 
             <div class="field">
               <span class="label">E-Mail</span>
-              <div class="value"><a href="mailto:${email}" style="color: #8B7355; text-decoration: none;">${email}</a></div>
+              <div class="value"><a href="mailto:${safeEmail}" style="color: #8B7355; text-decoration: none;">${safeEmail}</a></div>
             </div>
 
             <div class="message-box">
               <span class="label">Nachricht</span>
-              <div style="margin-top: 5px;">${message.replace(/\n/g, '<br>')}</div>
+              <div style="margin-top: 5px;">${safeMessage.replace(/\n/g, '<br>')}</div>
             </div>
           </div>
         </div>
@@ -317,5 +381,5 @@ export async function sendArtworkInquiry(
     `,
   };
 
-  await transporter.sendMail(mailOptions);
+  return safeSendMail(mailOptions);
 }

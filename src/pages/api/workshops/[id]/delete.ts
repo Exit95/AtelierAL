@@ -1,12 +1,25 @@
 import type { APIRoute } from 'astro';
-import { deleteItem } from '../../../../lib/storage';
+import { deleteWorkshop } from '../../../../lib/database';
+import { getSessionFromCookies } from '../../../../lib/auth';
 
-export const DELETE: APIRoute = async ({ params }) => {
+function isAuthenticated(request: Request): boolean {
+    const cookieHeader = request.headers.get('cookie');
+    return !!getSessionFromCookies(cookieHeader);
+}
+
+export const DELETE: APIRoute = async ({ params, request }) => {
+    if (!isAuthenticated(request)) {
+        return new Response(JSON.stringify({ error: 'Nicht autorisiert' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     try {
         const { id } = params;
         if (!id) throw new Error('No ID provided');
 
-        await deleteItem('workshops', id);
+        deleteWorkshop(id);
 
         return new Response(JSON.stringify({
             success: true,

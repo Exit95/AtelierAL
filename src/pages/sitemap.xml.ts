@@ -1,12 +1,12 @@
 import type { APIRoute } from 'astro';
-import { getItems, type Artwork, type Workshop } from '../lib/storage';
+import { getAllArtworks, getAllWorkshops, type Artwork, type Workshop } from '../lib/database';
 
-export const GET: APIRoute = async ({ site }) => {
+export const GET: APIRoute = ({ site }) => {
     const siteUrl = site?.toString() || 'https://atelierkl.de';
 
     // Get dynamic content
-    const artworks = await getItems<Artwork>('artworks');
-    const workshops = await getItems<Workshop>('workshops');
+    const artworks = getAllArtworks() as Artwork[];
+    const workshops = getAllWorkshops() as Workshop[];
 
     // Static pages with priorities
     const staticPages = [

@@ -23,7 +23,7 @@ import Alert from "./Alert.astro";
                 aria-required="true"
                 placeholder="Ihr vollständiger Name"
             />
-            <span class="form-error" data-error="name"></span>
+            <span class="form-error" role="alert" aria-live="polite" data-error="name"></span>
         </div>
 
         <div class="form-group">
@@ -36,7 +36,7 @@ import Alert from "./Alert.astro";
                 aria-required="true"
                 placeholder="ihre.email@beispiel.de"
             />
-            <span class="form-error" data-error="email"></span>
+            <span class="form-error" role="alert" aria-live="polite" data-error="email"></span>
         </div>
 
         <div class="form-group">
@@ -71,7 +71,7 @@ import Alert from "./Alert.astro";
                 required
                 aria-required="true"
                 placeholder="Beschreiben Sie Ihr Anliegen..."></textarea>
-            <span class="form-error" data-error="message"></span>
+            <span class="form-error" role="alert" aria-live="polite" data-error="message"></span>
         </div>
 
         <div class="form-group checkbox-group">
@@ -83,18 +83,18 @@ import Alert from "./Alert.astro";
                     aria-required="true"
                 />
                 <span>
-                    Ich habe die <a href="/datenschutz" target="_blank"
-                        >Datenschutzerklärung</a
+                    Ich habe die <a href="/datenschutz" target="_blank" rel="noopener noreferrer"
+                        >Datenschutzerklärung <span class="visually-hidden">(öffnet in neuem Tab)</span></a
                     >
                     zur Kenntnis genommen und bin damit einverstanden, dass die von
                     mir angegebenen Daten elektronisch erhoben und gespeichert werden.
                     *
                 </span>
             </label>
-            <span class="form-error" data-error="privacy"></span>
+            <span class="form-error" role="alert" aria-live="polite" data-error="privacy"></span>
         </div>
 
-        <div class="form-alert" data-form-alert hidden></div>
+        <div class="form-alert" data-form-alert hidden role="alert" aria-live="assertive"></div>
 
         <button type="submit" class="submit-button" data-submit-button>
             <span class="button-text">Nachricht senden</span>

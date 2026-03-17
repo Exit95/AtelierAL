@@ -1,12 +1,12 @@
 ---
 import AdminLayout from "../../layouts/AdminLayout.astro";
-import { getItems, type Workshop, type Artwork, type Review } from "../../lib/storage";
+import { getAllWorkshops, getAllArtworks, getAllReviews, type Workshop, type Artwork, type Review } from "../../lib/database";
 import { readdir } from 'fs/promises';
 import { join } from 'path';
 
-const workshops = await getItems<Workshop>("workshops");
-const artworks = await getItems<Artwork>("artworks");
-const reviews = await getItems<Review>("reviews");
+const workshops = getAllWorkshops() as Workshop[];
+const artworks = getAllArtworks() as Artwork[];
+const reviews = getAllReviews() as Review[];
 
 // Count images
 let imageCount = 0;

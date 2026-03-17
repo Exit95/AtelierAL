@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Badge from "../../components/Badge.astro";
-import { getItem, type Artwork } from "../../lib/storage";
+import { getArtwork, type Artwork } from "../../lib/database";
 import { generateProductSchema } from "../../utils/seo";
 
 const { id } = Astro.params;
@@ -10,7 +10,7 @@ if (!id) {
     return Astro.redirect("/404");
 }
 
-const artwork = await getItem<Artwork>("artworks", id);
+const artwork = getArtwork(id) as Artwork | null;
 
 if (!artwork) {
     return Astro.redirect("/404");

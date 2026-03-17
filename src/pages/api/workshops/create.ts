@@ -1,11 +1,30 @@
 import type { APIRoute } from 'astro';
-import { saveItem, type Workshop } from '../../../lib/storage';
+import { saveWorkshop, type Workshop } from '../../../lib/database';
+import { getSessionFromCookies } from '../../../lib/auth';
+
+function isAuthenticated(request: Request): boolean {
+    const cookieHeader = request.headers.get('cookie');
+    return !!getSessionFromCookies(cookieHeader);
+}
 
 export const POST: APIRoute = async ({ request }) => {
+    if (!isAuthenticated(request)) {
+        return new Response(JSON.stringify({ error: 'Nicht autorisiert' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     try {
         const data = await request.json();
 
-        // Generate ID from title
+        if (!data.title || typeof data.title !== 'string' || data.title.trim().length === 0) {
+            return new Response(JSON.stringify({ error: 'Titel ist erforderlich' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
         const id = data.title
             .toLowerCase()
             .replace(/ä/g, 'ae')
@@ -15,25 +34,25 @@ export const POST: APIRoute = async ({ request }) => {
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-+|-+$/g, '');
 
-        // Prepare workshop data
         const workshop: Workshop = {
             id,
-            title: data.title,
-            description: data.description,
+            title: data.title.trim(),
+            description: data.description || '',
             date: new Date(data.date).toISOString(),
-            time: data.time,
-            duration: data.duration,
-            location: data.location,
-            maxParticipants: parseInt(data.maxParticipants),
+            time: data.time || '',
+            duration: data.duration || '',
+            location: data.location || '',
+            maxParticipants: parseInt(data.maxParticipants) || 10,
             currentParticipants: parseInt(data.currentParticipants || '0'),
-            materials: data.materials.split('\n').filter((m: string) => m.trim()),
-            price: parseFloat(data.price),
-            image: data.image,
+            materials: typeof data.materials === 'string'
+                ? data.materials.split('\n').filter((m: string) => m.trim())
+                : (data.materials || []),
+            price: parseFloat(data.price) || 0,
+            image: data.image || '',
             bookingEnabled: data.bookingEnabled === 'on' || data.bookingEnabled === 'true' || data.bookingEnabled === true
         };
 
-        // Write to file
-        await saveItem('workshops', id, workshop);
+        saveWorkshop(workshop);
 
         return new Response(JSON.stringify({
             success: true,
@@ -46,8 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
     } catch (error) {
         console.error('Error creating workshop:', error);
         return new Response(JSON.stringify({
-            error: 'Fehler beim Erstellen des Workshops',
-            details: error instanceof Error ? error.message : 'Unknown error'
+            error: 'Fehler beim Erstellen des Workshops'
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }

@@ -5,14 +5,11 @@ import WorkshopCard from "../components/WorkshopCard.astro";
 import CTAButton from "../components/CTAButton.astro";
 import ReviewsDisplay from "../components/ReviewsDisplay.astro";
 import ReviewForm from "../components/ReviewForm.astro";
-import { getItems, type Artwork, type Workshop } from "../lib/storage";
+import { getFeaturedArtworks, getAllWorkshops } from "../lib/database";
 
-const allArtworks = await getItems<Artwork>("artworks");
-const featuredArtworks = allArtworks
-	.filter((artwork) => artwork.featured)
-	.slice(0, 6);
+const featuredArtworks = getFeaturedArtworks().slice(0, 6);
 
-const allWorkshops = await getItems<Workshop>("workshops");
+const allWorkshops = getAllWorkshops();
 const upcomingWorkshops = allWorkshops
 	.filter((workshop) => new Date(workshop.date) > new Date())
 	.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
@@ -528,8 +525,9 @@ const upcomingWorkshops = allWorkshops
 			for (let i = 0; i < totalDots; i++) {
 				const dot = document.createElement('button');
 				dot.classList.add('carousel-dot');
+				dot.setAttribute('aria-label', `Seite ${i + 1} von ${totalDots}`);
 				if (i === 0) dot.classList.add('active');
-				dot.addEventListener('click', () => goToSlide(i * slidesPerView));
+				dot.addEventListener('click', () => { stopAutoplay(); goToSlide(i * slidesPerView); delayedRestart(); });
 				dotsContainer.appendChild(dot);
 			}
 		}
@@ -547,7 +545,7 @@ const upcomingWorkshops = allWorkshops
 			currentIndex = Math.max(0, Math.min(index, maxIndex));
 
 			const slideWidth = (slides[0] as HTMLElement).offsetWidth;
-			const gap = 24;
+			const gap = parseFloat(getComputedStyle(track).gap) || 24;
 			track.style.transform = `translateX(-${currentIndex * (slideWidth + gap)}px)`;
 
 			updateDots();
@@ -581,21 +579,48 @@ const upcomingWorkshops = allWorkshops
 			clearInterval(autoplayInterval);
 		}
 
-		if (prevBtn) prevBtn.addEventListener('click', () => { stopAutoplay(); prevSlide(); startAutoplay(); });
-		if (nextBtn) nextBtn.addEventListener('click', () => { stopAutoplay(); nextSlide(); startAutoplay(); });
+		let autoplayTimeout: ReturnType<typeof setTimeout>;
+
+		if (prevBtn) prevBtn.addEventListener('click', () => { stopAutoplay(); prevSlide(); delayedRestart(); });
+		if (nextBtn) nextBtn.addEventListener('click', () => { stopAutoplay(); nextSlide(); delayedRestart(); });
+
+		// Keyboard navigation for carousel
+		const carouselContainer = document.querySelector('.carousel-container') as HTMLElement;
+		if (carouselContainer) {
+			carouselContainer.setAttribute('role', 'region');
+			carouselContainer.setAttribute('aria-label', 'Galerie-Karussell');
+			carouselContainer.setAttribute('tabindex', '0');
+			carouselContainer.addEventListener('keydown', (e) => {
+				if (e.key === 'ArrowLeft') { stopAutoplay(); prevSlide(); delayedRestart(); e.preventDefault(); }
+				if (e.key === 'ArrowRight') { stopAutoplay(); nextSlide(); delayedRestart(); e.preventDefault(); }
+			});
+		}
 
 		track.addEventListener('mouseenter', stopAutoplay);
-		track.addEventListener('mouseleave', startAutoplay);
+		track.addEventListener('mouseleave', () => delayedRestart());
 
+		function delayedRestart() {
+			clearTimeout(autoplayTimeout);
+			autoplayTimeout = setTimeout(startAutoplay, 8000);
+		}
+
+		let resizeTimer: ReturnType<typeof setTimeout>;
 		window.addEventListener('resize', () => {
-			updateSlidesPerView();
-			createDots();
-			goToSlide(0);
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(() => {
+				updateSlidesPerView();
+				createDots();
+				goToSlide(0);
+			}, 150);
 		});
 
 		updateSlidesPerView();
 		createDots();
 		updateButtons();
-		startAutoplay();
+
+		// Only autoplay if user hasn't indicated reduced motion preference
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			startAutoplay();
+		}
 	});
 </script>

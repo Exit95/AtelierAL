@@ -1,18 +1,16 @@
 ---
-import { getItems, type Review } from "../lib/storage";
+import { getApprovedReviews, type Review } from "../lib/database";
 
 interface Props {
-    ttitle?: string;
+    title?: string;
 }
 
-const { ttitle = "Kundenbewertungen" } = Astro.props;
+const { title = "Kundenbewertungen" } = Astro.props;
 
-// Fetch approved reviews directly from storage
+// Fetch approved reviews directly from database
 let reviews: Review[] = [];
 try {
-    const allReviews = await getItems<Review>("reviews");
-    reviews = allReviews
-        .filter((review) => review.status === "approved")
+    reviews = (getApprovedReviews() as Review[])
         .sort(
             (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
         );
@@ -23,7 +21,7 @@ try {
 
 <div class="reviews-section">
     <div class="section-header text-center">
-        <h2 class="handwriting">{ttitle}</h2>
+        <h2 class="handwriting">{title}</h2>
         {
             reviews.length > 0 && (
                 <p class="text-secondary">Das sagen unsere Kunden über uns</p>
@@ -90,8 +88,8 @@ try {
     }
 
     .section-header h2.handwriting {
-        font-family: 'greycliff-cf', sans-serif;
-        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-family: var(--font-headline);
+        font-size: var(--font-size-4xl);
         font-weight: 700;
     }
 

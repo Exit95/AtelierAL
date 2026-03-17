@@ -1,9 +1,29 @@
 import type { APIRoute } from 'astro';
-import { saveItem, type Artwork } from '../../../lib/storage';
+import { saveArtwork, type Artwork } from '../../../lib/database';
+import { getSessionFromCookies } from '../../../lib/auth';
+
+function isAuthenticated(request: Request): boolean {
+    const cookieHeader = request.headers.get('cookie');
+    return !!getSessionFromCookies(cookieHeader);
+}
 
 export const POST: APIRoute = async ({ request }) => {
+    if (!isAuthenticated(request)) {
+        return new Response(JSON.stringify({ error: 'Nicht autorisiert' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     try {
         const data = await request.json();
+
+        if (!data.title || typeof data.title !== 'string' || data.title.trim().length === 0) {
+            return new Response(JSON.stringify({ error: 'Titel ist erforderlich' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
 
         const id = data.title
             .toLowerCase()
@@ -16,27 +36,27 @@ export const POST: APIRoute = async ({ request }) => {
 
         const artwork: Artwork = {
             id,
-            title: data.title,
-            description: data.description,
-            technique: data.technique,
+            title: data.title.trim(),
+            description: data.description || '',
+            technique: data.technique || '',
             size: {
-                width: parseInt(data.width),
-                height: parseInt(data.height),
+                width: parseInt(data.width) || 0,
+                height: parseInt(data.height) || 0,
                 unit: data.unit || 'cm'
             },
-            availability: data.availability,
-            price: data.price,
+            availability: data.availability || 'available',
+            price: data.price || '',
             images: Array.isArray(data.images)
                 ? data.images
                 : (typeof data.images === 'string'
                     ? data.images.split(',').map((s: string) => s.trim()).filter(Boolean)
                     : [data.images].filter(Boolean)),
-            tags: typeof data.tags === 'string' ? data.tags.split(',').map((t: string) => t.trim()) : data.tags,
+            tags: typeof data.tags === 'string' ? data.tags.split(',').map((t: string) => t.trim()) : (data.tags || []),
             featured: data.featured === 'true' || data.featured === true,
             createdDate: new Date().toISOString()
         };
 
-        await saveItem('artworks', id, artwork);
+        saveArtwork(artwork);
 
         return new Response(JSON.stringify({
             success: true,

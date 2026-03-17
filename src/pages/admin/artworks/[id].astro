@@ -2,10 +2,10 @@
 export const prerender = false;
 
 import AdminLayout from "../../../layouts/AdminLayout.astro";
-import { getItem, type Artwork } from "../../../lib/storage";
+import { getArtwork, type Artwork } from "../../../lib/database";
 
 const { id } = Astro.params;
-const artwork = id ? await getItem<Artwork>("artworks", id) : null;
+const artwork = id ? (getArtwork(id) as Artwork | null) : null;
 
 if (!artwork) {
     return Astro.redirect("/admin/artworks");

@@ -1,8 +1,8 @@
 ---
 import AdminLayout from "../../../layouts/AdminLayout.astro";
-import { getItems, type Workshop } from "../../../lib/storage";
+import { getAllWorkshops, type Workshop } from "../../../lib/database";
 
-const workshops = await getItems<Workshop>("workshops");
+const workshops = getAllWorkshops() as Workshop[];
 const sortedWorkshops = workshops.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
 );

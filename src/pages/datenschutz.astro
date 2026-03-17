@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout
     title="Datenschutzerklärung"
-    description="Datenschutzerklärung für ATELIER KL - Informationen zur Verarbeitung personenbezogener Daten"
+    description="Datenschutzerklärung für ATELIER KL - Informationen zur Verarbeitung personenbezogener Daten gemäß DSGVO"
 >
     <section class="legal-page">
         <div class="container">
@@ -16,46 +16,82 @@ import Layout from "../layouts/Layout.astro";
 
                     <h3>Allgemeine Hinweise</h3>
                     <p>
-                        Die folgenden Hinweise geben einen einfachen Überblick
-                        darüber, was mit Ihren personenbezogenen Daten passiert,
-                        wenn Sie diese Website besuchen. Personenbezogene Daten
-                        sind alle Daten, mit denen Sie persönlich identifiziert
-                        werden können.
+                        Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren
+                        personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene
+                        Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.
+                        Ausführliche Informationen zum Thema Datenschutz entnehmen Sie unserer nachfolgend
+                        aufgeführten Datenschutzerklärung.
                     </p>
 
                     <h3>Datenerfassung auf dieser Website</h3>
                     <p>
-                        <strong
-                            >Wer ist verantwortlich für die Datenerfassung auf
-                            dieser Website?</strong
-                        ><br />
-                        Die Datenverarbeitung auf dieser Website erfolgt durch den
-                        Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum
-                        dieser Website entnehmen.
+                        <strong>Wer ist verantwortlich für die Datenerfassung auf dieser Website?</strong><br>
+                        Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber.
+                        Dessen Kontaktdaten können Sie dem Abschnitt „Verantwortliche Stelle" in dieser
+                        Datenschutzerklärung entnehmen.
                     </p>
-
                     <p>
-                        <strong>Wie erfassen wir Ihre Daten?</strong><br />
-                        Ihre Daten werden zum einen dadurch erhoben, dass Sie uns
-                        diese mitteilen. Hierbei kann es sich z. B. um Daten handeln,
-                        die Sie in ein Kontaktformular eingeben.
+                        <strong>Wie erfassen wir Ihre Daten?</strong><br>
+                        Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen.
+                        Hierbei kann es sich z.&nbsp;B. um Daten handeln, die Sie in ein Kontaktformular
+                        oder bei einer Workshop-Buchung eingeben. Andere Daten werden automatisch oder
+                        nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst.
+                        Das sind vor allem technische Daten (z.&nbsp;B. Internetbrowser, Betriebssystem
+                        oder Uhrzeit des Seitenaufrufs).
+                    </p>
+                    <p>
+                        <strong>Wofür nutzen wir Ihre Daten?</strong><br>
+                        Ein Teil der Daten wird erhoben, um eine fehlerfreie Bereitstellung der Website
+                        zu gewährleisten. Andere Daten können zur Analyse Ihres Nutzerverhaltens verwendet
+                        werden. Wenn Sie über unser Kontaktformular oder die Workshop-Buchung Daten
+                        übermitteln, werden diese zur Bearbeitung Ihrer Anfrage bzw. Buchung genutzt.
+                    </p>
+                    <p>
+                        <strong>Welche Rechte haben Sie bezüglich Ihrer Daten?</strong><br>
+                        Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger
+                        und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben
+                        außerdem ein Recht, die Berichtigung oder Löschung dieser Daten zu verlangen.
+                        Wenn Sie eine Einwilligung zur Datenverarbeitung erteilt haben, können Sie diese
+                        jederzeit für die Zukunft widerrufen. Außerdem haben Sie das Recht, unter
+                        bestimmten Umständen die Einschränkung der Verarbeitung Ihrer personenbezogenen
+                        Daten zu verlangen. Des Weiteren steht Ihnen ein Beschwerderecht bei der
+                        zuständigen Aufsichtsbehörde zu.
                     </p>
                 </section>
 
                 <section>
                     <h2>2. Hosting</h2>
+                    <h3>Eigenes Hosting</h3>
                     <p>
-                        Wir hosten die Inhalte unserer Website bei Vercel Inc.
-                        Die Server befinden sich in verschiedenen Rechenzentren.
-                        Weitere Informationen finden Sie in der
-                        Datenschutzerklärung von Vercel:
-                        <a
-                            href="https://vercel.com/legal/privacy-policy"
-                            target="_blank"
-                            rel="noopener"
-                        >
-                            https://vercel.com/legal/privacy-policy</a
-                        >
+                        Wir hosten die Inhalte unserer Website auf einem eigenen bzw. angemieteten Server.
+                        Beim Aufruf dieser Website werden durch den Hosting-Anbieter automatisch
+                        Informationen in sogenannten Server-Log-Dateien gespeichert, die Ihr Browser
+                        automatisch übermittelt. Dies sind:
+                    </p>
+                    <ul>
+                        <li>Browsertyp und Browserversion</li>
+                        <li>verwendetes Betriebssystem</li>
+                        <li>Referrer URL</li>
+                        <li>Hostname des zugreifenden Rechners</li>
+                        <li>Uhrzeit der Serveranfrage</li>
+                        <li>IP-Adresse</li>
+                    </ul>
+                    <p>
+                        Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen.
+                        Die Erfassung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO.
+                        Der Websitebetreiber hat ein berechtigtes Interesse an der technisch fehlerfreien
+                        Darstellung und der Optimierung seiner Website – hierzu müssen die Server-Log-Dateien
+                        erfasst werden.
+                    </p>
+
+                    <h3>Hetzner Object Storage (Bilderspeicherung)</h3>
+                    <p>
+                        Für die Speicherung von Bildern und Mediendateien nutzen wir Hetzner Object Storage
+                        (S3-kompatibel) der Hetzner Online GmbH, Industriestr. 25, 91710 Gunzenhausen.
+                        Beim Abruf von Bildern werden technische Daten (IP-Adresse, Zeitstempel) an die
+                        Server von Hetzner übermittelt. Weitere Informationen:
+                        <a href="https://www.hetzner.com/de/legal/privacy-policy" target="_blank" rel="noopener noreferrer">
+                            Datenschutzerklärung von Hetzner</a>.
                     </p>
                 </section>
 
@@ -64,25 +100,137 @@ import Layout from "../layouts/Layout.astro";
 
                     <h3>Datenschutz</h3>
                     <p>
-                        Wir nehmen den Schutz Ihrer persönlichen Daten sehr
-                        ernst. Wir behandeln Ihre personenbezogenen Daten
-                        vertraulich und entsprechend der gesetzlichen
-                        Datenschutzvorschriften sowie dieser
-                        Datenschutzerklärung.
+                        Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln
+                        Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen
+                        Datenschutzvorschriften sowie dieser Datenschutzerklärung.
+                    </p>
+                    <p>
+                        Wenn Sie diese Website benutzen, werden verschiedene personenbezogene Daten
+                        erhoben. Die vorliegende Datenschutzerklärung erläutert, welche Daten wir
+                        erheben und wofür wir sie nutzen. Sie erläutert auch, wie und zu welchem
+                        Zweck das geschieht.
+                    </p>
+                    <p>
+                        Wir weisen darauf hin, dass die Datenübertragung im Internet (z.&nbsp;B. bei der
+                        Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser
+                        Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich.
                     </p>
 
-                    <h3>Hinweis zur verantwortlichen Stelle</h3>
+                    <h3>Verantwortliche Stelle</h3>
                     <p>
-                        Die verantwortliche Stelle für die Datenverarbeitung auf
-                        dieser Website ist:
+                        Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:
+                    </p>
+                    <p>
+                        Katharina Lanvermann<br>
+                        ATELIER KL<br>
+                        Bockhorn 68<br>
+                        48683 Ahaus<br>
+                        E-Mail: <a href="mailto:studio@atelierkl.de">studio@atelierkl.de</a>
+                    </p>
+                    <p>
+                        Verantwortliche Stelle ist die natürliche oder juristische Person, die allein
+                        oder gemeinsam mit anderen über die Zwecke und Mittel der Verarbeitung von
+                        personenbezogenen Daten (z.&nbsp;B. Namen, E-Mail-Adressen o.&nbsp;Ä.) entscheidet.
                     </p>
 
+                    <h3>Speicherdauer</h3>
                     <p>
-                        Katharina Lanvermann<br />
-                        ATELIER KL<br />
-                        Bockhorn 68<br />
-                        48683 Ahaus<br />
-                        E-Mail: studio@atelierkl.de
+                        Soweit innerhalb dieser Datenschutzerklärung keine speziellere Speicherdauer
+                        genannt wurde, verbleiben Ihre personenbezogenen Daten bei uns, bis der Zweck
+                        für die Datenverarbeitung entfällt. Wenn Sie ein berechtigtes Löschersuchen
+                        geltend machen oder eine Einwilligung zur Datenverarbeitung widerrufen, werden
+                        Ihre Daten gelöscht, sofern wir keine anderen rechtlich zulässigen Gründe für
+                        die Speicherung Ihrer personenbezogenen Daten haben (z.&nbsp;B. steuer- oder
+                        handelsrechtliche Aufbewahrungsfristen); im letztgenannten Fall erfolgt die
+                        Löschung nach Fortfall dieser Gründe.
+                    </p>
+
+                    <h3>Allgemeine Hinweise zu den Rechtsgrundlagen der Datenverarbeitung</h3>
+                    <p>
+                        Sofern Sie in die Datenverarbeitung eingewilligt haben, verarbeiten wir Ihre
+                        personenbezogenen Daten auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO bzw.
+                        Art. 9 Abs. 2 lit. a DSGVO. Im Falle einer ausdrücklichen Einwilligung in
+                        die Übertragung personenbezogener Daten in Drittstaaten erfolgt die
+                        Datenverarbeitung außerdem auf Grundlage von Art. 49 Abs. 1 lit. a DSGVO.
+                        Sofern die Datenverarbeitung zur Erfüllung eines Vertrags oder zur Durchführung
+                        vorvertraglicher Maßnahmen erforderlich ist, verarbeiten wir Ihre Daten auf
+                        Grundlage von Art. 6 Abs. 1 lit. b DSGVO. Des Weiteren verarbeiten wir Ihre
+                        Daten, sofern diese zur Erfüllung einer rechtlichen Verpflichtung erforderlich
+                        sind, auf Grundlage von Art. 6 Abs. 1 lit. c DSGVO. Die Datenverarbeitung
+                        kann ferner auf Grundlage unseres berechtigten Interesses nach Art. 6 Abs. 1
+                        lit. f DSGVO erfolgen.
+                    </p>
+
+                    <h3>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h3>
+                    <p>
+                        Viele Datenverarbeitungsvorgänge sind nur mit Ihrer ausdrücklichen Einwilligung
+                        möglich. Sie können eine bereits erteilte Einwilligung jederzeit widerrufen.
+                        Die Rechtmäßigkeit der bis zum Widerruf erfolgten Datenverarbeitung bleibt
+                        vom Widerruf unberührt.
+                    </p>
+
+                    <h3>Widerspruchsrecht gegen die Datenerhebung (Art. 21 DSGVO)</h3>
+                    <p>
+                        <strong>
+                            Wenn die Datenverarbeitung auf Grundlage von Art. 6 Abs. 1 lit. e oder f DSGVO
+                            erfolgt, haben Sie jederzeit das Recht, aus Gründen, die sich aus Ihrer
+                            besonderen Situation ergeben, gegen die Verarbeitung Ihrer personenbezogenen
+                            Daten Widerspruch einzulegen. Die jeweilige Rechtsgrundlage, auf der eine
+                            Verarbeitung beruht, entnehmen Sie dieser Datenschutzerklärung. Wenn Sie
+                            Widerspruch einlegen, werden wir Ihre betroffenen personenbezogenen Daten nicht
+                            mehr verarbeiten, es sei denn, wir können zwingende schutzwürdige Gründe für
+                            die Verarbeitung nachweisen, die Ihre Interessen, Rechte und Freiheiten
+                            überwiegen oder die Verarbeitung dient der Geltendmachung, Ausübung oder
+                            Verteidigung von Rechtsansprüchen.
+                        </strong>
+                    </p>
+
+                    <h3>Beschwerderecht bei der zuständigen Aufsichtsbehörde</h3>
+                    <p>
+                        Im Falle von Verstößen gegen die DSGVO steht den Betroffenen ein
+                        Beschwerderecht bei einer Aufsichtsbehörde zu. Zuständige Aufsichtsbehörde
+                        in datenschutzrechtlichen Fragen ist die Landesbeauftragte für Datenschutz
+                        und Informationsfreiheit Nordrhein-Westfalen:
+                    </p>
+                    <p>
+                        Landesbeauftragte für Datenschutz und Informationsfreiheit NRW<br>
+                        Kavalleriestr. 2-4<br>
+                        40213 Düsseldorf<br>
+                        <a href="https://www.ldi.nrw.de" target="_blank" rel="noopener noreferrer">www.ldi.nrw.de</a>
+                    </p>
+
+                    <h3>Recht auf Datenübertragbarkeit</h3>
+                    <p>
+                        Sie haben das Recht, Daten, die wir auf Grundlage Ihrer Einwilligung oder in
+                        Erfüllung eines Vertrags automatisiert verarbeiten, an sich oder an einen Dritten
+                        in einem gängigen, maschinenlesbaren Format aushändigen zu lassen. Sofern Sie die
+                        direkte Übertragung der Daten an einen anderen Verantwortlichen verlangen, erfolgt
+                        dies nur, soweit es technisch machbar ist.
+                    </p>
+
+                    <h3>Auskunft, Berichtigung und Löschung</h3>
+                    <p>
+                        Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht
+                        auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten,
+                        deren Herkunft und Empfänger und den Zweck der Datenverarbeitung und ggf. ein
+                        Recht auf Berichtigung oder Löschung dieser Daten. Hierzu sowie zu weiteren
+                        Fragen zum Thema personenbezogene Daten können Sie sich jederzeit an uns wenden.
+                    </p>
+
+                    <h3>Recht auf Einschränkung der Verarbeitung</h3>
+                    <p>
+                        Sie haben das Recht, die Einschränkung der Verarbeitung Ihrer personenbezogenen
+                        Daten zu verlangen. Hierzu können Sie sich jederzeit an uns wenden.
+                    </p>
+
+                    <h3>SSL- bzw. TLS-Verschlüsselung</h3>
+                    <p>
+                        Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung
+                        vertraulicher Inhalte, wie zum Beispiel Buchungen oder Anfragen, die Sie an
+                        uns als Seitenbetreiber senden, eine SSL- bzw. TLS-Verschlüsselung. Eine
+                        verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des
+                        Browsers von „http://" auf „https://" wechselt und an dem Schloss-Symbol
+                        in Ihrer Browserzeile.
                     </p>
                 </section>
 
@@ -91,130 +239,167 @@ import Layout from "../layouts/Layout.astro";
 
                     <h3>Kontaktformular</h3>
                     <p>
-                        Wenn Sie uns per Kontaktformular Anfragen zukommen
-                        lassen, werden Ihre Angaben aus dem Anfrageformular
-                        inklusive der von Ihnen dort angegebenen Kontaktdaten
-                        zwecks Bearbeitung der Anfrage und für den Fall von
-                        Anschlussfragen bei uns gespeichert. Diese Daten geben
-                        wir nicht ohne Ihre Einwilligung weiter.
+                        Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre
+                        Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen
+                        Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von
+                        Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre
+                        Einwilligung weiter.
+                    </p>
+                    <p>
+                        Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b
+                        DSGVO, sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt
+                        oder zur Durchführung vorvertraglicher Maßnahmen erforderlich ist. In allen
+                        übrigen Fällen beruht die Verarbeitung auf unserem berechtigten Interesse an
+                        der effektiven Bearbeitung der an uns gerichteten Anfragen (Art. 6 Abs. 1
+                        lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO),
+                        sofern diese abgefragt wurde.
+                    </p>
+                    <p>
+                        Die von Ihnen im Kontaktformular eingegebenen Daten verbleiben bei uns, bis
+                        Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen
+                        oder der Zweck für die Datenspeicherung entfällt. Zwingende gesetzliche
+                        Bestimmungen – insbesondere Aufbewahrungsfristen – bleiben unberührt.
                     </p>
 
+                    <h3>Workshop-Buchung</h3>
                     <p>
-                        Die Verarbeitung dieser Daten erfolgt auf Grundlage von
-                        Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der
-                        Erfüllung eines Vertrags zusammenhängt oder zur
-                        Durchführung vorvertraglicher Maßnahmen erforderlich
-                        ist. In allen übrigen Fällen beruht die Verarbeitung auf
-                        unserem berechtigten Interesse an der effektiven
-                        Bearbeitung der an uns gerichteten Anfragen (Art. 6 Abs.
-                        1 lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6 Abs.
-                        1 lit. a DSGVO).
+                        Bei einer Workshop-Buchung über unsere Website erheben wir folgende Daten:
+                    </p>
+                    <ul>
+                        <li>Name</li>
+                        <li>E-Mail-Adresse</li>
+                        <li>Telefonnummer (optional)</li>
+                        <li>Anzahl der Teilnehmer</li>
+                        <li>Nachricht (optional)</li>
+                    </ul>
+                    <p>
+                        Diese Daten werden ausschließlich zur Abwicklung der Buchung, zur Bestätigung
+                        per E-Mail und zur Organisation des Workshops verarbeitet. Die Rechtsgrundlage
+                        ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung). Die Daten werden nach
+                        Abschluss des Workshops und Ablauf etwaiger gesetzlicher Aufbewahrungsfristen
+                        gelöscht.
                     </p>
 
                     <h3>Anfrage per E-Mail</h3>
                     <p>
-                        Wenn Sie uns per E-Mail kontaktieren, wird Ihre Anfrage
-                        inklusive aller daraus hervorgehenden personenbezogenen
-                        Daten (Name, Anfrage) zum Zwecke der Bearbeitung Ihres
-                        Anliegens bei uns gespeichert und verarbeitet. Diese
+                        Wenn Sie uns per E-Mail kontaktieren, wird Ihre Anfrage inklusive aller
+                        daraus hervorgehenden personenbezogenen Daten (Name, Anfrage) zum Zwecke
+                        der Bearbeitung Ihres Anliegens bei uns gespeichert und verarbeitet. Diese
                         Daten geben wir nicht ohne Ihre Einwilligung weiter.
                     </p>
-                </section>
 
-                <section>
-                    <h2>5. Analyse-Tools und Werbung</h2>
-
-                    <h3>Vercel Web Analytics</h3>
+                    <h3>Bewertungen / Kundenstimmen</h3>
                     <p>
-                        Diese Website nutzt Vercel Web Analytics. Dabei werden
-                        keine personenbezogenen Daten erfasst und keine Cookies
-                        gesetzt. Es werden lediglich anonymisierte
-                        Nutzungsstatistiken erhoben.
+                        Sie haben die Möglichkeit, über ein Formular eine Bewertung abzugeben. Dabei
+                        werden Ihr Name, optional Ihre E-Mail-Adresse, Ihre Bewertung (1–5 Sterne)
+                        und Ihr Bewertungstext gespeichert. Bewertungen werden erst nach Prüfung durch
+                        uns veröffentlicht. Die Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO
+                        (Einwilligung). Sie können die Löschung Ihrer Bewertung jederzeit verlangen.
                     </p>
                 </section>
 
                 <section>
-                    <h2>6. Ihre Rechte</h2>
+                    <h2>5. E-Mail-Versand</h2>
                     <p>
-                        Sie haben jederzeit das Recht auf unentgeltliche
-                        Auskunft über Ihre gespeicherten personenbezogenen
-                        Daten, deren Herkunft und Empfänger und den Zweck der
-                        Datenverarbeitung sowie ein Recht auf Berichtigung oder
-                        Löschung dieser Daten.
+                        Wir verwenden einen SMTP-E-Mail-Dienst zum Versand von Buchungsbestätigungen,
+                        Benachrichtigungen und Kontaktanfragen. Beim E-Mail-Versand werden folgende
+                        Daten an den E-Mail-Server übermittelt:
                     </p>
-
+                    <ul>
+                        <li>Empfänger-E-Mail-Adresse</li>
+                        <li>Inhalt der E-Mail (Buchungsdetails, Anfragedaten)</li>
+                        <li>Absender-Adresse</li>
+                    </ul>
                     <p>
-                        Hierzu sowie zu weiteren Fragen zum Thema
-                        personenbezogene Daten können Sie sich jederzeit unter
-                        der im Impressum angegebenen Adresse an uns wenden.
+                        Die Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung bei
+                        Buchungsbestätigungen) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse
+                        bei Kontaktanfragen).
                     </p>
                 </section>
 
                 <section>
-                    <h2>7. Widerspruchsrecht</h2>
+                    <h2>6. Cookies und Sitzungsverwaltung</h2>
+
+                    <h3>Session-Cookies</h3>
                     <p>
-                        Sofern Ihre personenbezogenen Daten auf Grundlage von
-                        berechtigten Interessen gemäß Art. 6 Abs. 1 S. 1 lit. f
-                        DSGVO verarbeitet werden, haben Sie das Recht, gemäß
-                        Art. 21 DSGVO Widerspruch gegen die Verarbeitung Ihrer
-                        personenbezogenen Daten einzulegen, soweit dafür Gründe
-                        vorliegen, die sich aus Ihrer besonderen Situation
-                        ergeben.
+                        Unsere Website verwendet für den Administrations-Bereich Session-Cookies.
+                        Diese sind technisch notwendig und dienen ausschließlich der Authentifizierung
+                        von Administratoren. Sie enthalten keine personenbezogenen Daten der
+                        Website-Besucher.
+                    </p>
+                    <p>
+                        Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an
+                        der sicheren Verwaltung der Website).
+                    </p>
+                    <p>
+                        Für reguläre Besucher der Website werden keine Cookies gesetzt.
                     </p>
                 </section>
 
-                <p
-                    class="text-sm text-secondary"
-                    style="margin-top: var(--space-12);"
-                >
-                    Stand: November 2024
-                </p>
+                <section>
+                    <h2>7. Externe Dienste</h2>
+
+                    <h3>Google Fonts</h3>
+                    <p>
+                        Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten sogenannte
+                        Google Fonts, die von Google bereitgestellt werden. Beim Aufruf einer Seite
+                        lädt Ihr Browser die benötigten Fonts in Ihren Browsercache, um Texte und
+                        Schriftarten korrekt anzuzeigen. Zu diesem Zweck muss der von Ihnen verwendete
+                        Browser Verbindung zu den Servern von Google aufnehmen. Hierdurch erlangt Google
+                        Kenntnis darüber, dass über Ihre IP-Adresse diese Website aufgerufen wurde.
+                    </p>
+                    <p>
+                        Die Nutzung von Google Fonts erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f
+                        DSGVO. Der Websitebetreiber hat ein berechtigtes Interesse an der einheitlichen
+                        Darstellung des Schriftbildes auf seiner Website.
+                    </p>
+                    <p>
+                        Weitere Informationen zu Google Fonts finden Sie unter
+                        <a href="https://developers.google.com/fonts/faq" target="_blank" rel="noopener noreferrer">
+                            https://developers.google.com/fonts/faq</a>
+                        und in der Datenschutzerklärung von Google:
+                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+                            https://policies.google.com/privacy</a>.
+                    </p>
+
+                    <h3>Adobe Fonts (Typekit)</h3>
+                    <p>
+                        Diese Website nutzt Adobe Fonts für die Darstellung bestimmter Schriftarten.
+                        Anbieter ist die Adobe Inc., 345 Park Avenue, San Jose, CA 95110-2704, USA.
+                        Beim Laden der Seite wird eine Verbindung zu den Servern von Adobe aufgebaut.
+                        Dabei wird Ihre IP-Adresse an Adobe übermittelt.
+                    </p>
+                    <p>
+                        Weitere Informationen finden Sie in der Datenschutzerklärung von Adobe:
+                        <a href="https://www.adobe.com/de/privacy/policy.html" target="_blank" rel="noopener noreferrer">
+                            https://www.adobe.com/de/privacy/policy.html</a>.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>8. Datensicherheit</h2>
+                    <p>
+                        Die übermittelten Daten werden in einer lokalen Datenbank (SQLite) auf
+                        unserem Server gespeichert. Der Zugriff auf die Administrationsoberfläche
+                        ist durch ein verschlüsseltes Passwort (bcrypt) und sitzungsbasierte
+                        Authentifizierung geschützt. Die Verbindung zur Website ist durch
+                        SSL/TLS-Verschlüsselung gesichert.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>9. Aktualität und Änderung dieser Datenschutzerklärung</h2>
+                    <p>
+                        Diese Datenschutzerklärung ist aktuell gültig und hat den Stand März 2026.
+                    </p>
+                    <p>
+                        Durch die Weiterentwicklung unserer Website oder aufgrund geänderter
+                        gesetzlicher bzw. behördlicher Vorgaben kann es notwendig werden, diese
+                        Datenschutzerklärung zu ändern. Die jeweils aktuelle Datenschutzerklärung
+                        kann jederzeit auf dieser Seite abgerufen werden.
+                    </p>
+                </section>
             </div>
         </div>
     </section>
 </Layout>
-
-<style>
-    .legal-page {
-        padding: var(--space-16) 0;
-        min-height: 60vh;
-    }
-
-    .legal-page h1 {
-        margin-bottom: var(--space-12);
-        padding-bottom: var(--space-6);
-        border-bottom: 2px solid var(--color-border);
-    }
-
-    .legal-content {
-        max-width: 800px;
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-10);
-    }
-
-    .legal-content section {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-4);
-    }
-
-    .legal-content h2 {
-        color: var(--color-accent);
-        font-size: var(--font-size-xl);
-    }
-
-    .legal-content h3 {
-        font-size: var(--font-size-lg);
-        margin-top: var(--space-4);
-    }
-
-    .legal-content p {
-        line-height: var(--line-height-relaxed);
-    }
-
-    .legal-content a {
-        color: var(--color-accent);
-        text-decoration: underline;
-    }
-</style>
